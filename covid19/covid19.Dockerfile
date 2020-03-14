@@ -21,5 +21,5 @@ RUN ./init-django.sh
 
 # RUN DJANGO APP
 ENTRYPOINT [ "bash" ]
-EXPOSE 8000
+EXPOSE 8070
 

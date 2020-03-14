@@ -5,10 +5,9 @@ services:
       context: ./covid19/
       dockerfile: covid19.Dockerfile
     container_name: dg_portal
-    command: python3 manage.py runserver 0.0.0.0:8000
     image: covid19:0.1
     ports:
-      - "8000:8000"
+      - "8070:8070"
     volumes:
       - ./covid19/:/app/
     tty: true
