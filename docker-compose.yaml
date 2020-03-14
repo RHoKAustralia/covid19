@@ -7,7 +7,7 @@ services:
     image: covid19:0.1
     container_name: dg_portal
     ports:
-      - "8000"
+      - "8000:8000"
     volumes:
       - ./covid19/:/app/
     tty: true
