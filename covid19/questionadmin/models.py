@@ -4,41 +4,41 @@ from django.db import models
 
 class Question(models.Model):
     question = models.TextField(blank=True, null=True)
-    questiontype = models.ForeignKey('Questiontype')
+    questiontype = models.ForeignKey('QuestionType', models.DO_NOTHING)
 
-class Questiontype(models.Model):
+class QuestionType(models.Model):
     type = models.TextField()
 
 class Location(models.Model):
     place = models.TextField(blank=True)
     postcode = models.TextField(blank=True)
-    region = models.ForeignKey('Region')
-    country = models.ForeignKey('Country')
+    region = models.ForeignKey('Region', models.DO_NOTHING)
+    country = models.ForeignKey('Country', models.DO_NOTHING)
 
 class Participant(models.Model):
     firstName = models.TextField()
     lastName = models.TextField()
-    location = models.ForeignKey('Participant_location')
-    age = models.ForeignKey('AgeRanges')
+    location = models.ForeignKey('ParticipantLocation', models.DO_NOTHING)
+    age = models.ForeignKey('AgeRanges', models.DO_NOTHING)
 
-class Participant_location(models.Model):
-    participant = models.ForeignKey('Participant')
-    location = models.ForeignKey('Location')
+class ParticipantLocation(models.Model):
+    participant_id = models.ForeignKey('Participant', models.DO_NOTHING)
+    location = models.ForeignKey('Location', models.DO_NOTHING)
     dateFrom = models.DateTimeField()
     dateTo = models.DateTimeField()
-    current_location= models.Boolean()
+    current_location= models.BooleanField()
 
 class Answer(models.Model):
-    question = models.ForeignKey('Question')
-    participant = models.ForeignKey('Participant')
+    question = models.ForeignKey('Question', models.DO_NOTHING)
+    participant = models.ForeignKey('Participant', models.DO_NOTHING)
     scale_Answer = models.IntegerField()
     dateFrom = models.DateTimeField()
     dateTo = models.DateTimeField()
     freeform_text = models.TextField()
 
 class  Health(models.Model):
-    participant = models.ForeignKey('Participant')
-    issue = models.ForeignKey('GlobalHealthSchema')
+    participant = models.ForeignKey('Participant', models.DO_NOTHING)
+    issue = models.ForeignKey('GlobalHealthSchema', models.DO_NOTHING)
     severity = models.IntegerField()
 
 class GlobalHealthSchema(models.Model):
@@ -47,13 +47,13 @@ class GlobalHealthSchema(models.Model):
     external_classification_code = models.TextField()
 
 class Event(models.Model):
-    participant = models.ForeignKey('Participant')
+    participant = models.ForeignKey('Participant', models.DO_NOTHING)
     name = models.TextField()
-    location = models.ForeignKey('Participant_location')
+    location = models.ForeignKey('ParticipantLocation', models.DO_NOTHING)
 
 class Contacts(models.Model):
-    participant = models.ForeignKey('Participant')
-    location = models.ForeignKey('Participant_location')
+    participant = models.ForeignKey('Participant', models.DO_NOTHING)
+    location = models.ForeignKey('ParticipantLocation', models.DO_NOTHING)
 
 class Country(models.Model):
     country = models.TextField()
@@ -61,7 +61,7 @@ class Country(models.Model):
 
 class Region(models.Model):
     region = models.TextField()
-    country = models.ForeignKey('Country')
+    country = models.ForeignKey('Country', models.DO_NOTHING)
 
 class AgeRanges(models.Model):
     age_ranges = models.TextField()
