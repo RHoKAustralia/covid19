@@ -18,7 +18,6 @@ WORKDIR ${PATH_APP}
 
 # INITIALISE DJANGO
 RUN ./init-django.sh
-RUN python3 /app/manage.py runserver 0.0.0.0:8000
 
 # RUN DJANGO APP
 ENTRYPOINT [ "bash" ]
