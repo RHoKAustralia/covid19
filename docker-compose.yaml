@@ -10,5 +10,9 @@ services:
       - "8070:8070"
     volumes:
       - ./covid19/:/app/
+      - mysql_volume:/var/lib/mysql
     tty: true
-    
+    command: >
+      ./start.sh
+volumes:
+        mysql_volume:

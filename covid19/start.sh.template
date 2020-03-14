@@ -1,0 +1,42 @@
+chmod -R 777 /var/lib/mysql
+/etc/init.d/mysql start
+export exists=false
+if [ $exists == true ]; then
+  echo ============================= database exists
+else
+ echo ============================= create database 
+  mysql -u root << !
+create database covid19;
+quit
+!
+mysql -u root << !
+GRANT ALL PRIVILEGES ON *.* TO 'covid19'@'localhost' IDENTIFIED BY 'XXX_change_password_085';
+quit
+!
+cat > tmp_fixture.json << "!"
+[
+    { "model": "auth_user",
+        "pk": 1,
+        "fields": {
+            "username": "r.seikel@gmail.com",
+            "email": "r.seikel@gmail.com",
+            "password": "pbkdf2_sha256$36000$qYsk7kKBWYoc$vwTE3sOz4zkbFWUVzR1lEXAtiZlLLFzNGrjlJlcRkWU=",
+            "is_superuser": true,
+            "is_staff": true,
+            "is_active": true
+        }
+    }
+]
+!
+#if [ $exists == true ]; then
+#  echo "skip loading of fixture"
+#else
+#   #python manage.py loaddata tmp_fixture.json
+#fi
+
+fi
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py shell -c "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'XXX_change_password_085')"
+python3 manage.py collectstatic --noinput
+python3 manage.py runserver 0.0.0.0:8070
