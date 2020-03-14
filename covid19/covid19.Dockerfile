@@ -11,7 +11,7 @@ RUN apt-get install -y \
     $(cat /app/requirements/apt.txt)
 
 # REQUIREMENTS: PIP
-RUN pip install -r /app/requirements/pip.txt 
+RUN pip3 install -r /app/requirements/pip.txt 
 
 EXPOSE 8000
 
