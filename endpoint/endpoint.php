@@ -27,7 +27,7 @@ function get_symptoms($pdo, $symptomslist) {
   $symptoms = explode(",", $symptomslist);
   $output = array();
   foreach ($symptoms as $symptom) {
-    $q = "SELECT scale_answer as scale, COUNT(*) as count FROM questionadmin_answer as a JOIN questionadmin_question as q ON q.id = a.question_id  WHERE question = '".$symptom."' GROUP BY scale_Answer";
+    $q = "SELECT scale_answer as scale, COUNT(*) as count FROM questionadmin_answer as a JOIN questionadmin_question as q ON q.id = a.question_id  WHERE alias = '".$symptom."' GROUP BY scale_Answer";
     $stmt = $pdo -> query($q);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
