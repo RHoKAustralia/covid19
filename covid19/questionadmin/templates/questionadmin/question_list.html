@@ -1,43 +1,118 @@
 {% load static %}
-<a href="{% static "front-page.html" %}">Front page sample</a>
-<a href="{% static "questionnaire.html" %}">questionnaire sample</a>
-<a href="{% static "histogram.html" %}">histogram sample</a>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+    <title>COVID-19-Hack</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
+
+    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+
+    <style>
+.all {
+padding-right:10px;
+padding-left:10px;
+}
+    </style>
+
+</head>
+<div class="all">
 {% if questions %}
-    <h3>Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h3>
+<form method="post" action="/covid19/saveresponse">
+    {% csrf_token %}
+    <h3 class="title is-3">Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h3>
     <ul>
     {% for question in questions %}
         {% if question.istested %}
             {% if question.isanswer %}
-<li>
-<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">Yes
-<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">No
-</li>
+       <div class="field">
+            <div class="control">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="1">Yes</option>
+                        <option value="0" selected>No</option>
+                    </select>
+                </div>
+            </div>
+        </div>
             {% else %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+                {% if question.order == 1 %}
+       <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="1">Positive</option>
+                        <option value="0" selected>Negative</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+                {% else %}
+                    {% if question.order == 2 %}
+        <label">{{ question.question }}</label>
+<div class="input-group date" data-provide="datepicker">
+    <input type="text" class="form-control" id="{{ question.id }}" name="{{ question.id }}">
+    <div class="input-group-addon">
+        <span class="glyphicon glyphicon-th"></span>
+    </div>
+</div>
+                    {% else %}
+<div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+                    {% endif %}
+                {% endif %}
             {% endif %}
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h3>Since this time yesterday, have you had any of the following symptoms?</h3>
-    <ul>
+    <h3 class="title is-3">Since this time yesterday, have you had any of the following symptoms?</h3>
     {% for question in questions %}
         {% if question.isscale %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="0" selected>None</option>
+                        <option value="1" >Mild</option>
+                        <option value="2">Moderate</option>
+                        <option value="3">Severe</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         {% endif %}
     {% endfor %}
-    </ul>
 
-    <h3>Since this time yesterday, have respiratory of flu-like problems affected your ability to:</h3>
+    <h3 class="title is-3">Since this time yesterday, have respiratory of flu-like problems affected your ability to:</h3>
     <ul>
     {% for question in questions %}
         {% if question.isdifficulty %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+<div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="0" selected>No Difficulty</option>
+                        <option value="1" >Some Difficulty</option>
+                        <option value="2">Moderate Difficulty</option>
+                        <option value="3">Great Difficulty</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         {% endif %}
     {% endfor %}
     </ul>
 
-    <h3>Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h3>
+    <h3 class="title is-3">Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h3>
     <ul>
     {% for question in questions %}
         {% if question.istravel %}
@@ -54,7 +129,7 @@
     {% endfor %}
     </ul>
 
-    <h3>In the last 14 days have you attended any mass gatherings (more than 500 people) ?</h3>
+    <h3 class="title is-3">In the last 14 days have you attended any mass gatherings (more than 500 people) ?</h3>
     <ul>
     {% for question in questions %}
         {% if question.isgathering %}
@@ -63,7 +138,7 @@
     {% endfor %}
     </ul>
 
-    <h3>Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h3>
+    <h3 class="title is-3">Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h3>
     <ul>
     {% for question in questions %}
         {% if question.iscontact %}
@@ -72,7 +147,7 @@
     {% endfor %}
     </ul>
 
-    <h3>Have you been self-isolating in the last 14 days?</h3>
+    <h3 class="title is-3">Have you been self-isolating in the last 14 days?</h3>
     <ul>
     {% for question in questions %}
         {% if question.isisolating %}
@@ -126,7 +201,7 @@
     {% endfor %}
     </ul>
 
-    <h3>Do you have of the following long-term conditions?</h3>
+    <h3 class="title is-3">Do you have of the following long-term conditions?</h3>
     <ul>
     {% for question in questions %}
         {% if question.islongterm %}
@@ -136,7 +211,15 @@
         {% endif %}
     {% endfor %}
     </ul>
+<button class="button is-success">
+    <span class="icon is-small">
+      <i class="fas fa-check"></i>
+    </span>
+    <span>Save</span>
+  </button>
+</form>
 
 {% else %}
     <p>No questions are available.</p>
 {% endif %}
+</div>
