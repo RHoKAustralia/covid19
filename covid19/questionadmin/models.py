@@ -13,6 +13,18 @@ class Question(models.Model):
     def __str__(self):
         return self.question
 
+    # Style
+    def isyesno(self):
+        if self.istested and str(question)=="Answer":
+            return True
+        if self.islongterm:
+            return True
+        return False
+    def isanswer(self):
+        if str(self.question)=="Answer":
+            return True
+        return False
+    # Groups
     def istested(self):
         if (str(self.questiontype) == "Tested"):
             return True

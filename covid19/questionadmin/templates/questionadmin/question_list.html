@@ -7,7 +7,14 @@
     <ul>
     {% for question in questions %}
         {% if question.istested %}
+            {% if question.isanswer %}
+<li>
+<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">Yes
+<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">No
+</li>
+            {% else %}
         <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+            {% endif %}
         {% endif %}
     {% endfor %}
     </ul>
@@ -34,7 +41,15 @@
     <ul>
     {% for question in questions %}
         {% if question.istravel %}
+            {% if question.isanswer %}
+<li>
+<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">Yes
+<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">No
+<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">Not Sure
+</li>
+            {% else %}
         <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+            {% endif %}
         {% endif %}
     {% endfor %}
     </ul>
@@ -115,7 +130,9 @@
     <ul>
     {% for question in questions %}
         {% if question.islongterm %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+<label class="checkbox-inline">
+  <input type="checkbox" data-toggle="toggle" off="No" on="Yes"> {{ question.question }}
+</label>
         {% endif %}
     {% endfor %}
     </ul>

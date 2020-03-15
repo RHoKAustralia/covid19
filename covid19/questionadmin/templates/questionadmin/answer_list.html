@@ -1,0 +1,233 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@5"></script>
+  </head>
+
+  <body>
+   <h1> Do you have a Cough?</h1>
+   <h2> Total Reponses = {{ answers.count}}</h2> 
+
+    <div class="embed">
+      <div id="bar-chart" class="view"></div>
+      <div id="pie-chart" class="view"></div>
+    </div>
+
+  </body>
+
+<script>
+  const specbar = {
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 400,
+  "height": 200,
+  "padding": 5,
+
+  "data": [
+  {
+  "name": "table",
+  "values": [
+  {"category": "None", "amount": {{ none.count }} },
+  {"category": "Mild", "amount": {{ mild.count }} },
+  {"category": "Moderate", "amount": {{ moderate.count }} },
+  {"category": "Severe", "amount": {{ severe.count }} },
+  ]
+  }
+  ],
+
+  "signals": [
+  {
+  "name": "tooltip",
+  "value": {},
+  "on": [
+  {"events": "rect:mouseover", "update": "datum"},
+  {"events": "rect:mouseout",  "update": "{}"}
+  ]
+  }
+  ],
+
+  "scales": [
+  {
+  "name": "xscale",
+  "type": "band",
+  "domain": {"data": "table", "field": "category"},
+  "range": "width",
+  "padding": 0.05,
+  "round": true
+  },
+  {
+  "name": "yscale",
+  "domain": {"data": "table", "field": "amount"},
+  "nice": true,
+  "range": "height"
+  }
+  ],
+
+  "axes": [
+  { "orient": "bottom", "scale": "xscale" },
+  { "orient": "left", "scale": "yscale" }
+  ],
+
+  "marks": [
+  {
+  "type": "rect",
+  "from": {"data":"table"},
+  "encode": {
+  "enter": {
+  "x": {"scale": "xscale", "field": "category"},
+  "width": {"scale": "xscale", "band": 1},
+  "y": {"scale": "yscale", "field": "amount"},
+  "y2": {"scale": "yscale", "value": 0}
+  },
+  "update": {
+  "fill": {"value": "steelblue"}
+  },
+  "hover": {
+  "fill": {"value": "red"}
+  }
+  }
+  },
+  {
+  "type": "text",
+  "encode": {
+  "enter": {
+  "align": {"value": "center"},
+  "baseline": {"value": "bottom"},
+  "fill": {"value": "#333"}
+  },
+  "update": {
+  "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},
+  "y": {"scale": "yscale", "signal": "tooltip.amount", "offset": -2},
+  "text": {"signal": "tooltip.amount"},
+  "fillOpacity": [
+  {"test": "isNaN(tooltip.amount)", "value": 0},
+  {"value": 1}
+  ]
+  }
+  }
+  }
+  ]
+  };
+
+  vegaEmbed("#bar-chart", specbar);
+  
+</script>
+
+<script>
+  const specpie = {
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A basic pie chart example.",
+  "width": 200,
+  "height": 200,
+  "autosize": "none",
+
+  "signals": [
+  {
+  "name": "startAngle", "value": 0,
+  "bind": {"input": "range", "min": 0, "max": 6.29, "step": 0.01}
+  },
+  {
+  "name": "endAngle", "value": 6.29,
+  "bind": {"input": "range", "min": 0, "max": 6.29, "step": 0.01}
+  },
+  {
+  "name": "padAngle", "value": 0,
+  "bind": {"input": "range", "min": 0, "max": 0.1}
+  },
+  {
+  "name": "innerRadius", "value": 0,
+  "bind": {"input": "range", "min": 0, "max": 90, "step": 1}
+  },
+  {
+  "name": "cornerRadius", "value": 0,
+  "bind": {"input": "range", "min": 0, "max": 10, "step": 0.5}
+  },
+  {
+  "name": "sort", "value": false,
+  "bind": {"input": "checkbox"}
+  }
+  ],
+
+  "data": [
+  {
+  "name": "table",
+  "values": [
+  {"id": 1, "field": 4},
+  {"id": 2, "field": 6},
+  {"id": 3, "field": 10},
+  {"id": 4, "field": 3},
+  {"id": 5, "field": 7},
+  {"id": 6, "field": 8}
+  ],
+  "transform": [
+  {
+  "type": "pie",
+  "field": "field",
+  "startAngle": {"signal": "startAngle"},
+  "endAngle": {"signal": "endAngle"},
+  "sort": {"signal": "sort"}
+  }
+  ]
+  }
+  ],
+
+  "scales": [
+  {
+  "name": "color",
+  "type": "ordinal",
+  "domain": {"data": "table", "field": "id"},
+  "range": {"scheme": "category20"}
+  }
+  ],
+
+  "marks": [
+  {
+  "type": "arc",
+  "from": {"data": "table"},
+  "encode": {
+  "enter": {
+  "fill": {"scale": "color", "field": "id"},
+  "x": {"signal": "width / 2"},
+  "y": {"signal": "height / 2"}
+  },
+  "update": {
+  "startAngle": {"field": "startAngle"},
+  "endAngle": {"field": "endAngle"},
+  "padAngle": {"signal": "padAngle"},
+  "innerRadius": {"signal": "innerRadius"},
+  "outerRadius": {"signal": "width / 2"},
+  "cornerRadius": {"signal": "cornerRadius"}
+  }
+  }
+  }
+  ]
+  }
+  ;
+
+  function image(view, type) {
+  return function(event) {
+  event.preventDefault();
+  view.toImageURL(type).then(function(url) {
+  var link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('target', '_blank');
+  link.setAttribute('download', 'pie-chart.' + type);
+  link.dispatchEvent(new MouseEvent('click'));
+  }).catch(function(error) { console.error(error); });
+  };
+  }
+
+  var view = new vega.View(vega.parse(specpie), {
+  loader: vega.loader({baseURL: '/vega/'}),
+  logLevel: vega.Warn,
+  renderer: 'canvas'
+  }).initialize('#pie-chart').hover().run();
+
+  //document.querySelector('#pie-chart-png').addEventListener('click', image(view, 'png'));
+  //document.querySelector('#pie-chart-svg').addEventListener('click', image(view, 'svg'));
+  </script>
+
+</html>
+
