@@ -26,10 +26,10 @@ function get_keysymptomps($pdo, $country, $agebracket) {
 $pdo = new PDO ('mysql:dbname='.MYSQL_DB.';host='.MYSQL_HOST, MYSQL_USER, MYSQL_PWD);
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($_GET["action"] == "stats") {
+if ($_POST["action"] == "stats") {
   get_nanswers($pdo);
-} else if ($_GET["action"] == "keysymptomps") {
-  get_keysymptomps($pdo, $_GET["country"], $_GET["agebracket"]);
+} else if ($_POST["action"] == "keysymptomps") {
+  get_keysymptomps($pdo, $_POST["country"], $_POST["agebracket"]);
 } else {
   echo json_encode("Unknown request received");
 }
