@@ -2,6 +2,15 @@
 <a href="{% static "front-page.html" %}">Front page sample</a>
 <a href="{% static "questionnaire.html" %}">questionnaire sample</a>
 {% if questions %}
+    <h3>Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.istested %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
     <h3>Since this time yesterday, have you had any of the following symptoms?</h3>
     <ul>
     {% for question in questions %}

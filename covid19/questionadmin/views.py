@@ -8,7 +8,7 @@ from .models import Question
 class IndexView(generic.ListView):
     context_object_name = 'questions'
     def get_queryset(self):
-        return Question.objects.order_by('-id')
+        return Question.objects.order_by('order')
 
 
 class ScaleView(generic.FormView):

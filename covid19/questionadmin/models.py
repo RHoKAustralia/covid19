@@ -5,9 +5,19 @@ from django.db import models
 class Question(models.Model):
     question = models.TextField(blank=True, null=True)
     questiontype = models.ForeignKey('QuestionType', models.DO_NOTHING)
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ('order', 'questiontype')
 
     def __str__(self):
         return self.question
+
+    def istested(self):
+        if (str(self.questiontype) == "Tested"):
+            return True
+        return False
+
     def isscale(self):
         if (str(self.questiontype) == "Scale"):
             return True
