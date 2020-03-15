@@ -4,6 +4,7 @@ from django.db import models
 
 class Question(models.Model):
     question = models.TextField(blank=True, null=True)
+    alias = models.CharField(max_length=50, blank=False, null=False)
     questiontype = models.ForeignKey('QuestionType', models.DO_NOTHING)
     order = models.IntegerField(default=0)
 
