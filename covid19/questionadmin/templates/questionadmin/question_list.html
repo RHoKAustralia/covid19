@@ -1,11 +1,115 @@
 {% load static %}
-<img src="{% static "asvo.png" %}" alt="Covid19 image">
+<a href="{% static "front-page.html" %}">Front page sample</a>
+<a href="{% static "questionnaire.html" %}">questionnaire sample</a>
 {% if questions %}
+    <h3>Since this time yesterday, have you had any of the following symptoms?</h3>
     <ul>
     {% for question in questions %}
+        {% if question.isscale %}
         <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
     {% endfor %}
     </ul>
+
+    <h3>Since this time yesterday, have respiratory of flu-like problems affected your ability to:</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.isdifficulty %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.istravel %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>In the last 14 days have you attended any mass gatherings (more than 500 people) ?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.isgathering %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.iscontact %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>Have you been self-isolating in the last 14 days?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.isisolating %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>What is your age range?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.isage %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>What is your country of residence?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.iscountry %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>What is your city/town?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.istown %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>What is your state/region?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.isregion %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>What is your postcode</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.ispostcode %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
+    <h3>Do you have of the following long-term conditions?</h3>
+    <ul>
+    {% for question in questions %}
+        {% if question.islongterm %}
+        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+
 {% else %}
     <p>No questions are available.</p>
 {% endif %}
