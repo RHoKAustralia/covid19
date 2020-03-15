@@ -5,9 +5,84 @@ from django.db import models
 class Question(models.Model):
     question = models.TextField(blank=True, null=True)
     questiontype = models.ForeignKey('QuestionType', models.DO_NOTHING)
+    order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ('order', 'questiontype')
+
+    def __str__(self):
+        return self.question
+
+    def istested(self):
+        if (str(self.questiontype) == "Tested"):
+            return True
+        return False
+
+    def isscale(self):
+        if (str(self.questiontype) == "Scale"):
+            return True
+        return False
+
+    def isdifficulty(self):
+        if (str(self.questiontype) == "Difficulty"):
+            return True
+        return False
+
+    def istravel(self):
+        if (str(self.questiontype) == "Travel"):
+            return True
+        return False
+
+    def isgathering(self):
+        if (str(self.questiontype) == "Gather"):
+            return True
+        return False
+
+    def iscontact(self):
+        if (str(self.questiontype) == "Contact"):
+            return True
+        return False
+
+    def isisolating(self):
+        if (str(self.questiontype) == "Isolating"):
+            return True
+        return False
+
+    def isage(self):
+        if (str(self.questiontype) == "Age"):
+            return True
+        return False
+
+    def iscountry(self):
+        if (str(self.questiontype) == "Country"):
+            return True
+        return False
+
+    def istown(self):
+        if (str(self.questiontype) == "Town"):
+            return True
+        return False
+
+    def isregion(self):
+        if (str(self.questiontype) == "Region"):
+            return True
+        return False
+
+    def ispostcode(self):
+        if (str(self.questiontype) == "Postcode"):
+            return True
+        return False
+
+    def islongterm(self):
+        if (str(self.questiontype) == "Longterm"):
+            return True
+        return False
 
 class QuestionType(models.Model):
     type = models.TextField()
+
+    def __str__(self):
+        return self.type
 
 class Location(models.Model):
     place = models.TextField(blank=True)
@@ -22,19 +97,21 @@ class Participant(models.Model):
     age = models.ForeignKey('AgeRanges', models.DO_NOTHING)
 
 class ParticipantLocation(models.Model):
-    participant_id = models.ForeignKey('Participant', models.DO_NOTHING)
+    # what's the point of this field?
+    #participant_id = models.ForeignKey('Participant', models.DO_NOTHING)
     location = models.ForeignKey('Location', models.DO_NOTHING)
-    dateFrom = models.DateTimeField()
-    dateTo = models.DateTimeField()
-    current_location= models.BooleanField()
+    dateFrom = models.DateTimeField(auto_now=True)
+    dateTo = models.DateTimeField(auto_now=True)
+    #what's the point of this field?
+    #current_location= models.BooleanField()
 
 class Answer(models.Model):
     question = models.ForeignKey('Question', models.DO_NOTHING)
     participant = models.ForeignKey('Participant', models.DO_NOTHING)
-    scale_Answer = models.IntegerField()
-    dateFrom = models.DateTimeField()
-    dateTo = models.DateTimeField()
-    freeform_text = models.TextField()
+    scale_Answer = models.IntegerField(null=True)
+    dateFrom = models.DateTimeField(null=True)
+    dateTo = models.DateTimeField(null=True)
+    freeform_text = models.TextField(null=True)
 
 class  Health(models.Model):
     participant = models.ForeignKey('Participant', models.DO_NOTHING)
