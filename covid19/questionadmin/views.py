@@ -8,6 +8,8 @@ from datetime import datetime
 from .models import Question
 from .models import Participant
 from .models import Answer
+from .models import HealthWarningTrigger
+from .models import HealthWarningMessage
 
 class IndexView(generic.ListView):
     context_object_name = 'questions'
@@ -41,6 +43,7 @@ class QuestionnaireView(generic.FormView):
 
     def home(request):
         print("process form")
+        myset = {}
         if request.method == 'POST':
             print("its a post="+str(request.POST))
             for field in request.POST.keys():
@@ -58,7 +61,22 @@ class QuestionnaireView(generic.FormView):
                     scale_Answer = QuestionnaireView.asint(request.POST[field])
                     answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=datetime.now())
                     answer.save()
+                    myset[question.id] = scale_Answer
         else:
             print("its a get")
             form = QuestionnaireForm()
-        return render(request, 'bye-page.html')
+
+        # stub for working out the health warning message
+        level = 0
+        jurisdictionid = 1
+        for q in myset.keys():
+            triggers = HealthWarningTrigger.objects.filter(question=q)
+            for i in triggers:
+                print("trigger="+str(triggers[:1][0]))
+                if myset[q] >= triggers[:1][0].mininclusive and myset[q] <= triggers[:1][0].maxinclusive:
+                    level += triggers[:1][0].warninglevel
+        context = {
+            'level':level,
+        }
+        return render(request, 'bye-page.html',context)
+

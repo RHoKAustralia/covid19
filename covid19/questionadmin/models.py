@@ -117,9 +117,15 @@ class ParticipantLocation(models.Model):
     #what's the point of this field?
     #current_location= models.BooleanField()
 
+class AnswerSet(models.Model):
+    participant = models.ForeignKey('Participant', models.DO_NOTHING)
+    dateAnswered = models.DateTimeField(null=True)
+
 class Answer(models.Model):
     question = models.ForeignKey('Question', models.DO_NOTHING)
     participant = models.ForeignKey('Participant', models.DO_NOTHING)
+    # This on is trouble
+    answerset = models.ForeignKey('Location', models.DO_NOTHING)
     scale_Answer = models.IntegerField(null=True)
     dateAnswered = models.DateTimeField(null=True)
     dateFrom = models.DateTimeField(null=True)
@@ -155,3 +161,18 @@ class Region(models.Model):
 
 class AgeRanges(models.Model):
     age_ranges = models.TextField()
+
+class Jurisdiction(models.Model):
+    name = models.TextField()
+
+class HealthWarningTrigger(models.Model):
+    jurisdiction = models.ForeignKey('Jurisdiction', models.DO_NOTHING)
+    question = models.ForeignKey('Question', models.DO_NOTHING)
+    warninglevel = models.IntegerField(null=True)
+    warningadvice = models.TextField()
+    mininclusive = models.IntegerField(null=True)
+    maxinclusive = models.IntegerField(null=True)
+
+class HealthWarningMessage(models.Model):
+    warninglevel = models.IntegerField(null=True)
+    warningadvice = models.TextField()

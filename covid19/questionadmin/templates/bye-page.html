@@ -28,13 +28,23 @@
         </div>
     </div>
 </section>
+{% if level == 0 %}
 <section class="section">
     <div class="container is-fluid">
             <h1 class="title">
-               Thank you! 
+               Thank you! All is well!
             </h1>
     </div>
 </section>
+{% else %}
+<section class="section">
+    <div class="container is-fluid">
+            <h1 class="title">
+               Thank you! Something is not right!
+            </h1>
+    </div>
+</section>
+{% endif %}
 
 <div class="columns">
     <div class="column"></div>
