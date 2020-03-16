@@ -21,7 +21,6 @@ padding-left:10px;
 <form method="post" action="/covid19/saveresponse">
     {% csrf_token %}
     <h3 class="title is-3">Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.istested %}
             {% if question.isanswer %}
@@ -69,7 +68,6 @@ padding-left:10px;
             {% endif %}
         {% endif %}
     {% endfor %}
-    </ul>
 
     <h3 class="title is-3">Since this time yesterday, have you had any of the following symptoms?</h3>
     {% for question in questions %}
@@ -91,7 +89,6 @@ padding-left:10px;
     {% endfor %}
 
     <h3 class="title is-3">Since this time yesterday, have respiratory of flu-like problems affected your ability to:</h3>
-    <ul>
     {% for question in questions %}
         {% if question.isdifficulty %}
 <div class="field">
@@ -110,99 +107,169 @@ padding-left:10px;
 
         {% endif %}
     {% endfor %}
-    </ul>
 
     <h3 class="title is-3">Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.istravel %}
             {% if question.isanswer %}
-<li>
-<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">Yes
-<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">No
-<input type="radio" class="custom-control-input" id="{{ question.id }}" name="{{ question.id }}">Not Sure
-</li>
+        <!-- YesNoUnsure -->
+        <div class="field">
+            <div class="control">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                        <option value="2" selected>Unsure</option>
+                    </select>
+                </div>
+            </div>
+        </div>
             {% else %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        <!-- Text -->
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
             {% endif %}
         {% endif %}
     {% endfor %}
-    </ul>
 
     <h3 class="title is-3">In the last 14 days have you attended any mass gatherings (more than 500 people) ?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.isgathering %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        {% if question.isanswer %}
+        <!-- YesNoUnsure -->
+        <div class="field">
+            <div class="control">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                        <option value="2" selected>Unsure</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+            {% else %}
+        <!-- Text -->
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+        {% endif %}
         {% endif %}
     {% endfor %}
-    </ul>
 
     <h3 class="title is-3">Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.iscontact %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+{% if question.isanswer %}
+        <!-- YesNoUnsure -->
+        <div class="field">
+            <div class="control">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                        <option value="2" selected>Unsure</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+            {% else %}
+        <!-- Text -->
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+        {% endif %}
         {% endif %}
     {% endfor %}
-    </ul>
 
     <h3 class="title is-3">Have you been self-isolating in the last 14 days?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.isisolating %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        <!-- YesNo -->
+        <div class="field">
+            <div class="control">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="1">Yes</option>
+                        <option value="0" selected>No</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         {% endif %}
     {% endfor %}
-    </ul>
 
-    <h3>What is your age range?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.isage %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        <!-- Text -->
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
         {% endif %}
     {% endfor %}
-    </ul>
 
-    <h3>What is your country of residence?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.iscountry %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        <!-- Text -->
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
         {% endif %}
     {% endfor %}
-    </ul>
 
-    <h3>What is your city/town?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.istown %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        <!-- Text -->
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
         {% endif %}
     {% endfor %}
-    </ul>
 
-    <h3>What is your state/region?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.isregion %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        <!-- Text -->
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
         {% endif %}
     {% endfor %}
-    </ul>
 
-    <h3>What is your postcode</h3>
-    <ul>
     {% for question in questions %}
         {% if question.ispostcode %}
-        <li><a href="{% url 'form' question.id %}">{{ question.question }}</a></li>
+        <!-- Text -->
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control">
+                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
         {% endif %}
     {% endfor %}
-    </ul>
 
     <h3 class="title is-3">Do you have of the following long-term conditions?</h3>
-    <ul>
     {% for question in questions %}
         {% if question.islongterm %}
 <label class="checkbox-inline">
@@ -210,13 +277,14 @@ padding-left:10px;
 </label>
         {% endif %}
     {% endfor %}
-    </ul>
-<button class="button is-success">
+<div>
+  <button class="button is-success">
     <span class="icon is-small">
       <i class="fas fa-check"></i>
     </span>
     <span>Save</span>
   </button>
+</div>
 </form>
 
 {% else %}

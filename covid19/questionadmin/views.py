@@ -3,6 +3,7 @@ from django.views import generic
 from django.views.generic.edit import FormView
 from .forms import ScaleForm
 from .forms import QuestionnaireForm
+from datetime import datetime
 
 from .models import Question
 from .models import Participant
@@ -55,7 +56,7 @@ class QuestionnaireView(generic.FormView):
                     print(str(Question.objects.filter(id=field))+"="+request.POST[field])
                     question = Question.objects.filter(id=field).first()
                     scale_Answer = QuestionnaireView.asint(request.POST[field])
-                    answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer)
+                    answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=datetime.now())
                     answer.save()
         else:
             print("its a get")
