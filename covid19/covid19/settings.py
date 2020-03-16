@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["tao.asvo.org.au"]
 INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'questionadmin.apps.QuestionadminConfig',
+    'django_tables2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

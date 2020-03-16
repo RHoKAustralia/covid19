@@ -26,6 +26,18 @@ class ScaleView(generic.FormView):
 class QuestionnaireView(generic.FormView):
     template_name = 'questionadmin/question_list.html'
     form_class = QuestionnaireForm
+    def asint(valuestr):
+        if valuestr=="Yes":
+            return 1
+        if valuestr=="No":
+            return 0
+        value = -1
+        try:
+            value = int(valuestr)
+        except:
+            value = -1
+        return value
+
     def home(request):
         print("process form")
         if request.method == 'POST':
@@ -42,11 +54,7 @@ class QuestionnaireView(generic.FormView):
                 if field!="csrfmiddlewaretoken":
                     print(str(Question.objects.filter(id=field))+"="+request.POST[field])
                     question = Question.objects.filter(id=field).first()
-                    scale_Answer = 0
-                    try:
-                        scale_Answer = int(request.POST[field])
-                    except:
-                        scale_Answer = 0
+                    scale_Answer = QuestionnaireView.asint(request.POST[field])
                     answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer)
                     answer.save()
         else:

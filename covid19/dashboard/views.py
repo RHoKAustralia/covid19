@@ -20,3 +20,11 @@ class IndexView(generic.ListView):
         context['severe'] = Answer.objects.filter(question__question="Cough").filter(scale_Answer=3)
         print("return custom context")
         return context
+
+
+import django_tables2 as tables
+
+class AnswerListView(generic.ListView):
+    model = Answer
+    template_name = 'dashboard_table.html'
+
