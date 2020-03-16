@@ -1,10 +1,20 @@
+<!DOCTYPE html> 
 {% load static %}
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>COVID-19-Hack</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <!-- Use bulma 0.8.0 -->
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
+ 
+    <!-- TODO change this to be distributed with the questionnaire -->       
+    <link href="https://astronomy.swin.edu.au/~ajameson/covid19/css/bulma-calendar.min.css" rel="stylesheet">
+    <script src="https://astronomy.swin.edu.au/~ajameson/covid19/js/bulma-calendar.min.js"></script>
 
     <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 
@@ -16,22 +26,35 @@ padding-left:10px;
     </style>
 
 </head>
+<body>
+<section class="hero is-dark">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title" style="color:#FFEC00">
+                Coronavirus Symptom Checker
+            </h1>   
+            <h2 class="subtitle" style="color:#FFEC00">
+                Your personal tracker of the symptoms of coronavirus (COVID-19)
+            </h2>       
+        </div>          
+    </div>          
+</section>      
 <div class="all">
 {% if questions %}
 <form method="post" action="/covid19/saveresponse">
     {% csrf_token %}
+    <section class="section">
     <h3 class="title is-3">Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h3>
     {% for question in questions %}
         {% if question.istested %}
             {% if question.isanswer %}
        <div class="field">
             <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="1">Yes</option>
-                        <option value="0" selected>No</option>
-                    </select>
-                </div>
+                <label class="radio" for="0">No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" checked>
+                &nbsp;&nbsp;
+                <label class="radio" for="1">Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
             </div>
         </div>
             {% else %}
@@ -39,25 +62,24 @@ padding-left:10px;
        <div class="field">
             <label class="label">{{ question.question }}</label>
             <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="1">Positive</option>
-                        <option value="0" selected>Negative</option>
-                    </select>
-                </div>
+                <label class="radio" for="0">Negative</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" checked>
+                &nbsp;&nbsp;
+                <label class="radio" for="1">Positive</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
             </div>
         </div>
                 {% else %}
                     {% if question.order == 2 %}
-        <label">{{ question.question }}</label>
-<div class="input-group date" data-provide="datepicker">
-    <input type="text" class="form-control" id="{{ question.id }}" name="{{ question.id }}">
-    <div class="input-group-addon">
-        <span class="glyphicon glyphicon-th"></span>
-    </div>
-</div>
+        <label>{{ question.question }}</label>
+        <div class="input-group date" data-provide="datepicker">
+            <input type="text" class="form-control" id="{{ question.id }}" name="{{ question.id }}">
+            <div class="input-group-addon">
+                <span class="glyphicon glyphicon-th"></span>
+            </div>
+        </div>
                     {% else %}
-<div class="field">
+        <div class="field">
             <label class="label">{{ question.question }}</label>
             <div class="control">
                 <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
@@ -68,46 +90,57 @@ padding-left:10px;
             {% endif %}
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     <h3 class="title is-3">Since this time yesterday, have you had any of the following symptoms?</h3>
     {% for question in questions %}
         {% if question.isscale %}
         <div class="field">
             <label class="label">{{ question.question }}</label>
             <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="0" selected>None</option>
-                        <option value="1" >Mild</option>
-                        <option value="2">Moderate</option>
-                        <option value="3">Severe</option>
-                    </select>
-                </div>
+                <label class="radio" for="0">None</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" checked>
+                &nbsp;&nbsp;
+                <label class="radio" for="1">Mild</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                &nbsp;&nbsp;
+                <label class="radio" for="2">Moderate</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2">
+                &nbsp;&nbsp;
+                <label class="radio" for="3">Severe</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="3">
             </div>
         </div>
         {% endif %}
     {% endfor %}
+    </section>
 
-    <h3 class="title is-3">Since this time yesterday, have respiratory of flu-like problems affected your ability to:</h3>
+    <section class="section">
+    <h3 class="title is-3">Since this time yesterday, have respiratory of flu-like problems given you difficulty to:</h3>
     {% for question in questions %}
         {% if question.isdifficulty %}
-<div class="field">
+        <div class="field">
             <label class="label">{{ question.question }}</label>
             <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="0" selected>No Difficulty</option>
-                        <option value="1" >Some Difficulty</option>
-                        <option value="2">Moderate Difficulty</option>
-                        <option value="3">Great Difficulty</option>
-                    </select>
-                </div>
+                <label class="radio" for="0">None</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" checked>
+                &nbsp;&nbsp;
+                <label class="radio" for="1">Some</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                &nbsp;&nbsp;
+                <label class="radio" for="2">Moderate</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2">
+                &nbsp;&nbsp;
+                <label class="radio" for="3">Great</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="3">
             </div>
         </div>
-
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     <h3 class="title is-3">Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h3>
     {% for question in questions %}
         {% if question.istravel %}
@@ -115,13 +148,14 @@ padding-left:10px;
         <!-- YesNoUnsure -->
         <div class="field">
             <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
-                        <option value="2" selected>Unsure</option>
-                    </select>
-                </div>
+                <label class="radio" for="2">Unsure</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" checked>
+                &nbsp;&nbsp;
+                <label class="radio" for="1">Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                &nbsp;&nbsp;
+                <label class="radio" for="0">No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
             </div>
         </div>
             {% else %}
@@ -135,7 +169,9 @@ padding-left:10px;
             {% endif %}
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     <h3 class="title is-3">In the last 14 days have you attended any mass gatherings (more than 500 people) ?</h3>
     {% for question in questions %}
         {% if question.isgathering %}
@@ -143,13 +179,14 @@ padding-left:10px;
         <!-- YesNoUnsure -->
         <div class="field">
             <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
-                        <option value="2" selected>Unsure</option>
-                    </select>
-                </div>
+                <label class="radio" for="2">Unsure</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" checked>
+                &nbsp;&nbsp;
+                <label class="radio" for="1">Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                &nbsp;&nbsp;
+                <label class="radio" for="0">No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
             </div>
         </div>
             {% else %}
@@ -163,52 +200,58 @@ padding-left:10px;
         {% endif %}
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     <h3 class="title is-3">Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h3>
     {% for question in questions %}
         {% if question.iscontact %}
-{% if question.isanswer %}
-        <!-- YesNoUnsure -->
-        <div class="field">
-            <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
-                        <option value="2" selected>Unsure</option>
-                    </select>
+            {% if question.isanswer %}
+                <!-- YesNoUnsure -->
+                <div class="field">
+                    <div class="control">
+                        <label class="radio" for="2">Unsure</label>
+                        <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" checked>
+                        &nbsp;&nbsp;
+                        <label class="radio" for="1">Yes</label>
+                        <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                        &nbsp;&nbsp;
+                        <label class="radio" for="0">No</label>
+                        <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
+                    </div>
                 </div>
-            </div>
-        </div>
-            {% else %}
-        <!-- Text -->
-        <div class="field">
-            <label class="label">{{ question.question }}</label>
-            <div class="control">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
-            </div>
-        </div>
-        {% endif %}
+                    {% else %}
+                <!-- Text -->
+                <div class="field">
+                    <label class="label">{{ question.question }}</label>
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                    </div>
+                </div>
+            {% endif %}
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     <h3 class="title is-3">Have you been self-isolating in the last 14 days?</h3>
     {% for question in questions %}
         {% if question.isisolating %}
         <!-- YesNo -->
         <div class="field">
             <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="1">Yes</option>
-                        <option value="0" selected>No</option>
-                    </select>
-                </div>
+                <label class="radio" for="1">Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                &nbsp;&nbsp;
+                <label class="radio" for="0">No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0 checked">
             </div>
         </div>
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     {% for question in questions %}
         {% if question.isage %}
         <!-- Text -->
@@ -220,7 +263,9 @@ padding-left:10px;
         </div>
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     {% for question in questions %}
         {% if question.iscountry %}
         <!-- Text -->
@@ -232,7 +277,9 @@ padding-left:10px;
         </div>
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     {% for question in questions %}
         {% if question.istown %}
         <!-- Text -->
@@ -244,7 +291,9 @@ padding-left:10px;
         </div>
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     {% for question in questions %}
         {% if question.isregion %}
         <!-- Text -->
@@ -256,7 +305,9 @@ padding-left:10px;
         </div>
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     {% for question in questions %}
         {% if question.ispostcode %}
         <!-- Text -->
@@ -268,26 +319,37 @@ padding-left:10px;
         </div>
         {% endif %}
     {% endfor %}
+    </section>
 
+    <section class="section">
     <h3 class="title is-3">Do you have of the following long-term conditions?</h3>
+    <div class="field">
     {% for question in questions %}
         {% if question.islongterm %}
-<label class="checkbox-inline">
-  <input type="checkbox" data-toggle="toggle" off="No" on="Yes"> {{ question.question }}
-</label>
+        <label class="checkbox-inline">
+          <input type="checkbox" data-toggle="toggle" off="No" on="Yes"> {{ question.question }}
+        </label>
+        <br/>
         {% endif %}
     {% endfor %}
-<div>
-  <button class="button is-success">
-    <span class="icon is-small">
-      <i class="fas fa-check"></i>
-    </span>
-    <span>Save</span>
-  </button>
-</div>
+    </div>
+    </section>
+
+    <section class="section">
+        <div>
+            <button class="button is-success">
+                <span class="icon is-small">
+                   <i class="fas fa-check"></i>
+                </span>
+              <span>Save</span>
+          </button>
+        </div>
+    </section>
 </form>
 
 {% else %}
     <p>No questions are available.</p>
 {% endif %}
 </div>
+</body>
+</html>
