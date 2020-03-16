@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 {% load static %}
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
@@ -11,19 +11,12 @@
     <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
     <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
- 
-    <!-- TODO change this to be distributed with the questionnaire -->       
+
+    <!-- TODO change this to be distributed with the questionnaire -->
     <link href="https://astronomy.swin.edu.au/~ajameson/covid19/css/bulma-calendar.min.css" rel="stylesheet">
     <script src="https://astronomy.swin.edu.au/~ajameson/covid19/js/bulma-calendar.min.js"></script>
 
     <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
-
-    <style>
-.all {
-padding-right:10px;
-padding-left:10px;
-}
-    </style>
 
 </head>
 <body>
@@ -32,13 +25,13 @@ padding-left:10px;
         <div class="container">
             <h1 class="title" style="color:#FFEC00">
                 Coronavirus Symptom Checker
-            </h1>   
+            </h1>
             <h2 class="subtitle" style="color:#FFEC00">
                 Your personal tracker of the symptoms of coronavirus (COVID-19)
-            </h2>       
-        </div>          
-    </div>          
-</section>      
+            </h2>
+        </div>
+    </div>
+</section>
 <div class="all">
 {% if questions %}
 <form method="post" action="/covid19/saveresponse">
@@ -71,11 +64,10 @@ padding-left:10px;
         </div>
                 {% else %}
                     {% if question.order == 2 %}
-        <label>{{ question.question }}</label>
-        <div class="input-group date" data-provide="datepicker">
-            <input type="text" class="form-control" id="{{ question.id }}" name="{{ question.id }}">
-            <div class="input-group-addon">
-                <span class="glyphicon glyphicon-th"></span>
+         <div class="field">
+            <label>{{ question.question }}</label>
+            <div class="control">
+                <input class="is-size-6 has-text-dark" type="date" name="{{ question.id }}" id="{{ question.id }}" value="">
             </div>
         </div>
                     {% else %}
@@ -92,7 +84,7 @@ padding-left:10px;
     {% endfor %}
     </section>
 
-    <section class="section">
+    <section class="section has-background-warning">
     <h3 class="title is-3">Since this time yesterday, have you had any of the following symptoms?</h3>
     {% for question in questions %}
         {% if question.isscale %}
@@ -140,7 +132,7 @@ padding-left:10px;
     {% endfor %}
     </section>
 
-    <section class="section">
+    <section class="section has-background-warning">
     <h3 class="title is-3">Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h3>
     {% for question in questions %}
         {% if question.istravel %}
@@ -202,7 +194,7 @@ padding-left:10px;
     {% endfor %}
     </section>
 
-    <section class="section">
+    <section class="section has-background-warning">
     <h3 class="title is-3">Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h3>
     {% for question in questions %}
         {% if question.iscontact %}
@@ -251,7 +243,8 @@ padding-left:10px;
     {% endfor %}
     </section>
 
-    <section class="section">
+    <section class="section has-background-warning">
+    <h3 class="title is-3">More about you</h3>
     {% for question in questions %}
         {% if question.isage %}
         <!-- Text -->
@@ -263,9 +256,7 @@ padding-left:10px;
         </div>
         {% endif %}
     {% endfor %}
-    </section>
 
-    <section class="section">
     {% for question in questions %}
         {% if question.iscountry %}
         <!-- Text -->
@@ -279,7 +270,7 @@ padding-left:10px;
     {% endfor %}
     </section>
 
-    <section class="section">
+    <section class="section has-background-warning">
     {% for question in questions %}
         {% if question.istown %}
         <!-- Text -->
@@ -307,7 +298,7 @@ padding-left:10px;
     {% endfor %}
     </section>
 
-    <section class="section">
+    <section class="section has-background-warning">
     {% for question in questions %}
         {% if question.ispostcode %}
         <!-- Text -->
@@ -335,7 +326,7 @@ padding-left:10px;
     </div>
     </section>
 
-    <section class="section">
+    <section class="section has-background-warning">
         <div>
             <button class="button is-success">
                 <span class="icon is-small">
