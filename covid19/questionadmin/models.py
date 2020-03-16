@@ -117,14 +117,11 @@ class ParticipantLocation(models.Model):
     #what's the point of this field?
     #current_location= models.BooleanField()
 
-class AnswerSet(models.Model):
-    participant = models.ForeignKey('Participant', models.DO_NOTHING)
-    dateAnswered = models.DateTimeField(null=True)
-
 class Answer(models.Model):
     question = models.ForeignKey('Question', models.DO_NOTHING)
-    answerSet = models.ForeignKey('answerSet', models.DO_NOTHING)
+    participant = models.ForeignKey('Participant', models.DO_NOTHING)
     scale_Answer = models.IntegerField(null=True)
+    dateAnswered = models.DateTimeField(null=True)
     dateFrom = models.DateTimeField(null=True)
     dateTo = models.DateTimeField(null=True)
     freeform_text = models.TextField(null=True)
