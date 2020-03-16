@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Coronavirus Symptom Checker</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
+    <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153695048-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-153695048-2');
+    </script>
+
+</head>
+<body>
+<section class="hero is-dark">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title" style="color:#FFEC00">
+                Coronavirus Symptom Checker
+            </h1>
+            <h2 class="subtitle" style="color:#FFEC00">
+                Your personal tracker of the symptoms of coronavirus (COVID-19)
+            </h2>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+        <a class="button is-large is-fullwidth is-warning has-text-weight-bold" href="index.html">
+            Home
+        </a>
+</section>
+
+    <section class="section">
+        <div class="container is-fluid">
+            <h3 class="subtitle">Symptom Proportions</h3>
+            <p>Explanatory blurb...</p>
+            <br/>
+            <div class="columns">
+                <div class="column is-2">
+                    <p>Select one or more:</p>
+                    <div class="field">
+                        <div class="control is-medium">
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                Cough
+                            </label>
+                        </div>
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                Sore Throat
+                            </label>
+                        </div>
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox">
+                                Fever
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- graph -->
+                <div class="column is-8">
+                    <div id="bar-chart" style="width:100% !important;"></div>
+                </div>
+
+                <div class="column is-2">
+                    <p>Filter by:</p>
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option>Country</option>
+                                    <option>With options</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option>Region</option>
+                                    <option>With options</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option>State</option>
+                                    <option>With options</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option>Postcode</option>
+                                    <option>With options</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="control">
+                            <div class="select">
+                                <select>
+                                    <option>Age Range</option>
+                                    <option>With options</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>This website has been developed by a team of public health and IT researchers, and staff at <a href="https://www.swinburne.edu.au/" target="_blank" class="has-text-dark has-text-weight-bold">Swinburne University of Technology</a>, Australia. This will help determine the current and emerging COVID19 symptoms of people across the world.  This will help you improve your understanding of your health, follow changes and help us to advise health authorities on what’s going onfrom the community’s perspective.</p>
+            <img src="swinburne-logo-horizontal-large.gif" width="100"/>
+        </div>
+    </footer>
+
+    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <script>
+        const specbar = {
+            "$schema": "https://vega.github.io/schema/vega/v5.json",
+            "title": "Symptom Proportions",
+            "width": 250,
+            "height": 250,
+            "padding": 5,
+
+            "data": [
+                {
+                    "name": "table",
+                    "values": [
+                        {"category": "None", "amount": 28},
+                        {"category": "Mild", "amount": 55},
+                        {"category": "Moderate", "amount": 43},
+                        {"category": "Severe", "amount": 91},
+                    ]
+                }
+            ],
+
+            "signals": [
+                {
+                    "name": "tooltip",
+                    "value": {},
+                    "on": [
+                        {"events": "rect:mouseover", "update": "datum"},
+                        {"events": "rect:mouseout",  "update": "{}"}
+                    ]
+                }
+            ],
+
+            "scales": [
+                {
+                    "name": "xscale",
+                    "type": "band",
+                    "domain": {"data": "table", "field": "category"},
+                    "range": "width",
+                    "padding": 0.05,
+                    "round": true
+                },
+                {
+                    "name": "yscale",
+                    "domain": {"data": "table", "field": "amount"},
+                    "nice": true,
+                    "range": "height"
+                }
+            ],
+
+            "axes": [
+                { "orient": "bottom", "scale": "xscale" },
+                { "orient": "left", "scale": "yscale" }
+            ],
+
+            "marks": [
+                {
+                    "type": "rect",
+                    "from": {"data":"table"},
+                    "encode": {
+                        "enter": {
+                            "x": {"scale": "xscale", "field": "category"},
+                            "width": {"scale": "xscale", "band": 1},
+                            "y": {"scale": "yscale", "field": "amount"},
+                            "y2": {"scale": "yscale", "value": 0}
+                        },
+                        "update": {
+                            "fill": {"value": "steelblue"}
+                        },
+                        "hover": {
+                            "fill": {"value": "red"}
+                        }
+                    }
+                },
+                {
+                    "type": "text",
+                    "encode": {
+                        "enter": {
+                            "align": {"value": "center"},
+                            "baseline": {"value": "bottom"},
+                            "fill": {"value": "#333"}
+                        },
+                        "update": {
+                            "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},
+                            "y": {"scale": "yscale", "signal": "tooltip.amount", "offset": -2},
+                            "text": {"signal": "tooltip.amount"},
+                            "fillOpacity": [
+                                {"test": "isNaN(tooltip.amount)", "value": 0},
+                                {"value": 1}
+                            ]
+                        }
+                    }
+                }
+            ]
+        };
+
+        vegaEmbed("#bar-chart", specbar);
+
+    </script>
+    </body>
+</html>
