@@ -5,6 +5,7 @@ from django.db import models
 class Question(models.Model):
     question = models.TextField(blank=True, null=True)
     questiontype = models.ForeignKey('QuestionType', models.DO_NOTHING)
+    alias = models.CharField(max_length=50, unique=True, null=True)
     order = models.IntegerField(default=0)
 
     class Meta:
