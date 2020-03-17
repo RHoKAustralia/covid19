@@ -109,6 +109,7 @@ class Participant(models.Model):
     lastName = models.TextField()
     location = models.ForeignKey('ParticipantLocation', models.DO_NOTHING)
     age = models.ForeignKey('AgeRanges', models.DO_NOTHING)
+    trackingKey = models.CharField(max_length=50, unique=True, null=True)
 
 class ParticipantLocation(models.Model):
     # what's the point of this field?
