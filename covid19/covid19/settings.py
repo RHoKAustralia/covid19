@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'dashboard.apps.DashboardConfig',
     'questionadmin.apps.QuestionadminConfig',
     'django_tables2',
+    'django_countries',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
