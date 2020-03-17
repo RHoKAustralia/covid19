@@ -19,6 +19,12 @@
     <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
+
+      var auBounds = new google.mapsLatLngBounds(
+        new google.maps.LatLng(-44, 113),
+        new google.maps.LatLng(-10, 154)
+      );
+
       function get_radio_selected_value(name)
       {
         var elements = document.getElementsByName(name);
@@ -346,11 +352,12 @@
         <div class="field">
             <label class="label">{{ question.question }}</label>
             <div class="control">
-                <div class="select">
+                <div class="select is-rounded">
                     <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="">--</option>
-                        <option value="<18">&lt; 18</option>
-                        <option value="18-29" >19-29</option>
+                        <option value="" selected></option>
+                        <option value="<15">&lt; 15</option>
+                        <option value="15-17">15-17</option>
+                        <option value="18-29" >18-29</option>
                         <option value="30-39">30-39</option>
                         <option value="40-49">40-49</option>
                         <option value="50-59">50-59</option>
@@ -363,6 +370,15 @@
         </div>
         {% endif %}
     {% endfor %}
+
+    <div class="field">
+      <label class="label">Google Autocomplete test - Enter your city, town, country</label>
+      <div class="control">
+          <input id="autocomplete_search" name="autocomplete_search" type="text" class="input" placeholder="Search" />
+          <input type="hidden" name="respondent_latitude" id="respondent_latitude">
+          <input type="hidden" name="respondent_longitude" id="respondent_longitude">
+      </div>
+    </div>
 
     {% for question in questions %}
         {% if question.iscountry %}
@@ -451,5 +467,32 @@
     <p>No questions are available.</p>
 {% endif %}
 </div>
+
 </body>
+<!-- Google Places API -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr9vma0ZPVFLmkOESuqK4tHNrfwtnyVaM&libraries=places"></script>
+
+<script>
+  google.maps.event.addDomListener(window, 'load', initialize);
+
+  function initialize() {
+
+    // Create a new session token.
+    var sessionToken = new google.maps.places.AutocompleteSessionToken();
+    var options = {
+      bounds: auBounds,
+      types: ['(regions)'],
+      sessionToken: sessionToken
+    }
+    var input = document.getElementById('autocomplete_search');
+    var autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    autocomplete.addListener('place_changed', function () {
+    var place = autocomplete.getPlace();
+    // place variable will have all the information you are looking for.
+    $('#respondent_latitude').val(place.geometry['location'].lat());
+    $('#respondent_longitude').val(place.geometry['location'].lng());
+  });
+  }
+</script>
 </html>
