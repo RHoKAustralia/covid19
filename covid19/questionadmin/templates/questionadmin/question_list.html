@@ -373,6 +373,11 @@
                 <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
+<select>
+        {% for country in countryList %}
+<option>{{country}}</option`>
+        {% endfor %}
+</select>
         {% endif %}
     {% endfor %}
 
