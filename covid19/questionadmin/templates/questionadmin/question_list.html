@@ -464,22 +464,22 @@
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
-            <p class="modal-card-title">Submit Survey</p>
+            <p class="modal-card-title">Confirm Questionnaire</p>
           </header>
           <section class="modal-content-body">
-            <p class="modal-card-body" id="conditions">By submitting this survey, this you consent that this information may be... (TBD)</p>
+            <p class="modal-card-body" id="conditions">By responding to this survey, this you consent that this information may be... (TBD)</p>
 {% if generatedKey %}
-            <p class="modal-card-body" id="generated_key">To synchronise future survey responses, please record this unique key: {{ generatedKey }}</p><br/>
+            <p class="modal-card-body" id="generated_key">Please record this unique key: {{ generatedKey }} and use it in future responses.</p><br/>
 {% endif %}
           </section>
           <footer class="modal-card-foot">
-            <button type="button" class="button is-success">Submit</button>
+            <button type="button" class="button is-success">Save</button>
             <button type="button" class="button" onClick="document.getElementById('modalPanel').classList.remove('is-active');">Cancel</button>
           </footer>
         </div>
       </div>
       <div>
-        <button class="button is-success" type="button" id="showModal" onClick="prepare_submit();">Submit</button>
+        <button class="button is-success" type="button" id="showModal" onClick="prepare_submit();">Save</button>
       </div>
     </section>
 </form>
