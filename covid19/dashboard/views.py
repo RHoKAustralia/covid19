@@ -36,3 +36,9 @@ class AnswerListView(generic.ListView):
     model = Answer
     template_name = 'dashboard_table.html'
 
+
+class AnswerListView2(generic.ListView):
+    template-name = 'dashboard_table.html'
+
+    def get_queryset(self):
+        return Answer.objects.select_related('participant', 'answerset')
