@@ -20,11 +20,6 @@
 
     <script type="text/javascript">
 
-      var auBounds = new google.mapsLatLngBounds(
-        new google.maps.LatLng(-44, 113),
-        new google.maps.LatLng(-10, 154)
-      );
-
       function get_radio_selected_value(name)
       {
         var elements = document.getElementsByName(name);
@@ -37,6 +32,16 @@
             }
         }
         return value;
+      }
+
+      function prepare_submit()
+      {
+        var prev_key = document.getElementById("tracking_code").value;
+        if ( prev_key != "")
+          document.getElementById('generated_key').innerHTML = "";
+        else
+          document.getElementById('generated_key').innerHTML = "To synchronise future survey responses, please record this unique key: {{ generatedKey }}";
+        document.getElementById('modalPanel').classList.add('is-active');
       }
     </script>
 
@@ -352,7 +357,7 @@
         <div class="field">
             <label class="label">{{ question.question }}</label>
             <div class="control">
-                <div class="select is-rounded">
+                <div class="select">
                     <select id="{{ question.id }}" name="{{ question.id }}">
                         <option value="" selected></option>
                         <option value="<15">&lt; 15</option>
@@ -372,7 +377,7 @@
     {% endfor %}
 
     <div class="field">
-      <label class="label">Google Autocomplete test - Enter your city, town, country</label>
+      <label class="label">What is your location?</label>
       <div class="control">
           <input id="autocomplete_search" name="autocomplete_search" type="text" class="input" placeholder="Search" />
           <input type="hidden" name="respondent_latitude" id="respondent_latitude">
@@ -448,37 +453,61 @@
     </div>
     </section>
 
+
     <section class="section has-background-warning">
-        <div>
-            <button class="button is-success">
-                <span class="icon is-small">
-                   <i class="fas fa-check"></i>
-                </span>
-              <span>Save</span>
-          </button>
-        </div>
+      <div class="field">
+        <label class="label">If you have previously responded, please enter you unique code here</label>
+        <input class="input" type="text" placeholder="Text input" id="tracking_code" name="tracking_code">
+     </div>
+
+      <div class="modal" id="modalPanel">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Submit Survey</p>
+          </header>
+          <section class="modal-content-body">
+            <p class="modal-card-body" id="conditions">By submitting this survey, this you consent that this information may be... (TBD)</p>
 {% if generatedKey %}
-<p>Test: Generated tracking key: {{ generatedKey }}</p>
+            <p class="modal-card-body" id="generated_key">To synchronise future survey responses, please record this unique key: {{ generatedKey }}</p><br/>
 {% endif %}
+          </section>
+          <footer class="modal-card-foot">
+            <button type="button" class="button is-success">Submit</button>
+            <button type="button" class="button" onClick="document.getElementById('modalPanel').classList.remove('is-active');">Cancel</button>
+          </footer>
+        </div>
+      </div>
+      <div>
+        <button class="button is-success" type="button" id="showModal" onClick="prepare_submit();">Submit</button>
+      </div>
     </section>
 </form>
-
 {% else %}
     <p>No questions are available.</p>
 {% endif %}
 </div>
 
 </body>
+
 <!-- Google Places API -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr9vma0ZPVFLmkOESuqK4tHNrfwtnyVaM&libraries=places"></script>
 
 <script>
+
   google.maps.event.addDomListener(window, 'load', initialize);
 
   function initialize() {
 
+    // Create bounds from Australia
+    var auBounds = new google.maps.LatLngBounds(
+      new google.maps.LatLng(-44, 113),
+      new google.maps.LatLng(-10, 154)
+    );
+
     // Create a new session token.
     var sessionToken = new google.maps.places.AutocompleteSessionToken();
+
     var options = {
       bounds: auBounds,
       types: ['(regions)'],
