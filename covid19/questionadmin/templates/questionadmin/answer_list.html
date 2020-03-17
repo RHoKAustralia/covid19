@@ -13,7 +13,18 @@
 
     <div class="embed">
       <div id="bar-chart" class="view"></div>
-      <!--<div id="pie-chart" class="view"></div>-->
+    </div>
+
+   <h1> Do you have a Sore-Throat?</h1>
+
+    <div class="embed">
+      <div id="bar-chart2" class="view"></div>
+    </div>
+
+   <h1> Do you have a Headache?</h1>
+
+    <div class="embed">
+      <div id="bar-chart3" class="view"></div>
     </div>
 
   </body>
@@ -110,124 +121,194 @@
   }
   ]
   };
-
-  vegaEmbed("#bar-chart", specbar);
-  
-</script>
-
-<script>
-  const specpie = {
+  const specbar2 = {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A basic pie chart example.",
-  "width": 200,
+  "width": 400,
   "height": 200,
-  "autosize": "none",
-
-  "signals": [
-  {
-  "name": "startAngle", "value": 0,
-  "bind": {"input": "range", "min": 0, "max": 6.29, "step": 0.01}
-  },
-  {
-  "name": "endAngle", "value": 6.29,
-  "bind": {"input": "range", "min": 0, "max": 6.29, "step": 0.01}
-  },
-  {
-  "name": "padAngle", "value": 0,
-  "bind": {"input": "range", "min": 0, "max": 0.1}
-  },
-  {
-  "name": "innerRadius", "value": 0,
-  "bind": {"input": "range", "min": 0, "max": 90, "step": 1}
-  },
-  {
-  "name": "cornerRadius", "value": 0,
-  "bind": {"input": "range", "min": 0, "max": 10, "step": 0.5}
-  },
-  {
-  "name": "sort", "value": false,
-  "bind": {"input": "checkbox"}
-  }
-  ],
+  "padding": 5,
 
   "data": [
   {
   "name": "table",
   "values": [
-  {"id": 1, "field": 4},
-  {"id": 2, "field": 6},
-  {"id": 3, "field": 10},
-  {"id": 4, "field": 3},
-  {"id": 5, "field": 7},
-  {"id": 6, "field": 8}
-  ],
-  "transform": [
-  {
-  "type": "pie",
-  "field": "field",
-  "startAngle": {"signal": "startAngle"},
-  "endAngle": {"signal": "endAngle"},
-  "sort": {"signal": "sort"}
+  {"category": "None", "amount": {{ sore_none.count }} },
+  {"category": "Mild", "amount": {{ sore_mild.count }} },
+  {"category": "Moderate", "amount": {{ sore_moderate.count }} },
+  {"category": "Severe", "amount": {{ sore_severe.count }} },
+  ]
   }
+  ],
+
+  "signals": [
+  {
+  "name": "tooltip",
+  "value": {},
+  "on": [
+  {"events": "rect:mouseover", "update": "datum"},
+  {"events": "rect:mouseout",  "update": "{}"}
   ]
   }
   ],
 
   "scales": [
   {
-  "name": "color",
-  "type": "ordinal",
-  "domain": {"data": "table", "field": "id"},
-  "range": {"scheme": "category20"}
+  "name": "xscale",
+  "type": "band",
+  "domain": {"data": "table", "field": "category"},
+  "range": "width",
+  "padding": 0.05,
+  "round": true
+  },
+  {
+  "name": "yscale",
+  "domain": {"data": "table", "field": "amount"},
+  "nice": true,
+  "range": "height"
   }
+  ],
+
+  "axes": [
+  { "orient": "bottom", "scale": "xscale" },
+  { "orient": "left", "scale": "yscale" }
   ],
 
   "marks": [
   {
-  "type": "arc",
-  "from": {"data": "table"},
+  "type": "rect",
+  "from": {"data":"table"},
   "encode": {
   "enter": {
-  "fill": {"scale": "color", "field": "id"},
-  "x": {"signal": "width / 2"},
-  "y": {"signal": "height / 2"}
+  "x": {"scale": "xscale", "field": "category"},
+  "width": {"scale": "xscale", "band": 1},
+  "y": {"scale": "yscale", "field": "amount"},
+  "y2": {"scale": "yscale", "value": 0}
   },
   "update": {
-  "startAngle": {"field": "startAngle"},
-  "endAngle": {"field": "endAngle"},
-  "padAngle": {"signal": "padAngle"},
-  "innerRadius": {"signal": "innerRadius"},
-  "outerRadius": {"signal": "width / 2"},
-  "cornerRadius": {"signal": "cornerRadius"}
+  "fill": {"value": "steelblue"}
+  },
+  "hover": {
+  "fill": {"value": "red"}
+  }
+  }
+  },
+  {
+  "type": "text",
+  "encode": {
+  "enter": {
+  "align": {"value": "center"},
+  "baseline": {"value": "bottom"},
+  "fill": {"value": "#333"}
+  },
+  "update": {
+  "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},
+  "y": {"scale": "yscale", "signal": "tooltip.amount", "offset": -2},
+  "text": {"signal": "tooltip.amount"},
+  "fillOpacity": [
+  {"test": "isNaN(tooltip.amount)", "value": 0},
+  {"value": 1}
+  ]
   }
   }
   }
   ]
-  }
-  ;
-
-  function image(view, type) {
-  return function(event) {
-  event.preventDefault();
-  view.toImageURL(type).then(function(url) {
-  var link = document.createElement('a');
-  link.setAttribute('href', url);
-  link.setAttribute('target', '_blank');
-  link.setAttribute('download', 'pie-chart.' + type);
-  link.dispatchEvent(new MouseEvent('click'));
-  }).catch(function(error) { console.error(error); });
   };
+  const specbar3 = {
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 400,
+  "height": 200,
+  "padding": 5,
+
+  "data": [
+  {
+  "name": "table",
+  "values": [
+  {"category": "None", "amount": {{ head_none.count }} },
+  {"category": "Mild", "amount": {{ head_mild.count }} },
+  {"category": "Moderate", "amount": {{ head_moderate.count }} },
+  {"category": "Severe", "amount": {{ head_severe.count }} },
+  ]
   }
+  ],
 
-  var view = new vega.View(vega.parse(specpie), {
-  loader: vega.loader({baseURL: '/vega/'}),
-  logLevel: vega.Warn,
-  renderer: 'canvas'
-  }).initialize('#pie-chart').hover().run();
+  "signals": [
+  {
+  "name": "tooltip",
+  "value": {},
+  "on": [
+  {"events": "rect:mouseover", "update": "datum"},
+  {"events": "rect:mouseout",  "update": "{}"}
+  ]
+  }
+  ],
 
-  //document.querySelector('#pie-chart-png').addEventListener('click', image(view, 'png'));
-  //document.querySelector('#pie-chart-svg').addEventListener('click', image(view, 'svg'));
-  </script>
+  "scales": [
+  {
+  "name": "xscale",
+  "type": "band",
+  "domain": {"data": "table", "field": "category"},
+  "range": "width",
+  "padding": 0.05,
+  "round": true
+  },
+  {
+  "name": "yscale",
+  "domain": {"data": "table", "field": "amount"},
+  "nice": true,
+  "range": "height"
+  }
+  ],
+
+  "axes": [
+  { "orient": "bottom", "scale": "xscale" },
+  { "orient": "left", "scale": "yscale" }
+  ],
+
+  "marks": [
+  {
+  "type": "rect",
+  "from": {"data":"table"},
+  "encode": {
+  "enter": {
+  "x": {"scale": "xscale", "field": "category"},
+  "width": {"scale": "xscale", "band": 1},
+  "y": {"scale": "yscale", "field": "amount"},
+  "y2": {"scale": "yscale", "value": 0}
+  },
+  "update": {
+  "fill": {"value": "steelblue"}
+  },
+  "hover": {
+  "fill": {"value": "red"}
+  }
+  }
+  },
+  {
+  "type": "text",
+  "encode": {
+  "enter": {
+  "align": {"value": "center"},
+  "baseline": {"value": "bottom"},
+  "fill": {"value": "#333"}
+  },
+  "update": {
+  "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},
+  "y": {"scale": "yscale", "signal": "tooltip.amount", "offset": -2},
+  "text": {"signal": "tooltip.amount"},
+  "fillOpacity": [
+  {"test": "isNaN(tooltip.amount)", "value": 0},
+  {"value": 1}
+  ]
+  }
+  }
+  }
+  ]
+  };
+
+  vegaEmbed("#bar-chart", specbar);
+  vegaEmbed("#bar-chart2", specbar2);
+  vegaEmbed("#bar-chart3", specbar3);
+  
+</script>
 
 </html>
 
