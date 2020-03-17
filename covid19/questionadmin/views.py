@@ -349,8 +349,15 @@ class QuestionnaireView(generic.FormView):
                 print("trigger="+str(triggers[:1][0]))
                 if myset[q] >= triggers[:1][0].mininclusive and myset[q] <= triggers[:1][0].maxinclusive:
                     level += triggers[:1][0].warninglevel
+        message = HealthWarningMessage.objects.filter(warninglevel=0).first()
+        for i in range(level,0,-1):
+           print("check "+str(i)+" size="+str(HealthWarningMessage.objects.filter(warninglevel=i).count()))
+           if HealthWarningMessage.objects.filter(warninglevel=i).count() > 0:
+              message = HealthWarningMessage.objects.filter(warninglevel=i).first()
+              break
         context = {
             'level':level,
+            'message':message,
         }
         return render(request, 'bye-page.html',context)
 

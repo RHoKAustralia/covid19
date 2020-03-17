@@ -189,4 +189,4 @@ class HealthWarningMessage(models.Model):
     warninglevel = models.IntegerField(null=True)
     warningadvice = models.TextField()
     def __str__(self):
-        return "Say \""+self.warningadvice+"\" for level "+str(self.warninglevel)
+        return self.warningadvice
