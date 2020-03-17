@@ -122,6 +122,9 @@ class AnswerSet(models.Model):
     participant = models.ForeignKey('Participant', models.DO_NOTHING)
     dateAnswered = models.DateTimeField(null=True)
 
+    def __str__(self):
+        return str(self.participant)+" on "+self.dateAnswered.strftime("%d-%b-%Y (%H:%M:%S.%f)")
+
 class Answer(models.Model):
     question = models.ForeignKey('Question', models.DO_NOTHING)
     participant = models.ForeignKey('Participant', models.DO_NOTHING)
@@ -177,3 +180,5 @@ class HealthWarningTrigger(models.Model):
 class HealthWarningMessage(models.Model):
     warninglevel = models.IntegerField(null=True)
     warningadvice = models.TextField()
+    def __str__(self):
+        return "Say \""+self.warningadvice+"\" for level "+str(self.warninglevel)
