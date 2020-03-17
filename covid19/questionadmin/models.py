@@ -1,5 +1,4 @@
 from django.db import models
-from django_countries.fields import CountryField
 
 # Create your models here.
 
@@ -111,6 +110,13 @@ class Participant(models.Model):
     age = models.ForeignKey('AgeRanges', models.DO_NOTHING)
     trackingKey = models.CharField(max_length=50, unique=True, null=True)
 
+    @staticmethod
+    def generateTrackingKey(request):
+        from base64 import b64encode
+        import os
+        ran_bytes = os.urandom(64)
+        token = b64encode(ran_bytes).decode('latin1')[0:6].upper()
+        return token
 class ParticipantLocation(models.Model):
     # what's the point of this field?
     #participant_id = models.ForeignKey('Participant', models.DO_NOTHING)

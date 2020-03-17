@@ -11,10 +11,8 @@ from .models import Answer
 from .models import HealthWarningTrigger
 from .models import HealthWarningMessage
 
-class IndexView(generic.ListView):
-    context_object_name = 'questions'
     #
-    countryList = [
+countryList = [
 	"Afghanistan",
 	"Albania",
 	"Algeria",
@@ -265,15 +263,32 @@ class IndexView(generic.ListView):
 	"Zimbabwe",
 	"Åland Islands"
 ]
+
+class IndexView(generic.ListView):
+    context_object_name = 'questions'
     #
     def get_queryset(self):
         return Question.objects.order_by('order')
 
     def get_context_data(self,**kwargs):
         context = super(IndexView,self).get_context_data(**kwargs)
-        context["countryList"] = self.countryList
+        context["countryList"] = countryList
         print("return custom context")
         return context
+
+class TrackedView(generic.ListView):
+    context_object_name = 'questions'
+    #
+    def get_queryset(self):
+        return Question.objects.order_by('order')
+
+    def get_context_data(self,**kwargs):
+        context = super(TrackedView,self).get_context_data(**kwargs)
+        context["countryList"] = countryList
+        context["generatedKey"] = Participant.generateTrackingKey(self.request)
+        print("return custom context")
+        return context
+
 
 
 class ScaleView(generic.FormView):
