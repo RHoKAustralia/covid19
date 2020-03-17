@@ -18,6 +18,14 @@ class IndexView(generic.ListView):
         context['mild'] = Answer.objects.filter(question__question="Cough").filter(scale_Answer=1)
         context['moderate'] = Answer.objects.filter(question__question="Cough").filter(scale_Answer=2)
         context['severe'] = Answer.objects.filter(question__question="Cough").filter(scale_Answer=3)
+        context['sore_none'] = Answer.objects.filter(question__question="Sore-throat").filter(scale_Answer=0)
+        context['sore_mild'] = Answer.objects.filter(question__question="Sore-throat").filter(scale_Answer=1)
+        context['sore_moderate'] = Answer.objects.filter(question__question="Sore-throat").filter(scale_Answer=2)
+        context['sore_severe'] = Answer.objects.filter(question__question="Sore-throat").filter(scale_Answer=3)
+        context['head_none'] = Answer.objects.filter(question__question="Headache").filter(scale_Answer=0)
+        context['head_mild'] = Answer.objects.filter(question__question="Headache").filter(scale_Answer=1)
+        context['head_moderate'] = Answer.objects.filter(question__question="Headache").filter(scale_Answer=2)
+        context['head_severe'] = Answer.objects.filter(question__question="Headache").filter(scale_Answer=3)
         print("return custom context")
         return context
 
