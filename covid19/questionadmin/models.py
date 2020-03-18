@@ -110,6 +110,9 @@ class Participant(models.Model):
     age = models.ForeignKey('AgeRanges', models.DO_NOTHING)
     trackingKey = models.CharField(max_length=50, unique=True, null=True)
 
+    def __str__(self):
+        return self.firstName+" "+self.lastName
+
     @staticmethod
     def generateTrackingKey(request):
         from base64 import b64encode
@@ -135,11 +138,10 @@ class AnswerSet(models.Model):
 
 class Answer(models.Model):
     question = models.ForeignKey('Question', models.DO_NOTHING)
-    participant = models.ForeignKey('Participant', models.DO_NOTHING)
-    # This on is trouble
+    participant = models.ForeignKey('Participant', models.DO_NOTHING) # don't need this anymore
     answerset = models.ForeignKey('AnswerSet', models.DO_NOTHING, null=True)
     scale_Answer = models.IntegerField(null=True)
-    dateAnswered = models.DateTimeField(null=True)
+    dateAnswered = models.DateTimeField(null=True) # don't need this anymore
     dateFrom = models.DateTimeField(null=True)
     dateTo = models.DateTimeField(null=True)
     freeform_text = models.TextField(null=True)
@@ -173,6 +175,8 @@ class Region(models.Model):
 
 class AgeRanges(models.Model):
     age_ranges = models.TextField()
+    def __str__(self):
+        return self.age_ranges
 
 class Jurisdiction(models.Model):
     name = models.TextField()

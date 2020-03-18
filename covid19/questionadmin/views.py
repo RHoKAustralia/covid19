@@ -6,10 +6,14 @@ from .forms import QuestionnaireForm
 from datetime import datetime
 
 from .models import Question
+from .models import Location
+from .models import ParticipantLocation
 from .models import Participant
 from .models import Answer
+from .models import AnswerSet
 from .models import HealthWarningTrigger
 from .models import HealthWarningMessage
+from .models import AgeRanges
 
     #
 countryList = [
@@ -264,6 +268,22 @@ countryList = [
 	"Åland Islands"
 ]
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+ 
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+ 
+    return False
+
 class IndexView(generic.ListView):
     context_object_name = 'questions'
     #
@@ -315,30 +335,48 @@ class QuestionnaireView(generic.FormView):
             value = -1
         return value
 
+    def findAgeRange(request):
+        expected_question = Question.objects.filter(questiontype__type="Age").first() # the AgeRange question
+        return request.POST[str(expected_question.id)] # the users response value
+
     def home(request):
         print("process form")
         myset = {}
         if request.method == 'POST':
             print("its a post="+str(request.POST))
+            print("AGE RANGE ID"+str(QuestionnaireView.findAgeRangeID(request)))
             for field in request.POST.keys():
-                if field!="csrfmiddlewaretoken":
-                    print(str(Question.objects.filter(id=field))+"="+request.POST[field])
+                if is_number(field):
+                    print(str(Question.objects.filter(id=field))+"="+str(request.POST[field]))
             form = QuestionnaireForm(request.POST)
             if form.is_valid():
                 pass  # does nothing, just trigger the validation
             # Add the response to the database!
-            participant = Participant.objects.all()[:1][0]
+            # look for participant
+            # if not found create one with firstName, lastName, [location], [agerange], trackingKey
+            firstName = "anon"
+            lastName = "anon"
+            location = Location.objects.all().first() # any location for now
+            age = QuestionnaireView.findAgeRange(request).first()
+            participantlocation = ParticipantLocation.objects.all().first() # any participant location
+            participant = Participant(firstName=firstName,lastName=lastName,location=participantlocation,age=age)
+            participant.save()
+            answerset = AnswerSet(participant=participant, dateAnswered=datetime.now())
+            answerset.save()
             for field in request.POST.keys():
-                if field!="csrfmiddlewaretoken":
-                    print(str(Question.objects.filter(id=field))+"="+request.POST[field])
+                print(".field="+str(field))
+                if field!="csrfmiddlewaretoken" and is_number(field):
+                    #print(str(Question.objects.filter(id=field))+"="+str(request.POST[field]))
                     question = Question.objects.filter(id=field).first()
                     scale_Answer = QuestionnaireView.asint(request.POST[field])
-                    answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=datetime.now())
+                    answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=datetime.now(),
+                                    answerset=answerset)
                     answer.save()
                     myset[question.id] = scale_Answer
         else:
             print("its a get")
             form = QuestionnaireForm()
+        print("DONE")
 
         # stub for working out the health warning message
         level = 0
