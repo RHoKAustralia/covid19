@@ -11,11 +11,47 @@
     <link rel="stylesheet" href="static/css/bulma.min.css" />
 
     <!-- bulma calendar -->
-
     <link rel="stylesheet" href="static/css/bulma-calendar.min.css" />
     <script src="static/js/bulma-calendar.min.js"></script>
 
+    <!-- bulma-steps -->
+    <link rel="stylesheet" href="static/css/bulma-steps.min.css" />
+    <script src="static/js/bulma-steps.min.js"></script>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
+    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+
     <script type="text/javascript">
+
+      function setCookie(cname, cvalue, exdays)
+      {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      } 
+
+      function getCookie(cname)
+      {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+
+      function chr4()
+      {
+        return Math.random().toString(16).slice(-4);
+      }
 
       function get_radio_selected_value(name)
       {
@@ -31,19 +67,7 @@
         return value;
       }
 
-      function prepare_submit()
-      {
-{% if generatedKey %}
-        var prev_key = document.getElementById("tracking_code").value;
-        if ( prev_key != "")
-          document.getElementById('generated_key').innerHTML = "";
-        else
-          document.getElementById('generated_key').innerHTML = "To synchronise future survey responses, please record this unique key: {{ generatedKey }}";
-{% endif %}
-        document.getElementById('modalPanel').classList.add('is-active');
-      }
     </script>
-
 
 </head>
 <body>
@@ -60,67 +84,127 @@
     </div>
 </section>
 <div class="all">
+
 {% if questions %}
 <form method="post" action="/covid19/saveresponse">
     {% csrf_token %}
+<br/>
+<div class="steps">
 
+  <div class="step-item is-active is-success">
+    <div class="step-marker">1</div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">2</div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">3</div>
+    <div class="step-details">
+      <p class="step-title"></p>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">4</div>
+    <div class="step-details">
+      <p class="step-title"></p>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">5</div>
+    <div class="step-details">
+      <p class="step-title"></p>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">6</div>
+    <div class="step-details">
+      <p class="step-title"></p>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">7</div>
+    <div class="step-details">
+      <p class="step-title"></p>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">8</div>
+    <div class="step-details">
+      <p class="step-title"></p>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">9</div>
+    <div class="step-details">
+      <p class="step-title"></p>
+    </div>
+  </div>
+  <div class="step-item">
+    <div class="step-marker">10</div>
+    <div class="step-details">
+      <p class="step-title"></p>
+    </div>
+  </div>
+  <div class="steps-content">
+    <div class="step-content is-active">
     <section class="section">
     <h4 class="title is-4">Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h4>
     <script type="text/javascript">
-        function have_been_tested()
+        function istested(id)
         {
-          var value = get_radio_selected_value("47");
-          if (value == "0")
-           {
-             document.getElementById("test_result").className = "is-hidden";
-             document.getElementById("test_date").className = "is-hidden";
-             document.getElementById("test_location").className = "is-hidden";
-           }
-           else
-           {
-             document.getElementById("test_result").className = "field";
-             document.getElementById("test_date").className = "field";
-             document.getElementById("test_location").className = "field";
-           }
-         }
+          var value = get_radio_selected_value(id);
+          var fields = [];
+          {% for question in questions %}
+              {% if question.istested %}
+                  {% if not question.isanswer %}
+          fields.push("field_{{ question.id }}");
+                  {% endif %}
+              {% endif %}
+          {% endfor %}
+          var className = (value == "0" || value == "2") ? "is-hidden" : "field";
+          for (i=0; i<fields.length; i++)
+          {
+            document.getElementById(fields[i]).className = className;
+          }
+        }
     </script>
     {% for question in questions %}
         {% if question.istested %}
             {% if question.isanswer %}
        <div class="field">
             <div class="control">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="istested('{{ question.id }}')">
                 <label class="radio" for="0">No</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="have_been_tested()">
                 &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="istested('{{ question.id }}')">
                 <label class="radio" for="1">Yes</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="have_been_tested()">
             </div>
         </div>
             {% else %}
                 {% if question.order == 1 %}
-       <div class="is-hidden" id="test_result">
+       <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label">{{ question.question }}</label>
             <div class="control">
-                <label class="radio" for="0">Negative</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
+                <label class="radio" for="0">Negative</label>
                 &nbsp;&nbsp;
-                <label class="radio" for="1">Positive</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                <label class="radio" for="1">Positive</label>
             </div>
         </div>
                 {% else %}
                     {% if question.order == 2 %}
-         <div class="is-hidden" id="test_date">
+         <div class="is-hidden" id="field_{{ question.id }}">
             <label>{{ question.question }}</label>
             <div class="control">
                 <input class="is-size-6 has-text-dark" type="date" name="{{ question.id }}" id="{{ question.id }}" value="">
             </div>
         </div>
                     {% else %}
-        <div class="is-hidden" id="test_location">
+        <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label">{{ question.question }}</label>
             <div class="control">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="text" placeholder="Name (and address if known)" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
                     {% endif %}
@@ -130,61 +214,80 @@
     {% endfor %}
     </section>
 
-    <section class="section has-background-warning">
+    </div>
+    <div class="step-content">
+
+    <section class="section">
     <h4 class="title is-4">Since this time yesterday, have you had any of the following symptoms?</h4>
     {% for question in questions %}
         {% if question.isscale %}
-        <div class="field">
-            <label class="label">{{ question.question }}</label>
-            <div class="control">
-                <label class="radio" for="0">None</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
-                &nbsp;&nbsp;
-                <label class="radio" for="1">Mild</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
-                &nbsp;&nbsp;
-                <label class="radio" for="2">Moderate</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2">
-                &nbsp;&nbsp;
-                <label class="radio" for="3">Severe</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="3">
-            </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">{{ question.question }}</label>
         </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control has-icon has-icon-right">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
+                <label class="radio" for="0">None</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                <label class="radio" for="1">Mild</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2">
+                <label class="radio" for="2">Moderate</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="3">
+                <label class="radio" for="3">Severe</label>
+            </div>
+          </div>
+        </div>
+      </div>
         {% endif %}
     {% endfor %}
     </section>
+    </div>
 
+    <div class="step-content">
     <section class="section">
     <h4 class="title is-4">Since this time yesterday, have respiratory of flu-like problems given you difficulty to:</h4>
     {% for question in questions %}
         {% if question.isdifficulty %}
-        <div class="field">
-            <label class="label">{{ question.question }}</label>
-            <div class="control">
-                <label class="radio" for="0">None</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
-                &nbsp;&nbsp;
-                <label class="radio" for="1">Some</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
-                &nbsp;&nbsp;
-                <label class="radio" for="2">Moderate</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2">
-                &nbsp;&nbsp;
-                <label class="radio" for="3">Great</label>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="3">
-            </div>
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">{{ question.question }}</label>
         </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control has-icon has-icon-right">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
+                <label class="radio" for="0">None</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                <label class="radio" for="1">Some</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2">
+                <label class="radio" for="2">Moderate</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="3">
+                <label class="radio" for="3">Great</label>
+            </div>
+          </div>
+        </div>
+      </div>
         {% endif %}
     {% endfor %}
     </section>
+    </div>
 
-    <section class="section has-background-warning">
-    <h4 class="title is-4">Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h4>
+    <div class="step-content">
+    <section class="section">
+    <h4 class="title is-4">Did you travel outside your home city/town of residence within the last 14 days?</h4>
     <script type="text/javascript">
         function istravel(id)
         {
           var value = get_radio_selected_value(id);
-          var fields = [];
+          var fields = ["field_istravel"];
           {% for question in questions %}
               {% if question.istravel %}
                   {% if not question.isanswer %}
@@ -205,36 +308,44 @@
         <!-- YesNoUnsure -->
         <div class="field">
             <div class="control">
-                <label class="radio" for="2">Unsure</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" onchange="istravel('{{ question.id }}')">
+                <label class="radio" for="2">Unsure</label>
                 &nbsp;&nbsp;
-                <label class="radio" for="1">Yes</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="istravel('{{ question.id }}')">
+                <label class="radio" for="1">Yes</label>
                 &nbsp;&nbsp;
-                <label class="radio" for="0">No</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="istravel('{{ question.id }}')">
+                <label class="radio" for="0">No</label>
             </div>
         </div>
+        <div class="field is-hidden" id="field_istravel">
+          <label class="label">Primary destination of travel?</label>
+          <div class="control">
+              <input id="istravel_location" name="istravel_location" type="text" class="input" placeholder="Search" />
+              <input type="hidden" class="control" name="istravel_location_json" id="istravel_location_json" />
+          </div>
+        </div>
             {% else %}
-        <!-- Text -->
         <div class="is-hidden" id="field_{{ question.id}}">
-            <label class="label">{{ question.question }}</label>
+            <!--<label class="label">{{ question.question }}</label>-->
             <div class="control">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
             {% endif %}
         {% endif %}
     {% endfor %}
     </section>
+    </div>
 
+    <div class="step-content">
     <section class="section">
     <h4 class="title is-4">In the last 14 days have you attended any mass gatherings (more than 500 people) ?</h4>
     <script type="text/javascript">
         function isgathering(id)
         {
           var value = get_radio_selected_value(id);
-          var fields = [];
+          var fields = ["field_isgathering"];
           {% for question in questions %}
               {% if question.isgathering %}
                   {% if not question.isanswer %}
@@ -256,36 +367,44 @@
         <!-- YesNoUnsure -->
         <div class="field">
             <div class="control">
-                <label class="radio" for="2">Unsure</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" onchange="isgathering('{{ question.id }}')">
+                <label class="radio" for="2">Unsure</label>
                 &nbsp;&nbsp;
-                <label class="radio" for="1">Yes</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="isgathering('{{ question.id }}')">
+                <label class="radio" for="1">Yes</label>
                 &nbsp;&nbsp;
-                <label class="radio" for="0">No</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="isgathering('{{ question.id }}')">
+                <label class="radio" for="0">No</label>
             </div>
         </div>
+        <div class="field is-hidden" id="field_isgathering">
+          <label class="label">Location of gathering ?</label>
+          <div class="control">
+              <input id="isgathering_location" name="isgathering_location" type="text" class="input" placeholder="Search" />
+              <input type="hidden" class="control" name="isgathering_location_json" id="isgathering_location_json" />
+          </div>
+        </div>
             {% else %}
-        <!-- Text -->
-        <div class="is-hidden" id="field_{{ question.id }}">
-            <label class="label">{{ question.question }}</label>
+        <div class="field is-hidden" id="field_{{ question.id }}">
+            <!--<label class="label">{{ question.question }}</label>-->
             <div class="control">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
         {% endif %}
         {% endif %}
     {% endfor %}
     </section>
+    </div>
 
-    <section class="section has-background-warning">
+    <div class="step-content">
+    <section class="section">
     <h4 class="title is-4">Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h4>
-    <script type="text/javascript">
+        <script type="text/javascript">
         function iscontact(id)
         {
           var value = get_radio_selected_value(id);
-          var fields = [];
+          var fields = ["field_iscontact"];
           {% for question in questions %}
               {% if question.iscontact%}
                   {% if not question.isanswer %}
@@ -299,56 +418,64 @@
             document.getElementById(fields[i]).className = className;
           }
         }
-    </script>
+        </script>
 
     {% for question in questions %}
         {% if question.iscontact %}
             {% if question.isanswer %}
-                <!-- YesNoUnsure -->
-                <div class="field">
-                    <div class="control">
-                        <label class="radio" for="2">Unsure</label>
-                        <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" onchange="iscontact('{{ question.id }}')">
-                        &nbsp;&nbsp;
-                        <label class="radio" for="1">Yes</label>
-                        <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="iscontact('{{ question.id }}')">
-                        &nbsp;&nbsp;
-                        <label class="radio" for="0">No</label>
-                        <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="iscontact('{{ question.id }}')">
-                    </div>
-                </div>
-                    {% else %}
-                <!-- Text -->
-                <div class="is-hidden" id="field_{{ question.id }}">
-                    <label class="label">{{ question.question }}</label>
-                    <div class="control">
-                        <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
-                    </div>
-                </div>
+        <div class="field">
+            <div class="control">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" onchange="iscontact('{{ question.id }}')">
+                <label class="radio" for="2">Unsure</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="iscontact('{{ question.id }}')">
+                <label class="radio" for="1">Yes</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="iscontact('{{ question.id }}')">
+                <label class="radio" for="0">No</label>
+            </div>
+        </div>
+        <div class="field is-hidden" id="field_iscontact">
+           <label class="label">Location of COVID-19 contact?</label>
+           <div class="control">
+               <input id="iscontact_location" name="iscontact_location" type="text" class="input" placeholder="Search" />
+               <input type="hidden" class="control" name="iscontact_location_json" id="iscontact_location_json" />
+           </div>
+       </div>
+           {% else %}
+       <div class="field is-hidden" id="field_{{ question.id }}">
+           <!--<label class="label">{{ question.question }}</label>-->
+           <div class="control">
+               <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
             {% endif %}
         {% endif %}
     {% endfor %}
     </section>
+    </div>
 
+    <div class="step-content">
     <section class="section">
     <h4 class="title is-4">Have you been self-isolating in the last 14 days?</h4>
     {% for question in questions %}
         {% if question.isisolating %}
-        <!-- YesNo -->
         <div class="field">
             <div class="control">
-                <label class="radio" for="1">Yes</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
+                <label class="radio" for="1">Yes</label>
                 &nbsp;&nbsp;
-                <label class="radio" for="0">No</label>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
+                <label class="radio" for="0">No</label>
             </div>
         </div>
         {% endif %}
     {% endfor %}
     </section>
+    </div>
 
-    <section class="section has-background-warning">
+    <div class="step-content">
+    <section class="section">
     <h4 class="title is-4">More about you</h4>
     {% for question in questions %}
         {% if question.isage %}
@@ -372,71 +499,52 @@
                 </div>
             </div>
         </div>
+
+        <div class="field">
+          <label class="label">Which town or city do you live in?</label>
+          <div class="control">
+              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search" />
+              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json" />
+          </div>
+        </div>
         {% endif %}
-    {% endfor %}
-
-    <div class="field">
-      <label class="label">What is your location?</label>
-      <div class="control">
-          <input id="autocomplete_search" name="autocomplete_search" type="text" class="input" placeholder="Search" />
-          <input type="hidden" class="control" name="respondent_place" id="respondent_place" />
-      </div>
-    </div>
-
-    {% for question in questions %}
         {% if question.iscountry %}
-        <!-- Text -->
         <div class="field">
-            <label class="label">{{ question.question }}</label>
+            <!--<label class="label">{{ question.question }}</label>-->
             <div class="control">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
-<select>
-        {% for country in countryList %}
-<option>{{country}}</option`>
-        {% endfor %}
-</select>
         {% endif %}
-    {% endfor %}
-
-    {% for question in questions %}
         {% if question.istown %}
-        <!-- Text -->
         <div class="field">
-            <label class="label">{{ question.question }}</label>
+            <!--<label class="label">{{ question.question }}</label>-->
             <div class="control">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
         {% endif %}
-    {% endfor %}
-
-    {% for question in questions %}
         {% if question.isregion %}
-        <!-- Text -->
         <div class="field">
-            <label class="label">{{ question.question }}</label>
+            <!--<label class="label">{{ question.question }}</label>-->
             <div class="control">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
         {% endif %}
-    {% endfor %}
-
-    {% for question in questions %}
         {% if question.ispostcode %}
-        <!-- Text -->
         <div class="field">
-            <label class="label">{{ question.question }}</label>
+            <!--<label class="label">{{ question.question }}</label>-->
             <div class="control">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
         {% endif %}
     {% endfor %}
     </section>
+    </div>
 
+    <div class="step-content">
     <section class="section">
     <h4 class="title is-4">Do you have of the following long-term conditions?</h4>
     <div class="field">
@@ -450,16 +558,13 @@
     {% endfor %}
     </div>
     </section>
+    </div>
 
-
-    <section class="section has-background-warning">
-{% if generatedKey %}
-      <div class="field">
-        <label class="label">If you have previously responded, please enter you unique code here</label>
-        <input class="input" type="text" placeholder="Text input" id="tracking_code" name="tracking_code">
-     </div>
-{% endif %}
-
+    <div class="step-content">
+      <section class="section">
+      <input class="input" type="hidden" id="uid" name="uid" />
+      <!-- Using a modal panel, a bit overkill -->
+      <!--
       <div class="modal" id="modalPanel">
         <div class="modal-background"></div>
         <div class="modal-card">
@@ -468,9 +573,6 @@
           </header>
           <section class="modal-content-body">
             <p class="modal-card-body" id="conditions">By responding to this survey, this you consent that this information may be... (TBD)</p>
-{% if generatedKey %}
-            <p class="modal-card-body" id="generated_key">Please record this unique key: {{ generatedKey }} and use it in future responses.</p>
-{% endif %}
           </section>
           <footer class="modal-card-foot">
             <button type="button" class="button is-success">Save</button>
@@ -479,9 +581,38 @@
         </div>
       </div>
       <div>
-        <button class="button is-success" type="button" id="showModal" onClick="prepare_submit();">Save</button>
+        <button class="button is-success" type="button" id="showModal" onClick="document.getElementById('modalPanel').classList.add('is-active');">Save</button>
       </div>
+     -->
+      <div class="content">By responding to this survey, this you consent that this information may be...</div>
+        <div>
+          <button class="button is-success">
+            <span class="icon is-small">
+              <i class="fas fa-check"></i>
+            </span>
+            <span>Save</span>
+          </button>
+          <button class="button" type="cancel" value="Cancel"/>
+            <span class="icon is-small">
+              <i class="fas fa-times"></i>
+            </span>
+            <span>Cancel</span>
+          </button>
+        </div>
     </section>
+    </div>
+
+  </div>
+  <div class="steps-actions has-background-warning">
+    <div class="steps-action">
+      <a href="#" data-nav="previous" class="button is-light">Previous</a>
+    </div>
+    <div class="steps-action">
+      <a href="#" data-nav="next" class="button is-light">Next</a>
+    </div>
+  </div>
+</div>
+
 </form>
 {% else %}
     <p>No questions are available.</p>
@@ -504,31 +635,72 @@
 
   google.maps.event.addDomListener(window, 'load', initialize);
 
-  function initialize() {
-
+  function initialize() 
+  {
     // Create bounds from Australia
-    var auBounds = new google.maps.LatLngBounds(
+    var bounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(-44, 113),
       new google.maps.LatLng(-10, 154)
     );
 
+    init_loc(bounds, "istravel", { "locality": "24", "administrative_area_level_1": "52", "country": "25", "postal_code": "23" });
+    init_loc(bounds, "isgathering", { "locality": "29", "administrative_area_level_1": "30", "country": "31", "postal_code": "28" }); 
+    init_loc(bounds, "iscontact", { "locality": "34", "administrative_area_level_1": "35", "country": "36", "postal_code": "33" });
+    init_loc(bounds, "aboutyou", { "locality": "40", "administrative_area_level_1": "41", "country": "39", "postal_code": "42" });
+  }
+
+  function init_loc(bounds, prefix, ids)
+  {
     // Create a new session token.
     var sessionToken = new google.maps.places.AutocompleteSessionToken();
-
     var options = {
-      bounds: auBounds,
+      bounds: bounds,
       types: ['(regions)'],
       sessionToken: sessionToken
     }
-    var input = document.getElementById('autocomplete_search');
+    var input = document.getElementById(prefix + '_location');
     var autocomplete = new google.maps.places.Autocomplete(input, options);
     autocomplete.setFields(["address_components", "geometry"]);
     autocomplete.addListener('place_changed', function () {
-    var place = autocomplete.getPlace();
-    // place variable will have all the information you are looking for.
-    var place_str = JSON.stringify(place, null, 4);
-    document.getElementById('respondent_place').value = place_str;
-  });
+      var place = autocomplete.getPlace();
+      var place_str = JSON.stringify(place, null, 4);
+      document.getElementById(prefix + '_location_json').value = place_str;
+      addr = place["address_components"];
+      var types = ["locality", "administrative_area_level_1", "country", "postal_code"];
+      for (i=0; i<addr.length; i++)
+      {
+        for (j=0; j<types.length; j++)
+        {
+          if (addr[i].types.includes(types[j]))
+          {
+            var id = ids[types[j]]
+            try {
+              document.getElementById(id).value = addr[i]["long_name"];
+            } catch {
+              alert("element type " + types[j] + " with id " + id + " did not exist for prefix=" + prefix);
+            } 
+          }
+        }
+      }
+    });
   }
 </script>
+
+<script type="text/javascript">
+  bulmaSteps.attach();
+</script>
+
+<script type="text/javascript">
+  var uid = getCookie("uid");
+  if (uid == "") {
+    uid = chr4() + chr4() +
+          '-' + chr4() +
+          '-' + chr4() +
+          '-' + chr4() +
+          '-' + chr4() + chr4() + chr4();
+ }
+ document.getElementById("uid").value = uid;
+ setCookie("uid", uid, 365);
+</script>
+
 </html>
