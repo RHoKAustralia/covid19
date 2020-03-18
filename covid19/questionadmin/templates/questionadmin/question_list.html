@@ -34,10 +34,12 @@
       function prepare_submit()
       {
         var prev_key = document.getElementById("tracking_code").value;
+{% if generatedKey %}
         if ( prev_key != "")
           document.getElementById('generated_key').innerHTML = "";
         else
           document.getElementById('generated_key').innerHTML = "To synchronise future survey responses, please record this unique key: {{ generatedKey }}";
+{% endif %}
         document.getElementById('modalPanel').classList.add('is-active');
       }
     </script>
