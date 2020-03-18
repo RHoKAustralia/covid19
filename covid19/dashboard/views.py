@@ -4,6 +4,7 @@ from django.views.generic.edit import FormView
 
 from questionadmin.models import Answer
 from questionadmin.models import Question,QuestionType
+from questionadmin.models import Participant,ParticipantLocation,Location,Region,Country,AgeRanges,Country,AnswerSet
 
 # Create your views here.
 class IndexView(generic.ListView):
@@ -32,13 +33,21 @@ class IndexView(generic.ListView):
 
 import django_tables2 as tables
 
-class AnswerListView(generic.ListView):
+class AnswerTable(tables.Table):
+    class Meta:
+        model = Answer
+        template_name = "dashboard_table.html"
+        fields = ("question", "scale_Answer", )
+
+from django_tables2 import SingleTableView
+class AnswerListView(SingleTableView):
     model = Answer
+    table_class = AnswerTable
     template_name = 'dashboard_table.html'
 
 
 class AnswerListView2(generic.ListView):
-    template_name = 'dashboard_table.html'
+    template_name = 'dashboard_table2.html'
 
     def get_queryset(self):
         from django.db.models import F
@@ -48,4 +57,16 @@ class AnswerListView2(generic.ListView):
         #date = F('answerset__dateAnswered')
         query_set = Answer.objects.select_related('participant',
                 'answerset').values(first=first, last=last)
+        print("table2="+str(query_set))
         # , date=date)
+        return query_set
+
+class ParticipantView(generic.ListView):
+    template_name = "dashboard_participant.html"
+    context_object_name = 'participants'
+    def get_queryset(self):
+        return Participant.objects.filter(trackingKey="XYZZY")
+
+    def get_context_data(self,**kwargs):
+        context = super(ParticipantView,self).get_context_data(**kwargs)
+        return context
