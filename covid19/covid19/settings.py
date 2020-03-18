@@ -25,7 +25,7 @@ SECRET_KEY = '7e!d9l_a_v%psq+u*h16w&i3hon*t7i!j(p3$gyq=47kuf8=3s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["tao.asvo.org.au"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -79,18 +79,10 @@ WSGI_APPLICATION = 'covid19.wsgi.application'
 
 DATABASES = {
     'default': {
-    #    'ENGINE': 'django.db.backends.sqlite3',
-    #    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # MySQL production database.
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'covid19',
-        'USER': 'root',
-        'PASSWORD': 'str8line',
-        'HOST': 'localhost',
-        'PORT': '3306',
         'OPTIONS': {
-            'init_command': 'SET default_storage_engine=INNODB,character_set_connection=utf8,foreign_key_checks=0;',
-        },
+            'read_default_file': '/app/sql.cfn',
+            },
     }
 }
 
@@ -129,23 +121,12 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/dev/howto/static-files/
-# Because production builds run in a subdirectory, STATIC_URL is changed
-# for most to be '/<tao/staging/taodev>/static/'
-# However whitenoise needs it's static prefix to be relative
-# to django root instead
-# eg instead of /taodev/static/ it needs to be /static/
-# Assuming django root is /taodev/
-#WHITENOISE_STATIC_PREFIX = STATIC_URL
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-#Not working for nginx mapped Docker deplolyment yet
+# https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_URL = '/covid19/static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = '/app/covid19/static'
-FORCE_SCRIPT_NAME = '/covid19'  # without trailing slash
-LOGIN_URL = '/covid19/accounts/login/'
-LOGIN_REDIRECT_URL = '/covid19/accounts/login/'
+LOGIN_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/accounts/login/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    "/usr/local/lib/python3.5/dist-packages/django/contrib/admin/static"
 ]
