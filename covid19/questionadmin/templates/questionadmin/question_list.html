@@ -33,11 +33,13 @@
 
       function prepare_submit()
       {
+{% if generatedKey %}
         var prev_key = document.getElementById("tracking_code").value;
         if ( prev_key != "")
           document.getElementById('generated_key').innerHTML = "";
         else
           document.getElementById('generated_key').innerHTML = "To synchronise future survey responses, please record this unique key: {{ generatedKey }}";
+{% endif %}
         document.getElementById('modalPanel').classList.add('is-active');
       }
     </script>
@@ -451,10 +453,12 @@
 
 
     <section class="section has-background-warning">
+{% if generatedKey %}
       <div class="field">
         <label class="label">If you have previously responded, please enter you unique code here</label>
         <input class="input" type="text" placeholder="Text input" id="tracking_code" name="tracking_code">
      </div>
+{% endif %}
 
       <div class="modal" id="modalPanel">
         <div class="modal-background"></div>
@@ -465,7 +469,7 @@
           <section class="modal-content-body">
             <p class="modal-card-body" id="conditions">By responding to this survey, this you consent that this information may be... (TBD)</p>
 {% if generatedKey %}
-            <p class="modal-card-body" id="generated_key">Please record this unique key: {{ generatedKey }} and use it in future responses.</p><br/>
+            <p class="modal-card-body" id="generated_key">Please record this unique key: {{ generatedKey }} and use it in future responses.</p>
 {% endif %}
           </section>
           <footer class="modal-card-foot">
