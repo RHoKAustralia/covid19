@@ -29,7 +29,7 @@
         d.setTime(d.getTime() + (exdays*24*60*60*1000));
         var expires = "expires="+ d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-      } 
+      }
 
       function getCookie(cname)
       {
@@ -53,18 +53,76 @@
         return Math.random().toString(16).slice(-4);
       }
 
-      function get_radio_selected_value(name)
+      function get_radio_value(name)
       {
         var elements = document.getElementsByName(name);
-        var value;
+        var value = "";
         for (var i = 0; i < elements.length; i++)
         {
-            if (elements[i].checked)
-            {
-                value = elements[i].value;
-            }
+          if (elements[i].checked)
+          {
+            value = elements[i].value;
+          }
         }
         return value;
+      }
+
+      function get_select_value(id)
+      {
+        var ele = document.getElementById(id)
+        return ele.options[ele.selectedIndex].value;
+      }
+
+      function get_input_value(id)
+      {
+        return document.getElementById(id).value
+      }
+
+      function check_data_missing(id)
+      {
+        var eles = document.getElementsByName(id);
+        for (i=0; i<eles.length; i++)
+        {
+          //alert("i=" + i + " name=" + id+ " nodeName=" + eles[i].nodeName + " type=" + eles[i].type);
+          if (eles[i].type == "text")
+            return set_missing_id(id, get_input_value(id));
+          if (eles[i].type == "select-one")
+            return set_missing_id(id, get_select_value(id));
+          if (eles[i].type == "radio")
+            return set_missing_id(id, get_radio_value(id));
+        }
+      }
+
+      function set_missing_name(name, val)
+      {
+        var eles = document.getElementsByName(name)
+        for (i=0; i<eles.length; i++)
+        {
+          if (val == "")
+            eles[i].classList.add("has-background-danger");
+          else
+            eles[i].classList.remove("has-background-danger");
+        }
+        if (val == "")
+          return 1;
+        else
+          return 0;
+      }
+
+      function set_missing_id(id, val)
+      {
+        if (val == "")
+        {
+          document.getElementById("label_" + id).classList.add("has-text-danger");
+          //document.getElementById("control_" + id).classList.add("has-background-danger");
+          return 1;
+        }
+        else
+        {
+          document.getElementById("label_" + id).classList.remove("has-text-danger");
+          //document.getElementById("control_" + id).classList.remove("has-background-danger");
+          return 0;
+        }
       }
 
     </script>
@@ -89,7 +147,7 @@
 <form method="post" action="/covid19/saveresponse">
     {% csrf_token %}
 <br/>
-<div class="steps">
+<div class="steps" id="stepsDemo">
 
   <div class="step-item is-active is-success">
     <div class="step-marker">1</div>
@@ -146,13 +204,129 @@
     </div>
   </div>
   <div class="steps-content">
+
+    <div class="step-content">
+    <section class="section">
+    <h4 class="title is-4">A little about you</h4>
+    <script type="text/javascript">
+      function checkAge(id)
+      {
+        var ele = document.getElementById(id);
+        if (ele.options[ele.selectedIndex].value == "<15")
+          document.getElementById('modalPanel').classList.add('is-active');
+        else
+          document.getElementById('modalPanel').classList.remove('is-active');
+      }
+
+      function validateAbout()
+      {
+        sum = 0;
+    {% for question in questions %}
+        {% if question.isage %}
+          sum += check_data_missing("{{ question.id }}");
+          //sum += check_data_missing("aboutyou_location");
+        {% endif %}
+    {% endfor %}
+        return sum;
+      }
+    </script>
+
+    {% for question in questions %}
+        {% if question.isage %}
+        <!-- Text -->
+        <div class="field">
+            <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+            <div class="control" id="control_{{ question.id }}">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}" onChange="checkAge('{{ question.id }}');">
+                        <option value="" selected></option>
+                        <option value="<15">&lt; 15</option>
+                        <option value="15-17">15-17</option>
+                        <option value="18-29" >18-29</option>
+                        <option value="30-39">30-39</option>
+                        <option value="40-49">40-49</option>
+                        <option value="50-59">50-59</option>
+                        <option value="60-69">60-69</option>
+                        <option value="70-79">70-79</option>
+                        <option value="80+">80+</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="field">
+          <label class="label" id="label_aboutyou_location">Which town or city do you live in?</label>
+          <div class="control" id="control_aboutyou_location">
+              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search" />
+              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json" />
+          </div>
+        </div>
+        {% endif %}
+        {% if question.iscountry %}
+        <div class="field has-background-danger">
+            <!--<label class="label">{{ question.question }}</label>-->
+            <div class="control" id="control_{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+        {% endif %}
+        {% if question.istown %}
+        <div class="field">
+            <!--<label class="label">{{ question.question }}</label>-->
+            <div class="control" id="control_{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+        {% endif %}
+        {% if question.isregion %}
+        <div class="field">
+            <!--<label class="label">{{ question.question }}</label>-->
+            <div class="control" id="control_{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+        {% endif %}
+        {% if question.ispostcode %}
+        <div class="field">
+            <!--<label class="label">{{ question.question }}</label>-->
+            <div class="control" id="control_{{ question.id }}">
+                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+
+      <div class="modal" id="modalPanel">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Unable to Complete Questionnaire</p>
+          </header>
+          <section class="modal-content-body">
+            <p class="modal-card-body" id="conditions">You must be 15 years or greater to use this survey</p>
+          </section>
+          <footer class="modal-card-foot">
+            <button type="button" class="button" onClick="document.getElementById('modalPanel').classList.remove('is-active'); document">Cancel</button>
+          </footer>
+        </div>
+      </div>
+
+    </section>
+    </div>
+
     <div class="step-content is-active">
     <section class="section">
-    <h4 class="title is-4">Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h4>
+    {% for question in questions %}
+        {% if question.istested %}
+            {% if question.isanswer %}
+    <h4 class="title is-4" id="label_{{ question.id }}">Have you been to a medical practitioner or health service to be tested for COVID-19 (coronavirus)?</h4>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
     <script type="text/javascript">
         function istested(id)
         {
-          var value = get_radio_selected_value(id);
+          var value = get_radio_value(id);
           var fields = [];
           {% for question in questions %}
               {% if question.istested %}
@@ -167,43 +341,64 @@
             document.getElementById(fields[i]).className = className;
           }
         }
+
+        function validateTested()
+        {
+          sum = 0;
+    {% for question in questions %}
+        {% if question.istested %}
+            {% if question.isanswer %}
+          sum += check_data_missing("{{ question.id }}");
+          val = get_radio_value("{{ question.id }}");
+            {% endif %}
+            {% if not question.isanswer %}
+          if (val == "1")
+          {
+            sum += check_data_missing("{{ question.id }}");
+          }
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+          return sum;
+        }
+
     </script>
     {% for question in questions %}
         {% if question.istested %}
             {% if question.isanswer %}
        <div class="field">
-            <div class="control">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="istested('{{ question.id }}')">
-                <label class="radio" for="0">No</label>
+            <div class="control" id="control_{{ question.id }}">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')" />
+                <label class="radio" for="{{ question.id }}_0">No</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="istested('{{ question.id }}')">
-                <label class="radio" for="1">Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')" />
+                <label class="radio" for="{{ question.id }}_1">Yes</label>
             </div>
         </div>
             {% else %}
                 {% if question.order == 1 %}
        <div class="is-hidden" id="field_{{ question.id }}">
-            <label class="label">{{ question.question }}</label>
-            <div class="control">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
-                <label class="radio" for="0">Negative</label>
+            <label class="label" id="label_{{ question.id}}">{{ question.question }}</label>
+            <div class="control" id="control_{{ question.id }}">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
+                <label class="radio" for="{{ question.id }}_0">Negative</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
-                <label class="radio" for="1">Positive</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
+                <label class="radio" for="{{ question.id }}_1">Positive</label>
             </div>
         </div>
                 {% else %}
                     {% if question.order == 2 %}
          <div class="is-hidden" id="field_{{ question.id }}">
-            <label>{{ question.question }}</label>
-            <div class="control">
+            <label id="label_{{ question.id }}">{{ question.question }}</label>
+            <div class="control" id="control_{{ question.id }}">
                 <input class="is-size-6 has-text-dark" type="date" name="{{ question.id }}" id="{{ question.id }}" value="">
             </div>
         </div>
                     {% else %}
         <div class="is-hidden" id="field_{{ question.id }}">
-            <label class="label">{{ question.question }}</label>
-            <div class="control">
+            <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+            <div class="control" id="control_{{ question.id }}">
                 <input class="input" type="text" placeholder="Name (and address if known)" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
@@ -213,32 +408,44 @@
         {% endif %}
     {% endfor %}
     </section>
-
     </div>
-    <div class="step-content">
 
+    <div class="step-content">
     <section class="section">
     <h4 class="title is-4">Since this time yesterday, have you had any of the following symptoms?</h4>
+    <script type="text/javascript">
+        function validateSymptoms()
+        {
+          sum = 0;
+    {% for question in questions %}
+        {% if question.isscale %}
+          sum += check_data_missing("{{ question.id }}");
+        {% endif %}
+    {% endfor %}
+          return sum;
+        }
+    </script>
+
     {% for question in questions %}
         {% if question.isscale %}
       <div class="field is-horizontal">
         <div class="field-label is-normal">
-          <label class="label">{{ question.question }}</label>
+          <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
         </div>
         <div class="field-body">
           <div class="field">
             <div class="control has-icon has-icon-right">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
-                <label class="radio" for="0">None</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
+                <label class="radio" for="{{ question.id }}_0">None</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
-                <label class="radio" for="1">Mild</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
+                <label class="radio" for="{{ question.id }}_1">Mild</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2">
-                <label class="radio" for="2">Moderate</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
+                <label class="radio" for="{{ question.id }}_2">Moderate</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="3">
-                <label class="radio" for="3">Severe</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">
+                <label class="radio" for="{{ question.id }}_3">Severe</label>
             </div>
           </div>
         </div>
@@ -260,17 +467,17 @@
         <div class="field-body">
           <div class="field">
             <div class="control has-icon has-icon-right">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
-                <label class="radio" for="0">None</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
+                <label class="radio" for="{{ question.id }}_0">None</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
-                <label class="radio" for="1">Some</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
+                <label class="radio" for="{{ question.id }}_1">Some</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2">
-                <label class="radio" for="2">Moderate</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
+                <label class="radio" for="{{ question.id }}_2">Moderate</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="3">
-                <label class="radio" for="3">Great</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">
+                <label class="radio" for="{{ question.id }}_3">Great</label>
             </div>
           </div>
         </div>
@@ -286,7 +493,7 @@
     <script type="text/javascript">
         function istravel(id)
         {
-          var value = get_radio_selected_value(id);
+          var value = get_radio_value(id);
           var fields = ["field_istravel"];
           {% for question in questions %}
               {% if question.istravel %}
@@ -305,22 +512,21 @@
     {% for question in questions %}
         {% if question.istravel %}
             {% if question.isanswer %}
-        <!-- YesNoUnsure -->
         <div class="field">
-            <div class="control">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" onchange="istravel('{{ question.id }}')">
-                <label class="radio" for="2">Unsure</label>
+            <div class="control" id="control_{{ question.id }}">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="istravel('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_2">Unsure</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="istravel('{{ question.id }}')">
-                <label class="radio" for="1">Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istravel('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_1">Yes</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="istravel('{{ question.id }}')">
-                <label class="radio" for="0">No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istravel('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_0">No</label>
             </div>
         </div>
         <div class="field is-hidden" id="field_istravel">
           <label class="label">Primary destination of travel?</label>
-          <div class="control">
+          <div class="control" id="control_istravel_location">
               <input id="istravel_location" name="istravel_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="istravel_location_json" id="istravel_location_json" />
           </div>
@@ -328,7 +534,7 @@
             {% else %}
         <div class="is-hidden" id="field_{{ question.id}}">
             <!--<label class="label">{{ question.question }}</label>-->
-            <div class="control">
+            <div class="control" id="control_{{ question.id }}">
                 <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
@@ -344,7 +550,7 @@
     <script type="text/javascript">
         function isgathering(id)
         {
-          var value = get_radio_selected_value(id);
+          var value = get_radio_value(id);
           var fields = ["field_isgathering"];
           {% for question in questions %}
               {% if question.isgathering %}
@@ -366,20 +572,20 @@
         {% if question.isanswer %}
         <!-- YesNoUnsure -->
         <div class="field">
-            <div class="control">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" onchange="isgathering('{{ question.id }}')">
-                <label class="radio" for="2">Unsure</label>
+            <div class="control" id="control_{{ question.id }}">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="isgathering('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_2">Unsure</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="isgathering('{{ question.id }}')">
-                <label class="radio" for="1">Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="isgathering('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_1">Yes</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="isgathering('{{ question.id }}')">
-                <label class="radio" for="0">No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="isgathering('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_0">No</label>
             </div>
         </div>
         <div class="field is-hidden" id="field_isgathering">
           <label class="label">Location of gathering ?</label>
-          <div class="control">
+          <div class="control" id="control_isgathering_location">
               <input id="isgathering_location" name="isgathering_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="isgathering_location_json" id="isgathering_location_json" />
           </div>
@@ -387,7 +593,7 @@
             {% else %}
         <div class="field is-hidden" id="field_{{ question.id }}">
             <!--<label class="label">{{ question.question }}</label>-->
-            <div class="control">
+            <div class="control" id="control_{{ question.id }}">
                 <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
@@ -403,7 +609,7 @@
         <script type="text/javascript">
         function iscontact(id)
         {
-          var value = get_radio_selected_value(id);
+          var value = get_radio_value(id);
           var fields = ["field_iscontact"];
           {% for question in questions %}
               {% if question.iscontact%}
@@ -424,20 +630,20 @@
         {% if question.iscontact %}
             {% if question.isanswer %}
         <div class="field">
-            <div class="control">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="2" onchange="iscontact('{{ question.id }}')">
-                <label class="radio" for="2">Unsure</label>
+            <div class="control" id="control_{{ question.id }}">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="iscontact('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_2">Unsure</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1" onchange="iscontact('{{ question.id }}')">
-                <label class="radio" for="1">Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="iscontact('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_1">Yes</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0" onchange="iscontact('{{ question.id }}')">
-                <label class="radio" for="0">No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="iscontact('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_0">No</label>
             </div>
         </div>
         <div class="field is-hidden" id="field_iscontact">
            <label class="label">Location of COVID-19 contact?</label>
-           <div class="control">
+           <div class="control" id="control_iscontact_location">
                <input id="iscontact_location" name="iscontact_location" type="text" class="input" placeholder="Search" />
                <input type="hidden" class="control" name="iscontact_location_json" id="iscontact_location_json" />
            </div>
@@ -445,7 +651,7 @@
            {% else %}
        <div class="field is-hidden" id="field_{{ question.id }}">
            <!--<label class="label">{{ question.question }}</label>-->
-           <div class="control">
+           <div class="control" id="control_{{ question.id }}">
                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
@@ -461,82 +667,12 @@
     {% for question in questions %}
         {% if question.isisolating %}
         <div class="field">
-            <div class="control">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="1">
-                <label class="radio" for="1">Yes</label>
+            <div class="control" id="control_{{ question.id }}">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
+                <label class="radio" for="{{ question.id }}_1">Yes</label>
                 &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}" value="0">
-                <label class="radio" for="0">No</label>
-            </div>
-        </div>
-        {% endif %}
-    {% endfor %}
-    </section>
-    </div>
-
-    <div class="step-content">
-    <section class="section">
-    <h4 class="title is-4">More about you</h4>
-    {% for question in questions %}
-        {% if question.isage %}
-        <!-- Text -->
-        <div class="field">
-            <label class="label">{{ question.question }}</label>
-            <div class="control">
-                <div class="select">
-                    <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="" selected></option>
-                        <option value="<15">&lt; 15</option>
-                        <option value="15-17">15-17</option>
-                        <option value="18-29" >18-29</option>
-                        <option value="30-39">30-39</option>
-                        <option value="40-49">40-49</option>
-                        <option value="50-59">50-59</option>
-                        <option value="60-69">60-69</option>
-                        <option value="70-79">70-79</option>
-                        <option value="80+">80+</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Which town or city do you live in?</label>
-          <div class="control">
-              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json" />
-          </div>
-        </div>
-        {% endif %}
-        {% if question.iscountry %}
-        <div class="field">
-            <!--<label class="label">{{ question.question }}</label>-->
-            <div class="control">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
-            </div>
-        </div>
-        {% endif %}
-        {% if question.istown %}
-        <div class="field">
-            <!--<label class="label">{{ question.question }}</label>-->
-            <div class="control">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
-            </div>
-        </div>
-        {% endif %}
-        {% if question.isregion %}
-        <div class="field">
-            <!--<label class="label">{{ question.question }}</label>-->
-            <div class="control">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
-            </div>
-        </div>
-        {% endif %}
-        {% if question.ispostcode %}
-        <div class="field">
-            <!--<label class="label">{{ question.question }}</label>-->
-            <div class="control">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
+                <label class="radio" for="{{ question.id }}_0">No</label>
             </div>
         </div>
         {% endif %}
@@ -635,7 +771,7 @@
 
   google.maps.event.addDomListener(window, 'load', initialize);
 
-  function initialize() 
+  function initialize()
   {
     // Create bounds from Australia
     var bounds = new google.maps.LatLngBounds(
@@ -643,19 +779,19 @@
       new google.maps.LatLng(-10, 154)
     );
 
-    init_loc(bounds, "istravel", { "locality": "24", "administrative_area_level_1": "52", "country": "25", "postal_code": "23" });
-    init_loc(bounds, "isgathering", { "locality": "29", "administrative_area_level_1": "30", "country": "31", "postal_code": "28" }); 
-    init_loc(bounds, "iscontact", { "locality": "34", "administrative_area_level_1": "35", "country": "36", "postal_code": "33" });
-    init_loc(bounds, "aboutyou", { "locality": "40", "administrative_area_level_1": "41", "country": "39", "postal_code": "42" });
+    init_loc(bounds, "(regions)", "istravel", { "locality": "24", "administrative_area_level_1": "52", "country": "25", "postal_code": "23" });
+    init_loc(bounds, "address", "isgathering", { "locality": "29", "administrative_area_level_1": "30", "country": "31", "postal_code": "28" });
+    init_loc(bounds, "(regions)", "iscontact", { "locality": "34", "administrative_area_level_1": "35", "country": "36", "postal_code": "33" });
+    init_loc(bounds, "(regions)", "aboutyou", { "locality": "40", "administrative_area_level_1": "41", "country": "39", "postal_code": "42" });
   }
 
-  function init_loc(bounds, prefix, ids)
+  function init_loc(bounds, type, prefix, ids)
   {
     // Create a new session token.
     var sessionToken = new google.maps.places.AutocompleteSessionToken();
     var options = {
       bounds: bounds,
-      types: ['(regions)'],
+      types: [type],
       sessionToken: sessionToken
     }
     var input = document.getElementById(prefix + '_location');
@@ -678,7 +814,7 @@
               document.getElementById(id).value = addr[i]["long_name"];
             } catch {
               alert("element type " + types[j] + " with id " + id + " did not exist for prefix=" + prefix);
-            } 
+            }
           }
         }
       }
@@ -687,7 +823,22 @@
 </script>
 
 <script type="text/javascript">
-  bulmaSteps.attach();
+
+  new bulmaSteps(
+    document.querySelectorAll('.steps')[0], {
+      beforeNext: function(id) {
+        error_count = 0
+        if (id == 0) error_count += validateAbout();
+        if (id == 1) error_count += validateTested();
+        if (id == 2) error_count += validateSymptoms();
+        if (error_count > 0)
+        {
+          alert("Please provide input for fields marked red");
+          return ["Please check for missing input"];
+        }
+      }
+    }
+  )
 </script>
 
 <script type="text/javascript">
