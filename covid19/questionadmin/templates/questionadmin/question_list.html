@@ -7,16 +7,13 @@
 
     <title>COVID-19-Hack</title>
 
-    <!-- Use bulma 0.8.0 -->
-    <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
-    <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
+    <!-- bulma 0.8.0 -->
+    <link rel="stylesheet" href="static/css/bulma.min.css" />
 
-    <!-- TODO change this to be distributed with the questionnaire -->
-    <link href="https://astronomy.swin.edu.au/~ajameson/covid19/css/bulma-calendar.min.css" rel="stylesheet">
-    <script src="https://astronomy.swin.edu.au/~ajameson/covid19/js/bulma-calendar.min.js"></script>
+    <!-- bulma calendar -->
 
-    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="static/css/bulma-calendar.min.css" />
+    <script src="static/js/bulma-calendar.min.js"></script>
 
     <script type="text/javascript">
 
@@ -66,7 +63,7 @@
     {% csrf_token %}
 
     <section class="section">
-    <h3 class="title is-3">Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h3>
+    <h4 class="title is-4">Have you been to a medical practitioner OR HEALTH SERVICE and BEEN tested for COVID-19 (CoronaVirus)?</h4>
     <script type="text/javascript">
         function have_been_tested()
         {
@@ -132,7 +129,7 @@
     </section>
 
     <section class="section has-background-warning">
-    <h3 class="title is-3">Since this time yesterday, have you had any of the following symptoms?</h3>
+    <h4 class="title is-4">Since this time yesterday, have you had any of the following symptoms?</h4>
     {% for question in questions %}
         {% if question.isscale %}
         <div class="field">
@@ -156,7 +153,7 @@
     </section>
 
     <section class="section">
-    <h3 class="title is-3">Since this time yesterday, have respiratory of flu-like problems given you difficulty to:</h3>
+    <h4 class="title is-4">Since this time yesterday, have respiratory of flu-like problems given you difficulty to:</h4>
     {% for question in questions %}
         {% if question.isdifficulty %}
         <div class="field">
@@ -180,7 +177,7 @@
     </section>
 
     <section class="section has-background-warning">
-    <h3 class="title is-3">Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h3>
+    <h4 class="title is-4">Did you travel OUTSIDE of your home city/town of residence within the last 14 days?</h4>
     <script type="text/javascript">
         function istravel(id)
         {
@@ -230,7 +227,7 @@
     </section>
 
     <section class="section">
-    <h3 class="title is-3">In the last 14 days have you attended any mass gatherings (more than 500 people) ?</h3>
+    <h4 class="title is-4">In the last 14 days have you attended any mass gatherings (more than 500 people) ?</h4>
     <script type="text/javascript">
         function isgathering(id)
         {
@@ -281,7 +278,7 @@
     </section>
 
     <section class="section has-background-warning">
-    <h3 class="title is-3">Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h3>
+    <h4 class="title is-4">Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h4>
     <script type="text/javascript">
         function iscontact(id)
         {
@@ -332,7 +329,7 @@
     </section>
 
     <section class="section">
-    <h3 class="title is-3">Have you been self-isolating in the last 14 days?</h3>
+    <h4 class="title is-4">Have you been self-isolating in the last 14 days?</h4>
     {% for question in questions %}
         {% if question.isisolating %}
         <!-- YesNo -->
@@ -350,7 +347,7 @@
     </section>
 
     <section class="section has-background-warning">
-    <h3 class="title is-3">More about you</h3>
+    <h4 class="title is-4">More about you</h4>
     {% for question in questions %}
         {% if question.isage %}
         <!-- Text -->
@@ -380,8 +377,7 @@
       <label class="label">What is your location?</label>
       <div class="control">
           <input id="autocomplete_search" name="autocomplete_search" type="text" class="input" placeholder="Search" />
-          <input type="hidden" name="respondent_latitude" id="respondent_latitude">
-          <input type="hidden" name="respondent_longitude" id="respondent_longitude">
+          <input type="hidden" class="control" name="respondent_place" id="respondent_place" />
       </div>
     </div>
 
@@ -440,7 +436,7 @@
     </section>
 
     <section class="section">
-    <h3 class="title is-3">Do you have of the following long-term conditions?</h3>
+    <h4 class="title is-4">Do you have of the following long-term conditions?</h4>
     <div class="field">
     {% for question in questions %}
         {% if question.islongterm %}
@@ -490,6 +486,13 @@
 
 </body>
 
+<!-- bulma calendars -->
+<script type="text/javascript">
+  // Initialize all input of type date
+  var calendar_options = [];
+  var calendars = bulmaCalendar.attach('[type="date"]', calendar_options);
+</script>
+
 <!-- Google Places API -->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr9vma0ZPVFLmkOESuqK4tHNrfwtnyVaM&libraries=places"></script>
 
@@ -515,12 +518,12 @@
     }
     var input = document.getElementById('autocomplete_search');
     var autocomplete = new google.maps.places.Autocomplete(input, options);
-
+    autocomplete.setFields(["address_components", "geometry"]);
     autocomplete.addListener('place_changed', function () {
     var place = autocomplete.getPlace();
     // place variable will have all the information you are looking for.
-    $('#respondent_latitude').val(place.geometry['location'].lat());
-    $('#respondent_longitude').val(place.geometry['location'].lng());
+    var place_str = JSON.stringify(place, null, 4);
+    document.getElementById('respondent_place').value = place_str;
   });
   }
 </script>
