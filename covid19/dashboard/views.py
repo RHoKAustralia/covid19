@@ -36,3 +36,16 @@ class AnswerListView(generic.ListView):
     model = Answer
     template_name = 'dashboard_table.html'
 
+
+class AnswerListView2(generic.ListView):
+    template_name = 'dashboard_table.html'
+
+    def get_queryset(self):
+        from django.db.models import F
+        first = F('participant__firstName')
+        last = F('participant__lastName')
+        # this won't work because of the bug in the models:
+        #date = F('answerset__dateAnswered')
+        query_set = Answer.objects.select_related('participant',
+                'answerset').values(first=first, last=last)
+        # , date=date)

@@ -137,7 +137,7 @@ class Answer(models.Model):
     question = models.ForeignKey('Question', models.DO_NOTHING)
     participant = models.ForeignKey('Participant', models.DO_NOTHING)
     # This on is trouble
-    answerset = models.ForeignKey('Location', models.DO_NOTHING, null=True)
+    answerset = models.ForeignKey('AnswerSet', models.DO_NOTHING, null=True)
     scale_Answer = models.IntegerField(null=True)
     dateAnswered = models.DateTimeField(null=True)
     dateFrom = models.DateTimeField(null=True)
