@@ -347,7 +347,6 @@
           </div>
         </div>
         {% endif %}
-
     {% endif %}
 
     {% if question.iscountry %}
@@ -1017,8 +1016,13 @@
 {% endif %}
 </div>
 
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>This website has been developed by a team of public health and IT researchers, and staff at <a href="https://www.swinburne.edu.au/" target="_blank" class="has-text-dark has-text-weight-bold">Swinburne University of Technology</a>, Australia. This will help determine the current and emerging COVID-19 symptoms of people across the world.  This will help you improve your understanding of your health, follow changes and help us to advise health authorities about what’s going on from the community’s perspective.</p>
+        <img src="/static/swinburne-logo-horizontal-large.gif" width="100"/>
+    </div>
+</footer>
 </body>
-
 <!-- bulma calendars -->
 <script type="text/javascript">
   var today = new Date();
@@ -1033,10 +1037,9 @@
   calendar_options["maxDate"] = today_str;
   var calendars = bulmaCalendar.attach('[type="date"]', calendar_options);
 </script>
-
-<!-- Google Places API -->
+<!-- Google Places API-->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr9vma0ZPVFLmkOESuqK4tHNrfwtnyVaM&libraries=places"></script>
-
+<!-- Google Places Configuration-->
 <script>
 
   google.maps.event.addDomListener(window, 'load', initialize);
@@ -1092,7 +1095,6 @@
     });
   }
 </script>
-
 <script type="text/javascript">
 
   new bulmaSteps(
@@ -1116,18 +1118,19 @@
     }
   )
 </script>
-
 <script type="text/javascript">
-  var uid = getCookie("uid");
+  var uid = ""
+{% if tracked %}
+  uid = getCookie("uid");
   if (uid == "") {
     uid = chr4() + chr4() +
           '-' + chr4() +
           '-' + chr4() +
           '-' + chr4() +
           '-' + chr4() + chr4() + chr4();
- }
+   }
+   setCookie("uid", uid, 365);
+{% endif %}
  document.getElementById("uid").value = uid;
- setCookie("uid", uid, 365);
 </script>
-
 </html>
