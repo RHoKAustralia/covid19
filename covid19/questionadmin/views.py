@@ -370,8 +370,9 @@ class QuestionnaireView(generic.FormView):
     def findTrackingKey(request):
         value = None
         for field in request.POST.keys():
-            if str(field)=="trackingKey":
+            if str(field)=="uid":
                 value = request.POST[field]
+        print("UID="+str(value))
         return value
 
     def findCountry(request):
@@ -439,7 +440,13 @@ class QuestionnaireView(generic.FormView):
                 age = AgeRanges.objects.all().first()
             trackingKey = QuestionnaireView.findTrackingKey(request) # still need to pass it
             participantlocation = ParticipantLocation.objects.all().first() # any participant location
-            participant = Participant(firstName=firstName,lastName=lastName,location=participantlocation,age=age, trackingKey=trackingKey)
+            participant = None
+            if trackingKey:
+                print("UID PASSED="+str(trackingKey))
+                participant = Participant.objects.filter(trackingKey=trackingKey).first()
+            if not participant:
+                print("Create New Participant="+str(trackingKey))
+                participant = Participant(firstName=firstName,lastName=lastName,location=participantlocation,age=age, trackingKey=trackingKey)
             participant.save()
             answerset = AnswerSet(participant=participant, dateAnswered=QuestionnaireView.nowUTC())
             answerset.save()
