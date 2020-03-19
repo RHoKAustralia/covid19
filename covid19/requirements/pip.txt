@@ -1,4 +1,5 @@
 Django==2.2.10
+django_countries
 django_tables2
 python-dateutil
 pytz
