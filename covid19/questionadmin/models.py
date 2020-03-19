@@ -11,6 +11,7 @@ class Question(models.Model):
     alias = models.CharField(max_length=50, unique=True, null=True)
     style = models.IntegerField(default=0)
     order = models.IntegerField(default=0)
+    reportorder = models.IntegerField(default=0)
 
     class Meta:
         ordering = ('order', 'questiontype')
@@ -192,6 +193,11 @@ class AgeRanges(models.Model):
     age_ranges = models.TextField()
     def __str__(self):
         return self.age_ranges
+
+class EmploymentStatus(models.Model):
+    status = models.TextField()
+    def __str__(self):
+        return self.status
 
 class Jurisdiction(models.Model):
     name = models.TextField()

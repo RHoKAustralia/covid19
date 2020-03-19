@@ -21,116 +21,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
     <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 
-    <script type="text/javascript">
-
-      function setCookie(cname, cvalue, exdays)
-      {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays*24*60*60*1000));
-        var expires = "expires="+ d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-      }
-
-      function getCookie(cname)
-      {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-          }
-          if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-          }
-        }
-        return "";
-      }
-
-      function chr4()
-      {
-        return Math.random().toString(16).slice(-4);
-      }
-
-      function get_radio_value(name)
-      {
-        var elements = document.getElementsByName(name);
-        var value = "";
-        for (var i = 0; i < elements.length; i++)
-        {
-          if (elements[i].checked)
-          {
-            value = elements[i].value;
-          }
-        }
-        return value;
-      }
-
-      function get_select_value(id)
-      {
-        var ele = document.getElementById(id)
-        return ele.options[ele.selectedIndex].value;
-      }
-
-      function get_input_value(id)
-      {
-        return document.getElementById(id).value
-      }
-
-      function check_data_missing(id)
-      {
-        var eles = document.getElementsByName(id);
-        for (i=0; i<eles.length; i++)
-        {
-          //alert("i=" + i + " name=" + id+ " nodeName=" + eles[i].nodeName + " type=" + eles[i].type);
-          if (eles[i].type == "text")
-            return set_missing_id(id, get_input_value(id));
-          if (eles[i].type == "select-one")
-            return set_missing_id(id, get_select_value(id));
-          if (eles[i].type == "radio")
-            return set_missing_id(id, get_radio_value(id));
-        }
-      }
-
-      function set_missing_name(name, val)
-      {
-        var eles = document.getElementsByName(name)
-        for (i=0; i<eles.length; i++)
-        {
-          if (val == "")
-            eles[i].classList.add("has-background-danger");
-          else
-            eles[i].classList.remove("has-background-danger");
-        }
-        if (val == "")
-          return 1;
-        else
-          return 0;
-      }
-
-      function set_missing_id(id, val)
-      {
-        var e;
-        try {
-          e = document.getElementById("label_" + id); 
-          if (val == "")
-          {
-            document.getElementById("label_" + id).classList.add("has-text-danger");
-            return 1;
-          }
-          else
-          {
-            document.getElementById("label_" + id).classList.remove("has-text-danger");
-            return 0;
-          }
-        } catch {
-          alert("set_missing_id could not find label_" + id);
-          return 1;
-        }
-      }
-
-    </script>
+    <!-- toolkit -->
+    <script src="static/js/covid.js"></script>
 
 </head>
 <body>
@@ -162,54 +54,29 @@
   </div>
   <div class="step-item">
     <div class="step-marker">3</div>
-    <div class="step-details">
-      <p class="step-title"></p>
-    </div>
   </div>
   <div class="step-item">
     <div class="step-marker">4</div>
-    <div class="step-details">
-      <p class="step-title"></p>
-    </div>
   </div>
   <div class="step-item">
     <div class="step-marker">5</div>
-    <div class="step-details">
-      <p class="step-title"></p>
-    </div>
   </div>
   <div class="step-item">
     <div class="step-marker">6</div>
-    <div class="step-details">
-      <p class="step-title"></p>
-    </div>
   </div>
   <div class="step-item">
     <div class="step-marker">7</div>
-    <div class="step-details">
-      <p class="step-title"></p>
-    </div>
   </div>
   <div class="step-item">
     <div class="step-marker">8</div>
-    <div class="step-details">
-      <p class="step-title"></p>
-    </div>
   </div>
   <div class="step-item">
     <div class="step-marker">9</div>
-    <div class="step-details">
-      <p class="step-title"></p>
-    </div>
   </div>
   <div class="step-item">
     <div class="step-marker">10</div>
-    <div class="step-details">
-      <p class="step-title"></p>
-    </div>
   </div>
   <div class="steps-content">
-
     <div class="step-content">
     <section class="section">
     <h4 class="title is-4">Some details about you</h4>
@@ -242,14 +109,11 @@
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Female" value="Female" />
-                <label class="radio" for="{{ question.id }}_Female">Female</label>
+                <label class="radio" for="{{ question.id }}_Female"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Female" value="Female" />&nbsp;Female</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Male" value="Male" />
-                <label class="radio" for="{{ question.id }}_Male">Male</label>
+                <label class="radio" for="{{ question.id }}_Male"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Male" value="Male" />&nbsp;Male</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Other" value="Other" />
-                <label class="radio" for="{{ question.id }}_Other">Other</label>
+                <label class="radio" for="{{ question.id }}_Other"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Other" value="Other" />&nbsp;Other</label>
             </div>
         </div>
         {% endif %}
@@ -278,11 +142,11 @@
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes" value="Yes" />
-                <label class="radio" for="{{ question.id }}_Yes">Yes</label>
+                <label class="radio" for="{{ question.id }}_Yes">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes" value="Yes" />&nbsp;Yes</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No" />
-                <label class="radio" for="{{ question.id }}_No">No</label>
+                <label class="radio" for="{{ question.id }}_No">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No" />&nbsp;No</label>
             </div>
         </div>
         {% endif %}
@@ -347,7 +211,6 @@
           </div>
         </div>
         {% endif %}
-
     {% endif %}
 
     {% if question.iscountry %}
@@ -456,14 +319,11 @@
             {% if question.isanswer %}
        <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')" />
-                <label class="radio" for="{{ question.id }}_1">Yes, I was tested</label>
+                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')" />&nbsp;Yes,&nbsp;I&nbsp;was&nbsp;tested</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="istested('{{ question.id }}')" />
-                <label class="radio" for="{{ question.id }}_2">Yes, but I was not tested</label>
+                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="istested('{{ question.id }}')" />&nbsp;Yes,&nbsp;but&nbsp;I&nbsp;was&nbsp;not&nbsp;tested</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')" />
-                <label class="radio" for="{{ question.id }}_0">No</label>
+                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')" />&nbsp;No</label>
             </div>
         </div>
             {% else %}
@@ -471,14 +331,11 @@
        <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id}}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
-                <label class="radio" for="{{ question.id }}_1">Positive</label>
+                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">&nbsp;Positive</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
-                <label class="radio" for="{{ question.id }}_0">Negative</label>
+                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">&nbsp;Negative</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
-                <label class="radio" for="{{ question.id }}_2">Don't know</label>
+                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">&nbsp;Don't know</label>
             </div>
         </div>
                 {% else %}
@@ -557,14 +414,11 @@
             {% if question.isanswer %}
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="iscontact('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_1">Yes</label>
+                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="iscontact('{{ question.id }}')">&nbsp;Yes</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="iscontact('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_0">No</label>
+                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="iscontact('{{ question.id }}')">&nbsp;No</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="iscontact('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_2">Unsure</label>
+                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="iscontact('{{ question.id }}')">&nbsp;Unsure</label>
             </div>
         </div>
         <div class="field is-hidden" id="field_iscontact">
@@ -640,25 +494,25 @@
         {% if question.isanswer %}
     <h4 class="title is-4" id="label_{{ question.id }}">Have you been in self-isolation in the past 14 days?</h4>
     <div class="content">Self-isolation means staying at home and avoiding contact with other people.</div>
-        <div class="field">
-            <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onChange="isisolating('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_1">Yes</label>
-                <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onChange="isisolating('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_0">No</label>
-                <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onChange="isisolating('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_2">I tried, but it was too difficult.</label>
-            </div>
+    <div class="field">
+        <div class="control" id="control_{{ question.id }}">
+            <label class="radio" for="{{ question.id }}_1">
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onChange="isisolating('{{ question.id }}')">&nbsp;Yes</label>
+            <br/>
+            <label class="radio" for="{{ question.id }}_0">
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onChange="isisolating('{{ question.id }}')">&nbsp;No</label>
+            <br/>
+            <label class="radio" for="{{ question.id }}_2">
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onChange="isisolating('{{ question.id }}')">&nbsp;I&nbsp;tried,&nbsp;but&nbsp;it&nbsp;was&nbsp;too&nbsp;difficult.</label>
         </div>
+    </div>
         {% else %}
-        <div class="field is-hidden" id="field_{{ question.id }}">
-            <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
-            <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="text" placeholder="How self-isolation was too difficult" id="{{ question.id }}" name="{{ question.id }}">
-            </div>
+    <div class="field is-hidden" id="field_{{ question.id }}">
+        <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+        <div class="control" id="control_{{ question.id }}">
+            <input class="input" type="text" placeholder="How self-isolation was too difficult" id="{{ question.id }}" name="{{ question.id }}">
         </div>
+    </div>
         {% endif %}
     {% endif %}
 {% endfor %}
@@ -686,17 +540,10 @@
     <div class="field">
         <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
         <div class="control has-icon has-icon-right">
-            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
-            <label class="radio" for="{{ question.id }}_0">None</label>
-            <br/>
-            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
-            <label class="radio" for="{{ question.id }}_1">Mild</label>
-            <br/>
-            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
-            <label class="radio" for="{{ question.id }}_2">Moderate</label>
-            <br/>
-            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">
-            <label class="radio" for="{{ question.id }}_3">Severe</label>
+            <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">&nbsp;None</label>
+            <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">&nbsp;Mild</label>
+            <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">&nbsp;Moderate</label>
+            <label class="radio" for="{{ question.id }}_3"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">&nbsp;Severe</label>
         </div>
     </div>
         {% endif %}
@@ -721,28 +568,17 @@
     <h4 class="title is-4"><u>Since this time yesterday</u>, have respiratory problems affected your ability to:</h4>
     {% for question in questions %}
         {% if question.isdifficulty %}
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control has-icon has-icon-right">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
-                <label class="radio" for="{{ question.id }}_0">No</label>
-                <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
-                <label class="radio" for="{{ question.id }}_1">Somewhat</label>
-                <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
-                <label class="radio" for="{{ question.id }}_2">Moderately</label>
-                <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">
-                <label class="radio" for="{{ question.id }}_3">Greatly</label>
+    <div class="field">
+        <div class="control" id="control_{{ question.id }}">
+            <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+            <div class="control">
+                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">&nbsp;No</label>
+                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">&nbsp;A&nbsp;bit</label>
+                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">&nbsp;Moderately</label>
+                <label class="radio" for="{{ question.id }}_3"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">&nbsp;Greatly</label>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
         {% endif %}
     {% endfor %}
     </section>
@@ -807,12 +643,9 @@
     <h4 class="title is-4" id="label_{{ question.id }}">Have you undertaken international travel in the past 14 days?</h4>
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes-to" value="Yes-to" onchange="istravel('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_Yes-to">Yes - I travelled <b>to</b> another country</label><br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes-from" value="Yes-from" onchange="istravel('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_Yes-from">Yes - I travelled <b>from</b> another country</label><br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No" onchange="istravel('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_No">No</label>
+                <label class="radio" for="{{ question.id }}_Yes-to"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes-to" value="Yes-to" onchange="istravel('{{ question.id }}')">&nbsp;Yes&nbsp;-&nbsp;I&nbsp;travelled&nbsp;<b>to</b>&nbsp;another&nbsp;country</label><br/>
+                <label class="radio" for="{{ question.id }}_Yes-from"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes-from" value="Yes-from" onchange="istravel('{{ question.id }}')">&nbsp;Yes&nbsp;-&nbsp;I&nbsp;travelled&nbsp;<b>from</b>&nbsp;another&nbsp;country</label><br/>
+                <label class="radio" for="{{ question.id }}_No"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No" onchange="istravel('{{ question.id }}')">&nbsp;No</label>
             </div>
         </div>
         <div class="field is-hidden" id="field_istravel_to">
@@ -897,17 +730,13 @@
         <!-- YesNoUnsure -->
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="isgathering('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_1">Yes, more than 500 people</label>
+                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="isgathering('{{ question.id }}')">&nbsp;Yes,&nbsp;more&nbsp;than&nbsp;500&nbsp;people</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="isgathering('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_2">Yes, 50 to 500 people</label>
+                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="isgathering('{{ question.id }}')">&nbsp;Yes,&nbsp;50&nbsp;to&nbsp;500&nbsp;people</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3" onchange="isgathering('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_3">Yes, 10 to 50 people</label>
+                <label class="radio" for="{{ question.id }}_3"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3" onchange="isgathering('{{ question.id }}')">&nbsp;Yes,&nbsp;10&nbsp;to&nbsp;50&nbsp;people</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="isgathering('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_0">No</label>
+                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="isgathering('{{ question.id }}')">&nbsp;No</label>
             </div>
         </div>
         {% else %}
@@ -1021,8 +850,10 @@
 {% endif %}
 </div>
 
+<div class="content has-text-centered">
+    <br/>
+</div>
 </body>
-
 <!-- bulma calendars -->
 <script type="text/javascript">
   var today = new Date();
@@ -1037,10 +868,9 @@
   calendar_options["maxDate"] = today_str;
   var calendars = bulmaCalendar.attach('[type="date"]', calendar_options);
 </script>
-
-<!-- Google Places API -->
+<!-- Google Places API-->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr9vma0ZPVFLmkOESuqK4tHNrfwtnyVaM&libraries=places"></script>
-
+<!-- Google Places Configuration-->
 <script>
 
   google.maps.event.addDomListener(window, 'load', initialize);
@@ -1096,7 +926,6 @@
     });
   }
 </script>
-
 <script type="text/javascript">
 
   new bulmaSteps(
@@ -1116,22 +945,24 @@
           alert("Please provide input for fields marked red");
           return ["Please check for missing input"];
         }
-      }
+      },
+      onShow: function (id) { window.scrollTo(0, 0); }
     }
   )
 </script>
-
 <script type="text/javascript">
-  var uid = getCookie("uid");
+  var uid = ""
+{% if tracked %}
+  uid = getCookie("uid");
   if (uid == "") {
     uid = chr4() + chr4() +
           '-' + chr4() +
           '-' + chr4() +
           '-' + chr4() +
           '-' + chr4() + chr4() + chr4();
- }
+   }
+   setCookie("uid", uid, 365);
+{% endif %}
  document.getElementById("uid").value = uid;
- setCookie("uid", uid, 365);
 </script>
-
 </html>
