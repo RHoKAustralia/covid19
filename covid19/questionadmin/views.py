@@ -18,6 +18,7 @@ from .models import HealthWarningTrigger
 from .models import HealthWarningMessage
 from .models import AgeRanges
 from .models import Region
+from . import settings
 
     #
 countryList = [
@@ -297,7 +298,7 @@ class IndexView(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super(IndexView,self).get_context_data(**kwargs)
         context["countryList"] = countryList
-        print("return custom context")
+        context["urlprefix"] = settings.PREFIX_URL
         return context
 
 class TrackedView(generic.ListView):

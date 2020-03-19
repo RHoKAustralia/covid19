@@ -25,7 +25,7 @@ SECRET_KEY = '7e!d9l_a_v%psq+u*h16w&i3hon*t7i!j(p3$gyq=47kuf8=3s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["tao.asvo.org.au"]
+ALLOWED_HOSTS = ["tao.asvo.org.au", "localhost"]
 
 
 # Application definition
@@ -140,12 +140,10 @@ USE_TZ = True
 #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #Not working for nginx mapped Docker deplolyment yet
 
-STATIC_URL = '/covid19/static/'
-STATIC_ROOT = '/app/covid19/static'
-FORCE_SCRIPT_NAME = '/covid19'  # without trailing slash
-LOGIN_URL = '/covid19/accounts/login/'
-LOGIN_REDIRECT_URL = '/covid19/accounts/login/'
+STATIC_URL = '/static/'
+STATIC_ROOT = '/Users/rseikel/code/covid19/covid19/static'
+FORCE_SCRIPT_NAME = '/'  # without trailing slash
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/accounts/login/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    "/usr/local/lib/python3.5/dist-packages/django/contrib/admin/static"
 ]

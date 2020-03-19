@@ -149,7 +149,7 @@
 <div class="all">
 
 {% if questions %}
-<form method="post" action="/covid19/saveresponse">
+<form method="post" action="{{ PREFIX_URL }}/saveresponse">
     {% csrf_token %}
 <br/>
 <div class="steps" id="stepsDemo">
