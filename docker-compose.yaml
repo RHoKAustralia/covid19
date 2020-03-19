@@ -11,12 +11,14 @@ services:
     volumes:
       - mysql-persistent-storage:/var/lib/mysql
     ports:
+      # this is a temporary solution to facilitate interacting with the db from the host
       - "3307:3306"
   web:
     build:
       context: ./covid19/
       dockerfile: docker/web.Dockerfile
-    container_name: dg_portal
+    container_name: portal_covid19
+    image: dg_portal:0.1
     volumes:
       - ./covid19/:/app/
     tty: true
@@ -32,10 +34,10 @@ services:
     ports:
       - "8000:80"
     container_name: ng_covid19
+    image: ng_covid:0.1
     depends_on:
       - web
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - ./static:/static
+      - ./covid19/static:/static
 volumes:
   mysql-persistent-storage:
