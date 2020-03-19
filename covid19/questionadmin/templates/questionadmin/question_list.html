@@ -325,7 +325,7 @@
         </div>
 
         <div class="field">
-          <label class="label" id="label_aboutyou_location">Which town or city do you live in?</label>
+          <label class="label" id="label_aboutyou_location">Where are you living now?</label>
           <div class="control" id="control_aboutyou_location">
               <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json" />
@@ -392,7 +392,7 @@
     {% for question in questions %}
         {% if question.istested %}
             {% if question.isanswer %}
-    <h4 class="title is-4" id="label_{{ question.id }}">Have you been to a medical practitioner or health service to be tested for COVID-19 (coronavirus)?</h4>
+    <h4 class="title is-4" id="label_{{ question.id }}">Have you been seen by a medical practitioner or other health service to be tested for COVID-19 (coronavirus)?</h4>
             {% endif %}
         {% endif %}
     {% endfor %}
@@ -463,7 +463,7 @@
                 <label class="radio" for="{{ question.id }}_1">Positive</label>
                 &nbsp;&nbsp;
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
-                <label class="radio" for="{{ question.id }}_1">Don't know</label>
+                <label class="radio" for="{{ question.id }}_2">Don't know</label>
             </div>
         </div>
                 {% else %}
@@ -494,7 +494,7 @@
 {% for question in questions %}
     {% if question.iscontact%}
         {% if question.isanswer %}
-    <h4 class="title is-4" id="label_{{ question.id }}">Have you been in contact with anyone confirmed to have COVID-19 in the last 14 days?</h4>
+    <h4 class="title is-4" id="label_{{ question.id }}">Have you been in contact with anyone confirmed to have COVID-19 in the past 14 days?</h4>
         {% endif %}
     {% endif %}
 {% endfor %}
@@ -589,7 +589,8 @@
 
 {% for question in questions %}
     {% if question.isisolating %}
-    <h4 class="title is-4" id="label_{{ question.id }}">Have you been self-isolating in the last 14 days?</h4>
+    <h4 class="title is-4" id="label_{{ question.id }}">Have you been in self-isolation in the past 14 days?</h4>
+    <div class="content">Self-isolation means staying at home and avoiding contact with other people.</div>
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
@@ -597,6 +598,9 @@
                 &nbsp;&nbsp;
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
                 <label class="radio" for="{{ question.id }}_0">No</label>
+                &nbsp;&nbsp;
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="0">
+                <label class="radio" for="{{ question.id }}_2">I tried, but it was too difficult.</label>
             </div>
         </div>
     {% endif %}
@@ -606,7 +610,7 @@
 
     <div class="step-content">
     <section class="section">
-    <h4 class="title is-4">Since this time yesterday, because of respiratory problems, have you had the following symptoms?</h4>
+    <h4 class="title is-4"><u>Since this time yesterday</u>, because of respiratory problems, have you had the following symptoms?</h4>
     <script type="text/javascript">
         function validateSymptoms()
         {
