@@ -4,6 +4,8 @@ from django.views.generic.edit import FormView
 from .forms import ScaleForm
 from .forms import QuestionnaireForm
 from datetime import datetime
+import pytz
+from pytz import timezone
 
 from .models import Question
 from .models import Location
@@ -337,9 +339,25 @@ class QuestionnaireView(generic.FormView):
             value = -1
         return value
 
+    def asdate(valuestr):
+        from dateutil import parser
+        # ds = '2012-03-01T10:00:00Z' # or any date sting of differing formats.
+        try:
+            value = parser.parse(valuestr)
+        except:
+            value = None
+        return value
+
+    def astext(valuestr):
+        value = valuestr
+        return value
+
+    def nowUTC():
+        return datetime.now(timezone('UTC'))
+
     def findAgeRange(request):
         # Foreign key
-        expected_question = Question.objects.filter(questiontype__type="Age").first() # the AgeRange question
+        expected_question = Question.objects.filter(questiontype__alias="Age").first() # the AgeRange question
         user_reponse = request.POST[str(expected_question.id)] # the users response value
         value = AgeRanges.objects.filter(age_ranges=user_reponse).first()
         if not value:
@@ -349,7 +367,11 @@ class QuestionnaireView(generic.FormView):
         return value
 
     def findTrackingKey(request):
-        return "XYZZY"
+        value = None
+        for field in request.POST.keys():
+            if str(field)=="trackingKey":
+                value = request.POST[field]
+        return value
 
     def findCountry(request):
         # Foreign key
@@ -421,18 +443,31 @@ class QuestionnaireView(generic.FormView):
             participantlocation = ParticipantLocation.objects.all().first() # any participant location
             participant = Participant(firstName=firstName,lastName=lastName,location=participantlocation,age=age, trackingKey=trackingKey)
             participant.save()
-            answerset = AnswerSet(participant=participant, dateAnswered=datetime.now())
+            answerset = AnswerSet(participant=participant, dateAnswered=QuestionnaireView.nowUTC())
             answerset.save()
             for field in request.POST.keys():
                 print(".field="+str(field))
                 if field!="csrfmiddlewaretoken" and is_number(field):
                     #print(str(Question.objects.filter(id=field))+"="+str(request.POST[field]))
                     question = Question.objects.filter(id=field).first()
-                    scale_Answer = QuestionnaireView.asint(request.POST[field])
-                    answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=datetime.now(),
-                                    answerset=answerset)
+                    if question.style == 0:
+                        # scale
+                        scale_Answer = QuestionnaireView.asint(request.POST[field])
+                        answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=QuestionnaireView.nowUTC(),
+                                        answerset=answerset)
+                        myset[question.id] = scale_Answer
+                    if question.style == 1:
+                        # datetime
+                        date_Answer = QuestionnaireView.asdate(request.POST[field])
+                        answer = Answer(participant=participant,question=question, dateFrom=date_Answer,dateAnswered=QuestionnaireView.nowUTC(),
+                                        answerset=answerset)
+                    if question.style == 2:
+                        # text
+                        text_Answer = QuestionnaireView.astext(request.POST[field])
+                        answer = Answer(participant=participant,question=question, freeform_text=text_Answer,dateAnswered=QuestionnaireView.nowUTC(),
+                                        answerset=answerset)
+                        
                     answer.save()
-                    myset[question.id] = scale_Answer
         else:
             print("its a get")
             form = QuestionnaireForm()

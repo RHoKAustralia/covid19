@@ -61,12 +61,45 @@ class AnswerListView2(generic.ListView):
         # , date=date)
         return query_set
 
+def infofor(request):
+    now = datetime.datetime.now()
+    html = "<html><body>It is now %s.</body></html>" % now
+    return HttpResponse(html)
+from django.template.defaulttags import register
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 class ParticipantView(generic.ListView):
     template_name = "dashboard_participant.html"
     context_object_name = 'participants'
     def get_queryset(self):
-        return Participant.objects.filter(trackingKey="XYZZY")
+        return Participant.objects.filter(trackingKey="TMJFBG")
 
     def get_context_data(self,**kwargs):
         context = super(ParticipantView,self).get_context_data(**kwargs)
+        if context.request.method == 'POST':
+            return
+        if context.request.method == 'GET':
+            print("for "+str(context.request.GET["trackerKey"]))
+        participant = self.get_queryset().first()
+        answersets = AnswerSet.objects.filter(participant=participant)
+        context['answerset'] = answersets.first()
+        print("Participant with trackingKey="+participant.trackingKey)
+        answers = {}
+        for a in answersets:
+            print("AnswerSet ID="+str(a.id)+" on "+str(a.dateAnswered))
+            for answer in Answer.objects.filter(answerset=a.id):
+                question = answer.question
+                message = ""
+                if question.style == 0:
+                    message += (" "+str(question)+"="+str(answer.scale_Answer))
+                if question.style == 1:
+                    message += (" "+str(question)+"="+str(answer.dateFrom))
+                if question.style == 2:
+                    message += (" "+str(question)+"="+str(answer.freeform_text))
+                #answers[str(question.id)] = message
+                answers[message] = message
+        print("ANSWERS "+str(answers))
+        context['answersetsdata'] = answers
+        
         return context
