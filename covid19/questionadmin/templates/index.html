@@ -22,6 +22,9 @@
         gtag('config', 'UA-153695048-2');
     </script>
 
+    <!-- covid toolkit -->
+    <script src="static/js/covid.js"></script>
+
 </head>
 <body>
 <section class="hero is-dark">
@@ -87,7 +90,7 @@
   </div>
   <div class="message-body">
     <div class="content">We are using anonymous data from cookies to ensure that multiple responses from the same person can be easily matched. This feature is only used if you select the Tracker Survey, if you do not wish to participate, simply use Anonymous Survey link and no cookies will be used.</div>
-    <button class="button is-success" type="button" onClick="document.getElementById('cookie_message').classList.add('is-hidden');">I Understand</button>
+    <button class="button is-success" type="button" onClick="setCookie('ack', 'yes', 365); document.getElementById('cookie_message').classList.add('is-hidden');">I Understand</button>
   </div>
 </article>
 
@@ -100,4 +103,13 @@
 
 <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 </body>
+
+<script type="text/javascript">
+  var ack = getCookie("ack");
+  if (ack == "yes")
+  {
+    document.getElementById("cookie_message").classList.add("is-hidden");
+  }
+  
+</script>
 </html>
