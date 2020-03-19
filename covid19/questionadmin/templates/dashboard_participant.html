@@ -9,13 +9,12 @@
 
 </head>
 <body>
-{% for participant in participants %}
-<h3>Participant with TrackingKey={{participant.trackingKey}}</h3>
-<h4>Location={{participant.location}}</h4>
-<h4>Age Range={{participant.age}}</h4>
-{% for answer in answersetsdata %}
-<div>{{ answer }}</div>
-{% endfor %}
+{% for message in messages %}
+{% if single %}
+<div>{{message|get_item:message}}</div>
+{% else %}
+<div><a href="{{ message }}">{{message|get_item:message}}</a></div>
+{% endif %}
 {% endfor %}
 </body>
 </html>

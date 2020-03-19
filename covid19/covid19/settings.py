@@ -25,7 +25,7 @@ SECRET_KEY = '7e!d9l_a_v%psq+u*h16w&i3hon*t7i!j(p3$gyq=47kuf8=3s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["tao.asvo.org.au", "localhost"]
 
 
 # Application definition
@@ -121,6 +121,7 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
+<<<<<<< HEAD
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
@@ -129,4 +130,3 @@ LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/accounts/login/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-]

@@ -22,6 +22,9 @@
         gtag('config', 'UA-153695048-2');
     </script>
 
+    <!-- covid toolkit -->
+    <script src="static/js/covid.js"></script>
+
 </head>
 <body>
 <section class="hero is-dark">
@@ -49,13 +52,13 @@
     <div class="container is-fluid">
         <div class="columns">
             <div class="column is-6">
-                <a class="button is-medium is-fullwidth is-warning has-text-weight-bold" href="/covid19/questionnaire">
+                <a class="button is-medium is-fullwidth is-warning has-text-weight-bold" href="{{ urlprefix }}/questionnaire">
                     Anonymous Survey
                 </a>
                 <p class="is-size-6 has-text-centered">One-time symptom checker</p>
             </div>
             <div class="column is-6">
-                <a class="button is-medium is-fullwidth is-warning has-text-weight-bold" href="/covid19/monitor">
+                <a class="button is-medium is-fullwidth is-warning has-text-weight-bold" href="{{ urlprefix }}/monitor">
                     Tracker Survey
                 </a>
                 <p class="is-size-6 has-text-centered">Follow your symptoms over time (recommended)</p>
@@ -80,6 +83,17 @@
     <div class="column"></div>
 </div>
 
+<article class="message is-info" id="cookie_message">
+  <div class="message-header">
+    <p>Cookies Notice</p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body">
+    <div class="content">We are using anonymous data from cookies to ensure that multiple responses from the same person can be easily matched. This feature is only used if you select the Tracker Survey, if you do not wish to participate, simply use Anonymous Survey link and no cookies will be used.</div>
+    <button class="button is-success" type="button" onClick="setCookie('ack', 'yes', 365); document.getElementById('cookie_message').classList.add('is-hidden');">I Understand</button>
+  </div>
+</article>
+
 <footer class="footer">
     <div class="content has-text-centered">
         <p>This website has been developed by a team of public health and IT researchers, and staff at <a href="https://www.swinburne.edu.au/" target="_blank" class="has-text-dark has-text-weight-bold">Swinburne University of Technology</a>, Australia. This will help determine the current and emerging COVID-19 symptoms of people across the world.  This will help you improve your understanding of your health, follow changes and help us to advise health authorities about  what’s going on from the community’s perspective.</p>
@@ -89,4 +103,13 @@
 
 <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 </body>
+
+<script type="text/javascript">
+  var ack = getCookie("ack");
+  if (ack == "yes")
+  {
+    document.getElementById("cookie_message").classList.add("is-hidden");
+  }
+  
+</script>
 </html>
