@@ -291,7 +291,7 @@
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="text" placeholder="Language spoken at home" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
         {% endif %}
@@ -340,7 +340,7 @@
         </div>
 
         <div class="field">
-          <label class="label" id="label_aboutyou_location">What town or city do you live in?</label>
+          <label class="label" id="label_aboutyou_location">Which town or city are you in now?</label>
           <div class="control" id="control_aboutyou_location">
               <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json" />
@@ -483,7 +483,7 @@
         </div>
                 {% else %}
                     {% if question.order == 2 %}
-         <div class="is-hidden" id="field_{{ question.id }}">
+        <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
                 <input class="is-size-6 has-text-dark" type="date" name="{{ question.id }}" id="{{ question.id }}" value="">
@@ -493,7 +493,7 @@
         <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="text" placeholder="Name of hospital, clinic or other health service" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="text" placeholder="Hospital, clinic or other health service" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
                     {% endif %}
@@ -568,7 +568,7 @@
             </div>
         </div>
         <div class="field is-hidden" id="field_iscontact">
-           <label class="label" id="label_iscontact_location">Location of COVID-19 contact?</label>
+           <label class="label" id="label_iscontact_location">Which town or city did the interaction occur in?</label>
            <div class="control" id="control_iscontact_location">
                <input id="iscontact_location" name="iscontact_location" type="text" class="input" placeholder="Search" />
                <input type="hidden" class="control" name="iscontact_location_json" id="iscontact_location_json" />
@@ -590,34 +590,76 @@
     <div class="step-content">
     <section class="section">
     <script type="text/javascript">
+        function isisolating(id)
+        {
+          var value = get_radio_value(id);
+          var fields = [];
+{% for question in questions %}
+    {% if question.isisolating %}
+        {% if not question.isanswer %}
+          fields.push("field_{{ question.id }}");
+        {% endif %}
+    {% endif %}
+{% endfor %}
+          var className = (value == "2") ? "field" : "is-hidden";
+          for (i=0; i<fields.length; i++)
+          {
+            document.getElementById(fields[i]).className = className;
+          }
+        }
+
         function validateIsolating()
         {
           sum = 0;
+
+
 {% for question in questions %}
-    {% if question.isisolating%}
+    {% if question.isisolating %}
+        {% if question.isanswer %}
           sum += check_data_missing("{{ question.id }}");
+          val = get_radio_value("{{ question.id }}");
+        {% endif %}
     {% endif %}
 {% endfor %}
+          if (val == "1")
+          {
+{% for question in questions %}
+    {% if question.isisolating %}
+        {% if not question.isanswer %}
+            sum += check_data_missing("{{ question.id }}");
+        {% endif %}
+    {% endif %}
+{% endfor %}
+          }
           return sum;
         }
     </script>
 
 {% for question in questions %}
     {% if question.isisolating %}
+        {% if question.order == 0 %}
     <h4 class="title is-4" id="label_{{ question.id }}">Have you been in self-isolation in the past 14 days?</h4>
     <div class="content">Self-isolation means staying at home and avoiding contact with other people.</div>
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onChange="isisolating('{{ question.id }}')">
                 <label class="radio" for="{{ question.id }}_1">Yes</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onChange="isisolating('{{ question.id }}')">
                 <label class="radio" for="{{ question.id }}_0">No</label>
                 <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="0">
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onChange="isisolating('{{ question.id }}')">
                 <label class="radio" for="{{ question.id }}_2">I tried, but it was too difficult.</label>
             </div>
         </div>
+        {% else %}
+        <div class="field">
+            <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+            <div class="control" id="control_{{ question.id }}">
+                <input class="input" type="text" placeholder="How self-isolation was too difficult" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+        {% endif %}
     {% endif %}
 {% endfor %}
     </section>
@@ -774,14 +816,14 @@
             </div>
         </div>
         <div class="field is-hidden" id="field_istravel_to">
-          <label class="label" id="label_istravel_to_location">What city did you travel to?</label>
+          <label class="label" id="label_istravel_to_location">Which city did you travel to?</label>
           <div class="control" id="control_istravel_to_location">
               <input id="istravel_to_location" name="istravel_to_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="istravel_to_location_json" id="istravel_to_location_json" />
           </div>
         </div>
         <div class="field is-hidden" id="field_istravel_from">
-          <label class="label" id="label_istravel_from_location">What city did you travel from?</label>
+          <label class="label" id="label_istravel_from_location">Which city did you travel from?</label>
           <div class="control" id="control_istravel_from_location">
               <input id="istravel_from_location" name="istravel_from_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="istravel_from_location_json" id="istravel_from_location_json" />
