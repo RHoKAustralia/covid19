@@ -244,10 +244,10 @@
             <div class="control" id="control_{{ question.id }}">
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Female" value="Female" />
                 <label class="radio" for="{{ question.id }}_Female">Female</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Male" value="Male" />
                 <label class="radio" for="{{ question.id }}_Male">Male</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Other" value="Other" />
                 <label class="radio" for="{{ question.id }}_Other">Other</label>
             </div>
@@ -280,7 +280,7 @@
             <div class="control" id="control_{{ question.id }}">
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes" value="Yes" />
                 <label class="radio" for="{{ question.id }}_Yes">Yes</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No" />
                 <label class="radio" for="{{ question.id }}_No">No</label>
             </div>
@@ -320,12 +320,27 @@
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="text" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <div class="select">
+                    <select id="{{ question.id }}" name="{{ question.id }}">
+                        <option value="" selected></option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10+">10+</option>
+                    </select>
+                </div>
             </div>
         </div>
 
         <div class="field">
-          <label class="label" id="label_aboutyou_location">Where are you living now?</label>
+          <label class="label" id="label_aboutyou_location">What suburb are you living in now ?</label>
           <div class="control" id="control_aboutyou_location">
               <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json" />
@@ -441,14 +456,14 @@
             {% if question.isanswer %}
        <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')" />
-                <label class="radio" for="{{ question.id }}_0">No</label>
-                &nbsp;&nbsp;
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')" />
                 <label class="radio" for="{{ question.id }}_1">Yes, I was tested</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="istested('{{ question.id }}')" />
                 <label class="radio" for="{{ question.id }}_2">Yes, but I was not tested</label>
+                <br/>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')" />
+                <label class="radio" for="{{ question.id }}_0">No</label>
             </div>
         </div>
             {% else %}
@@ -456,12 +471,12 @@
        <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id}}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
-                <label class="radio" for="{{ question.id }}_0">Negative</label>
-                &nbsp;&nbsp;
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
                 <label class="radio" for="{{ question.id }}_1">Positive</label>
-                &nbsp;&nbsp;
+                <br/>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
+                <label class="radio" for="{{ question.id }}_0">Negative</label>
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
                 <label class="radio" for="{{ question.id }}_2">Don't know</label>
             </div>
@@ -542,14 +557,14 @@
             {% if question.isanswer %}
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="iscontact('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_2">Unsure</label>
-                &nbsp;&nbsp;
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="iscontact('{{ question.id }}')">
                 <label class="radio" for="{{ question.id }}_1">Yes</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="iscontact('{{ question.id }}')">
                 <label class="radio" for="{{ question.id }}_0">No</label>
+                <br/>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="iscontact('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_2">Unsure</label>
             </div>
         </div>
         <div class="field is-hidden" id="field_iscontact">
@@ -595,10 +610,10 @@
             <div class="control" id="control_{{ question.id }}">
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
                 <label class="radio" for="{{ question.id }}_1">Yes</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
                 <label class="radio" for="{{ question.id }}_0">No</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="0">
                 <label class="radio" for="{{ question.id }}_2">I tried, but it was too difficult.</label>
             </div>
@@ -626,28 +641,22 @@
 
     {% for question in questions %}
         {% if question.isscale %}
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+    <div class="field">
+        <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+        <div class="control has-icon has-icon-right">
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
+            <label class="radio" for="{{ question.id }}_0">None</label>
+            <br/>
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
+            <label class="radio" for="{{ question.id }}_1">Mild</label>
+            <br/>
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
+            <label class="radio" for="{{ question.id }}_2">Moderate</label>
+            <br/>
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">
+            <label class="radio" for="{{ question.id }}_3">Severe</label>
         </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control has-icon has-icon-right">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
-                <label class="radio" for="{{ question.id }}_0">None</label>
-                &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
-                <label class="radio" for="{{ question.id }}_1">Mild</label>
-                &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
-                <label class="radio" for="{{ question.id }}_2">Moderate</label>
-                &nbsp;&nbsp;
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">
-                <label class="radio" for="{{ question.id }}_3">Severe</label>
-            </div>
-          </div>
-        </div>
-      </div>
+    </div>
         {% endif %}
     {% endfor %}
     </section>
@@ -667,7 +676,7 @@
           return sum;
         }
     </script>
-    <h4 class="title is-4">Since this time yesterday, have respiratory problems affected your ability to:</h4>
+    <h4 class="title is-4"><u>Since this time yesterday</u>, have respiratory problems affected your ability to:</h4>
     {% for question in questions %}
         {% if question.isdifficulty %}
       <div class="field is-horizontal">
@@ -679,13 +688,13 @@
             <div class="control has-icon has-icon-right">
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
                 <label class="radio" for="{{ question.id }}_0">No</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">
                 <label class="radio" for="{{ question.id }}_1">Somewhat</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">
                 <label class="radio" for="{{ question.id }}_2">Moderately</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">
                 <label class="radio" for="{{ question.id }}_3">Greatly</label>
             </div>
@@ -765,14 +774,14 @@
             </div>
         </div>
         <div class="field is-hidden" id="field_istravel_to">
-          <label class="label" id="label_istravel_to_location">What city and country did you travel to?</label>
+          <label class="label" id="label_istravel_to_location">What city did you travel to?</label>
           <div class="control" id="control_istravel_to_location">
               <input id="istravel_to_location" name="istravel_to_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="istravel_to_location_json" id="istravel_to_location_json" />
           </div>
         </div>
         <div class="field is-hidden" id="field_istravel_from">
-          <label class="label" id="label_istravel_from_location">What city and country did you travel from?</label>
+          <label class="label" id="label_istravel_from_location">What city did you travel from?</label>
           <div class="control" id="control_istravel_from_location">
               <input id="istravel_from_location" name="istravel_from_location" type="text" class="input" placeholder="Search" />
               <input type="hidden" class="control" name="istravel_from_location_json" id="istravel_from_location_json" />
@@ -846,17 +855,17 @@
         <!-- YesNoUnsure -->
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="isgathering('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_0">No</label>
-                &nbsp;&nbsp;
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="isgathering('{{ question.id }}')">
                 <label class="radio" for="{{ question.id }}_1">Yes, more than 500 people</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="isgathering('{{ question.id }}')">
                 <label class="radio" for="{{ question.id }}_2">Yes, 50 to 500 people</label>
-                &nbsp;&nbsp;
+                <br/>
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3" onchange="isgathering('{{ question.id }}')">
                 <label class="radio" for="{{ question.id }}_3">Yes, 10 to 50 people</label>
+                <br/>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="isgathering('{{ question.id }}')">
+                <label class="radio" for="{{ question.id }}_0">No</label>
             </div>
         </div>
         {% else %}
