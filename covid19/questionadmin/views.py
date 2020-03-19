@@ -470,6 +470,8 @@ class QuestionnaireView(generic.FormView):
                 print("UID PASSED="+str(trackingKey))
                 participant = Participant.objects.filter(trackingKey=trackingKey).first()
             if not participant:
+                if len(str(trackingKey))==0:
+                    trackingKey=Participant.generateTrackingKey(request)
                 print("Create New Participant="+str(trackingKey))
                 participant = Participant(firstName=firstName,lastName=lastName,location=participantlocation,age=age, trackingKey=trackingKey)
             participant.save()
