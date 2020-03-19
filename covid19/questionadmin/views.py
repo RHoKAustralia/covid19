@@ -310,6 +310,7 @@ class TrackedView(generic.ListView):
         context = super(TrackedView,self).get_context_data(**kwargs)
         context["countryList"] = countryList
         context["generatedKey"] = Participant.generateTrackingKey(self.request)
+        context["tracked"] = True
         print("return custom context")
         return context
 
