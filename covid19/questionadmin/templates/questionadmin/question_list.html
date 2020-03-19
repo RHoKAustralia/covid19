@@ -621,7 +621,7 @@
         {% endif %}
     {% endif %}
 {% endfor %}
-          if (val == "1")
+          if (val == "2")
           {
 {% for question in questions %}
     {% if question.isisolating %}
@@ -637,7 +637,7 @@
 
 {% for question in questions %}
     {% if question.isisolating %}
-        {% if question.order == 0 %}
+        {% if question.isanswer %}
     <h4 class="title is-4" id="label_{{ question.id }}">Have you been in self-isolation in the past 14 days?</h4>
     <div class="content">Self-isolation means staying at home and avoiding contact with other people.</div>
         <div class="field">
@@ -653,7 +653,7 @@
             </div>
         </div>
         {% else %}
-        <div class="field">
+        <div class="field is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
                 <input class="input" type="text" placeholder="How self-isolation was too difficult" id="{{ question.id }}" name="{{ question.id }}">
