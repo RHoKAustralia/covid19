@@ -77,10 +77,8 @@ class ParticipantView(generic.ListView):
 
     def get_context_data(self,**kwargs):
         context = super(ParticipantView,self).get_context_data(**kwargs)
-        if context.request.method == 'POST':
-            return
-        if context.request.method == 'GET':
-            print("for "+str(context.request.GET["trackerKey"]))
+        Question.objects.filter(question__alias="age")
+        Question.objects.filter(questiontype__type="AboutYou")
         participant = self.get_queryset().first()
         answersets = AnswerSet.objects.filter(participant=participant)
         context['answerset'] = answersets.first()
