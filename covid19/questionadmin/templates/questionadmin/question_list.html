@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -80,7 +80,7 @@
     <div class="step-content">
     <section class="section">
     <h4 class="title is-4">Some details about you</h4>
-    <script type="text/javascript">
+    <script> 
       function checkAge(id)
       {
         var ele = document.getElementById(id);
@@ -124,7 +124,7 @@
             <div class="control" id="control_{{ question.id }}">
                 <div class="select">
                     <select id="{{ question.id }}" name="{{ question.id }}" onChange="checkAge('{{ question.id }}');">
-                        <option value="" selected></option>
+                        <option value="" selected>--</option>
                         <option value="<15">14 years or less</option>
                         <option value="15-17">15-17</option>
                         <option value="18-25">18-25</option>
@@ -166,7 +166,7 @@
             <div class="control" id="control_{{ question.id }}">
                 <div class="select">
                     <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="" selected></option>
+                        <option value="" selected>--</option>
                         <option value="Full-time work">Full-time work</option>
                         <option value="Part-time work">Part-time work</option>
                         <option value="Casual employee">Casual employee</option>
@@ -186,7 +186,7 @@
             <div class="control" id="control_{{ question.id }}">
                 <div class="select">
                     <select id="{{ question.id }}" name="{{ question.id }}">
-                        <option value="" selected></option>
+                        <option value="" selected>--</option>
                         <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -217,7 +217,7 @@
         <div class="field has-background-danger">
             <!--<label class="label">{{ question.question }}</label>-->
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
     {% endif %}
@@ -225,7 +225,7 @@
         <div class="field">
             <!--<label class="label">{{ question.question }}</label>-->
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
     {% endif %}
@@ -233,7 +233,7 @@
         <div class="field">
             <!--<label class="label">{{ question.question }}</label>-->
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
     {% endif %}
@@ -241,7 +241,7 @@
         <div class="field">
             <!--<label class="label">{{ question.question }}</label>-->
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
     {% endif %}
@@ -274,7 +274,7 @@
             {% endif %}
         {% endif %}
     {% endfor %}
-    <script type="text/javascript">
+    <script>
         function istested(id)
         {
           var value = get_radio_value(id);
@@ -371,7 +371,7 @@
     {% endif %}
 {% endfor %}
 
-        <script type="text/javascript">
+        <script>
         function iscontact(id)
         {
           var value = get_radio_value(id);
@@ -432,7 +432,7 @@
        <div class="field is-hidden" id="field_{{ question.id }}">
            <!--<label class="label">{{ question.question }}</label>-->
            <div class="control" id="control_{{ question.id }}">
-               <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+               <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
             {% endif %}
@@ -443,7 +443,7 @@
 
     <div class="step-content">
     <section class="section">
-    <script type="text/javascript">
+    <script>
         function isisolating(id)
         {
           var value = get_radio_value(id);
@@ -522,7 +522,7 @@
     <div class="step-content">
     <section class="section">
     <h4 class="title is-4"><u>Since this time yesterday</u>, because of respiratory problems, have you had the following symptoms?</h4>
-    <script type="text/javascript">
+    <script>
         function validateSymptoms()
         {
           sum = 0;
@@ -553,7 +553,7 @@
 
     <div class="step-content">
     <section class="section">
-    <script type="text/javascript">
+    <script>
         function validateDifficulty()
         {
           sum = 0;
@@ -586,7 +586,7 @@
 
     <div class="step-content">
     <section class="section">
-    <script type="text/javascript">
+    <script>
         function istravel(id)
         {
           var value = get_radio_value(id);
@@ -666,7 +666,7 @@
         <div class="is-hidden" id="field_{{ question.id}}">
             <!--<label class="label">{{ question.question }}</label>-->
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
             {% endif %}
@@ -677,7 +677,7 @@
 
     <div class="step-content">
     <section class="section">
-    <script type="text/javascript">
+    <script>
         function isgathering(id)
         {
           var value = get_radio_value(id);
@@ -756,7 +756,7 @@
             {% if not question.id == 53 and not question.id == 27 %}
             <!--<label class="label" id="label_{{ question.id }}">{{ question.question }}</label>-->
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="hidden" placeholder="Text input" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
             {% endif %}
         </div>
@@ -855,7 +855,7 @@
 </div>
 </body>
 <!-- bulma calendars -->
-<script type="text/javascript">
+<script>
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -926,7 +926,7 @@
     });
   }
 </script>
-<script type="text/javascript">
+<script>
 
   new bulmaSteps(
     document.querySelectorAll('.steps')[0], {
@@ -950,7 +950,7 @@
     }
   )
 </script>
-<script type="text/javascript">
+<script>
   var uid = ""
 {% if tracked %}
   uid = getCookie("uid");
