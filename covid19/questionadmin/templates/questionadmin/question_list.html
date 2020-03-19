@@ -970,8 +970,16 @@
 
 <!-- bulma calendars -->
 <script type="text/javascript">
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  var today_str = mm + '/' + dd + '/' + yyyy;
   // Initialize all input of type date
   var calendar_options = [];
+  calendar_options["showHeader"] = false;
+  calendar_options["showButtons"] = false;
+  calendar_options["maxDate"] = today_str;
   var calendars = bulmaCalendar.attach('[type="date"]', calendar_options);
 </script>
 
