@@ -4,6 +4,7 @@ from django.views.generic.edit import FormView
 
 from questionadmin.models import Answer
 from questionadmin.models import Question,QuestionType
+from questionadmin.models import Participant,ParticipantLocation,Location,Region,Country,AgeRanges,Country,AnswerSet
 
 # Create your views here.
 class IndexView(generic.ListView):
@@ -32,13 +33,21 @@ class IndexView(generic.ListView):
 
 import django_tables2 as tables
 
-class AnswerListView(generic.ListView):
+class AnswerTable(tables.Table):
+    class Meta:
+        model = Answer
+        template_name = "dashboard_table.html"
+        fields = ("question", "scale_Answer", )
+
+from django_tables2 import SingleTableView
+class AnswerListView(SingleTableView):
     model = Answer
+    table_class = AnswerTable
     template_name = 'dashboard_table.html'
 
 
 class AnswerListView2(generic.ListView):
-    template_name = 'dashboard_table.html'
+    template_name = 'dashboard_table2.html'
 
     def get_queryset(self):
         from django.db.models import F
@@ -48,4 +57,47 @@ class AnswerListView2(generic.ListView):
         #date = F('answerset__dateAnswered')
         query_set = Answer.objects.select_related('participant',
                 'answerset').values(first=first, last=last)
+        print("table2="+str(query_set))
         # , date=date)
+        return query_set
+
+def infofor(request):
+    now = datetime.datetime.now()
+    html = "<html><body>It is now %s.</body></html>" % now
+    return HttpResponse(html)
+from django.template.defaulttags import register
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
+class ParticipantView(generic.ListView):
+    template_name = "dashboard_participant.html"
+    context_object_name = 'participants'
+    def get_queryset(self):
+        return Participant.objects.filter(trackingKey="TMJFBG")
+
+    def get_context_data(self,**kwargs):
+        #for key, value in kwars.items():
+            #print("{} is {}".format(key,value))
+        context = super(ParticipantView,self).get_context_data(**kwargs)
+        participant = self.get_queryset().first()
+        answersets = AnswerSet.objects.filter(participant=participant)
+        context['answerset'] = answersets.first()
+        print("Participant with trackingKey="+participant.trackingKey)
+        answers = {}
+        for a in answersets:
+            print("AnswerSet ID="+str(a.id)+" on "+str(a.dateAnswered))
+            for answer in Answer.objects.filter(answerset=a.id):
+                question = answer.question
+                message = ""
+                if question.style == 0:
+                    message += (" "+str(question)+"="+str(answer.scale_Answer))
+                if question.style == 1:
+                    message += (" "+str(question)+"="+str(answer.dateFrom))
+                if question.style == 2:
+                    message += (" "+str(question)+"="+str(answer.freeform_text))
+                #answers[str(question.id)] = message
+                answers[message] = message
+        print("ANSWERS "+str(answers))
+        context['answersetsdata'] = answers
+        
+        return context

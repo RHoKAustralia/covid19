@@ -4,12 +4,20 @@ from django.views.generic.edit import FormView
 from .forms import ScaleForm
 from .forms import QuestionnaireForm
 from datetime import datetime
+import pytz
+from pytz import timezone
 
 from .models import Question
+from .models import Location
+from .models import Country
+from .models import ParticipantLocation
 from .models import Participant
 from .models import Answer
+from .models import AnswerSet
 from .models import HealthWarningTrigger
 from .models import HealthWarningMessage
+from .models import AgeRanges
+from .models import Region
 
     #
 countryList = [
@@ -264,6 +272,22 @@ countryList = [
 	"Åland Islands"
 ]
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+ 
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+ 
+    return False
+
 class IndexView(generic.ListView):
     context_object_name = 'questions'
     #
@@ -315,30 +339,136 @@ class QuestionnaireView(generic.FormView):
             value = -1
         return value
 
+    def asdate(valuestr):
+        from dateutil import parser
+        # ds = '2012-03-01T10:00:00Z' # or any date sting of differing formats.
+        try:
+            value = parser.parse(valuestr)
+        except:
+            value = None
+        return value
+
+    def astext(valuestr):
+        value = valuestr
+        return value
+
+    def nowUTC():
+        return datetime.now(timezone('UTC'))
+
+    def findAgeRange(request):
+        # Foreign key
+        expected_question = Question.objects.filter(alias="age").first() # the AgeRange question
+        user_reponse = request.POST[str(expected_question.id)] # the users response value
+        value = AgeRanges.objects.filter(age_ranges=user_reponse).first()
+        if not value:
+            value = AgeRanges.objects.all().first()
+            if not value:
+               value = AgeRanges(age_ranges="unknown")
+        return value
+
+    def findTrackingKey(request):
+        value = None
+        for field in request.POST.keys():
+            if str(field)=="trackingKey":
+                value = request.POST[field]
+        return value
+
+    def findCountry(request):
+        # Foreign key
+        expected_question = Question.objects.filter(questiontype__type="Country").first() # the question
+        user_reponse = request.POST[str(expected_question.id)] # the users response value
+        value = Country.objects.filter(country=user_reponse).first()
+        if not value:
+            value = Country.objects.all().first()
+            if not value:
+               value = Country(country="unknown",international_country_code="unkown")
+        return value
+
+    def findPlace(request):
+        # Text
+        expected_question = Question.objects.filter(questiontype__type="Town").first() # the question
+        user_reponse = request.POST[str(expected_question.id)] # the users response value
+        value = user_reponse
+
+    def findPostcode(request):
+        # Text
+        expected_question = Question.objects.filter(questiontype__type="Postcode").first() # the AgeRange question
+        return request.POST[str(expected_question.id)] # the users response value
+
+    def findRegion(request):
+        # Foreign key
+        expected_question = Question.objects.filter(questiontype__type="Country").first() # the question
+        user_reponse = request.POST[str(expected_question.id)] # the users response value
+        value = Region.objects.filter(region=user_reponse).first()
+        if not value:
+            value = Region.objects.all().first()
+            if not value:
+               value = Region(region="unknown",country="unkown")
+        return value
+
     def home(request):
         print("process form")
         myset = {}
         if request.method == 'POST':
-            print("its a post="+str(request.POST))
-            for field in request.POST.keys():
-                if field!="csrfmiddlewaretoken":
-                    print(str(Question.objects.filter(id=field))+"="+request.POST[field])
+            #print("its a post="+str(request.POST))
+            print("AGE RANGE ID"+str(QuestionnaireView.findAgeRange(request)))
             form = QuestionnaireForm(request.POST)
             if form.is_valid():
                 pass  # does nothing, just trigger the validation
             # Add the response to the database!
-            participant = Participant.objects.all()[:1][0]
+            # look for participant
+            # if not found create one with firstName, lastName, [location], [agerange], trackingKey
+            firstName = "anon" # no way to pass it
+            lastName = "anon" # no way to pass it
+            # look for location
+            place = QuestionnaireView.findPlace(request)
+            postcode = QuestionnaireView.findPostcode(request)
+            region = QuestionnaireView.findRegion(request)
+            country = QuestionnaireView.findCountry(request)
+            print("USER LOCATION="+str(place)+" "+str(postcode)+" "+str(region)+" "+str(country))
+            #found_place = Region.filter(region=region)
+            #found_region = Region.filter(region=region)
+            location = Location.objects.filter(country__country=country).filter(region=region).first()
+            print("location="+str(location))
+            # if not found create one with place,postcode,[region],[country]
+             
+            location = Location.objects.all().first() # any location for now
+            age = AgeRanges.objects.filter(age_ranges=QuestionnaireView.findAgeRange(request)).first()
+            if not age:
+                age = AgeRanges.objects.all().first()
+            trackingKey = QuestionnaireView.findTrackingKey(request) # still need to pass it
+            participantlocation = ParticipantLocation.objects.all().first() # any participant location
+            participant = Participant(firstName=firstName,lastName=lastName,location=participantlocation,age=age, trackingKey=trackingKey)
+            participant.save()
+            answerset = AnswerSet(participant=participant, dateAnswered=QuestionnaireView.nowUTC())
+            answerset.save()
             for field in request.POST.keys():
-                if field!="csrfmiddlewaretoken":
-                    print(str(Question.objects.filter(id=field))+"="+request.POST[field])
+                print(".field="+str(field))
+                if field!="csrfmiddlewaretoken" and is_number(field):
+                    #print(str(Question.objects.filter(id=field))+"="+str(request.POST[field]))
                     question = Question.objects.filter(id=field).first()
-                    scale_Answer = QuestionnaireView.asint(request.POST[field])
-                    answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=datetime.now())
+                    if question.style == 0:
+                        # scale
+                        scale_Answer = QuestionnaireView.asint(request.POST[field])
+                        answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=QuestionnaireView.nowUTC(),
+                                        answerset=answerset)
+                        myset[question.id] = scale_Answer
+                    if question.style == 1:
+                        # datetime
+                        date_Answer = QuestionnaireView.asdate(request.POST[field])
+                        answer = Answer(participant=participant,question=question, dateFrom=date_Answer,dateAnswered=QuestionnaireView.nowUTC(),
+                                        answerset=answerset)
+                    if question.style == 2:
+                        # text
+                        text_Answer = QuestionnaireView.astext(request.POST[field])
+                        answer = Answer(participant=participant,question=question, freeform_text=text_Answer,dateAnswered=QuestionnaireView.nowUTC(),
+                                        answerset=answerset)
+                        
                     answer.save()
-                    myset[question.id] = scale_Answer
         else:
             print("its a get")
             form = QuestionnaireForm()
+        print("DONE")
 
         # stub for working out the health warning message
         level = 0
