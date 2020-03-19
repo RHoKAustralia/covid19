@@ -411,11 +411,8 @@ class QuestionnaireView(generic.FormView):
         print("process form")
         myset = {}
         if request.method == 'POST':
-            print("its a post="+str(request.POST))
+            #print("its a post="+str(request.POST))
             print("AGE RANGE ID"+str(QuestionnaireView.findAgeRange(request)))
-            for field in request.POST.keys():
-                if is_number(field):
-                    print(str(Question.objects.filter(id=field))+"="+str(request.POST[field]))
             form = QuestionnaireForm(request.POST)
             if form.is_valid():
                 pass  # does nothing, just trigger the validation
