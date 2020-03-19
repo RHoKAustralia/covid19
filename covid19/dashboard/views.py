@@ -6,6 +6,7 @@ from questionadmin.models import Answer
 from questionadmin.models import Question,QuestionType
 from questionadmin.models import Participant,ParticipantLocation,Location,Region,Country,AgeRanges,Country,AnswerSet
 from questionadmin.models import EmploymentStatus
+from questionadmin import settings
 
 def asScale(scale):
     index = int(scale)
@@ -209,7 +210,7 @@ class ParticipantView(generic.ListView):
             messages = {}
             for participant in self.get_queryset():
                 if participant.trackingKey:
-                    messages["/covid19/dashboard/participant/"+participant.trackingKey] = True
+                    messages[settings.PREFIX_URL+"/dashboard/participant/"+participant.trackingKey] = True
         context['messages'] = messages
         
         return context
