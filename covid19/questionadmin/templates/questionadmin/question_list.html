@@ -640,25 +640,25 @@
         {% if question.isanswer %}
     <h4 class="title is-4" id="label_{{ question.id }}">Have you been in self-isolation in the past 14 days?</h4>
     <div class="content">Self-isolation means staying at home and avoiding contact with other people.</div>
-        <div class="field">
-            <div class="control" id="control_{{ question.id }}">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onChange="isisolating('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_1">Yes</label>
-                <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onChange="isisolating('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_0">No</label>
-                <br/>
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onChange="isisolating('{{ question.id }}')">
-                <label class="radio" for="{{ question.id }}_2">I tried, but it was too difficult.</label>
-            </div>
+    <div class="field">
+        <div class="control" id="control_{{ question.id }}">
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onChange="isisolating('{{ question.id }}')">
+            <label class="radio" for="{{ question.id }}_1">Yes</label>
+            <br/>
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onChange="isisolating('{{ question.id }}')">
+            <label class="radio" for="{{ question.id }}_0">No</label>
+            <br/>
+            <input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onChange="isisolating('{{ question.id }}')">
+            <label class="radio" for="{{ question.id }}_2">I tried, but it was too difficult.</label>
         </div>
+    </div>
         {% else %}
-        <div class="field is-hidden" id="field_{{ question.id }}">
-            <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
-            <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="text" placeholder="How self-isolation was too difficult" id="{{ question.id }}" name="{{ question.id }}">
-            </div>
+    <div class="field is-hidden" id="field_{{ question.id }}">
+        <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+        <div class="control" id="control_{{ question.id }}">
+            <input class="input" type="text" placeholder="How self-isolation was too difficult" id="{{ question.id }}" name="{{ question.id }}">
         </div>
+    </div>
         {% endif %}
     {% endif %}
 {% endfor %}
@@ -721,13 +721,10 @@
     <h4 class="title is-4"><u>Since this time yesterday</u>, have respiratory problems affected your ability to:</h4>
     {% for question in questions %}
         {% if question.isdifficulty %}
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control has-icon has-icon-right">
+    <div class="field">
+        <div class="control" id="control_{{ question.id }}">
+            <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
+            <div class="control">
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">
                 <label class="radio" for="{{ question.id }}_0">No</label>
                 <br/>
@@ -740,9 +737,8 @@
                 <input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">
                 <label class="radio" for="{{ question.id }}_3">Greatly</label>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
         {% endif %}
     {% endfor %}
     </section>
