@@ -95,6 +95,11 @@ class Question(models.Model):
             return True
         return False
 
+    def isaboutyou(self):
+        if (str(self.questiontype) == "AboutYou"):
+            return True
+        return False
+
 class QuestionType(models.Model):
     type = models.TextField()
 
