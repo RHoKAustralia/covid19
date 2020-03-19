@@ -77,8 +77,11 @@ class ParticipantView(generic.ListView):
 
     def get_context_data(self,**kwargs):
         context = super(ParticipantView,self).get_context_data(**kwargs)
-        Question.objects.filter(question__alias="age")
+        print("A")
+        Question.objects.filter(alias="age")
+        print("B")
         Question.objects.filter(questiontype__type="AboutYou")
+        print("C")
         participant = self.get_queryset().first()
         answersets = AnswerSet.objects.filter(participant=participant)
         context['answerset'] = answersets.first()

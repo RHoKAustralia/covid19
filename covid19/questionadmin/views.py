@@ -357,7 +357,7 @@ class QuestionnaireView(generic.FormView):
 
     def findAgeRange(request):
         # Foreign key
-        expected_question = Question.objects.filter(questiontype__alias="Age").first() # the AgeRange question
+        expected_question = Question.objects.filter(alias="age").first() # the AgeRange question
         user_reponse = request.POST[str(expected_question.id)] # the users response value
         value = AgeRanges.objects.filter(age_ranges=user_reponse).first()
         if not value:
