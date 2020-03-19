@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+<html lang='en'>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,21 +9,21 @@
     <title>COVID-19-Hack</title>
 
     <!-- bulma 0.8.0 -->
-    <link rel="stylesheet" href="static/css/bulma.min.css" />
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}"/>
 
     <!-- bulma calendar -->
-    <link rel="stylesheet" href="static/css/bulma-calendar.min.css" />
-    <script src="static/js/bulma-calendar.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/bulma-calendar.min.css' %}" />
+    <script src="{% static 'js/bulma-calendar.min.js' %}"></script>
 
     <!-- bulma-steps -->
-    <link rel="stylesheet" href="static/css/bulma-steps.min.css" />
-    <script src="static/js/bulma-steps.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/bulma-steps.min.css' %}" />
+    <script src="{% static "js/bulma-steps.min.js" %}"</script>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{" static 'apple-touch-icon.png' %}">
     <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 
     <!-- toolkit -->
-    <script src="static/js/covid.js"></script>
+    <script src="{% static 'js/covid.js' %}"></script>
 
 </head>
 <body>
