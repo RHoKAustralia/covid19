@@ -28,6 +28,69 @@
         </div>
     </div>
 </section>
+<!-- START FROM WORD DOC-->
+
+The Symptom Checker does not diagnose COVID-19 and it does not provide medical advice. Contact your relevant local health authority or medical practitioner for health advice about COVID-19 and to find out what to do if you think you have symptoms.
+	Graphic of results
+
+These are considered the most important symptoms of COVID-19:
+
+COVID-19 Symptom	Your score today 
+Cough	Mild
+Sore throat	Mild
+Feeling feverish 	Moderate
+Short of breath	None
+Fatigue (severe tiredness)	None
+
+Potential exposure 
+In the past 14 days: 
+	International travel	No
+	Been in contact with someone with COVID-19	No
+	
+Please review relevant health authority webpages in your country. The following feedback is based on the Australian Government Department of Health website. 
+
+from: 
+
+ 
+[need our own nice graphics]
+
+{% if risk == "A"}
+	
+A. [If any key symptom is none/mild AND no travel or exposure]
+
+Report: No or mild symptoms, no recent travel or exposure
+
+Your survey results show that you should continue to monitor your wellbeing. Please complete this survey each day. Follow the advice of local health authorities. 
+
+{% elif  risk == "B" %}
+B. [If any symptom is mild/moderate/severe AND no travel or exposure]
+
+Report: You reported that you have mild, moderate or severe symptoms and no recent travel or exposure.
+
+Your survey results show that you should continue to monitor your symptoms. If you have serious symptoms such as difficulty breathing, call 000 (or local in-country emergency line) for urgent medical help.
+
+If you would like to talk to someone, call the Coronavirus (COVID-19) Health Information Line. The line operates 24 hours a day, seven days a week. 1800 020 080
+{% elif risk == "C" %}	
+C. [If any symptom is mild/moderate/severe, Shortness of breath is moderate/severe AND no travel or exposure]
+If you have serious symptoms such as difficulty breathing, call 000 in Australia (or local in-country emergency line) for urgent medical help. 
+
+Report: You reported that you have symptoms including Shortness of breath (moderate or severe), with no recent travel or exposure.
+
+If you have serious symptoms such as difficulty breathing, call 000 (or local in-country emergency line) for urgent medical help
+
+{% elif risk == "D" %}
+D. [If any symptom is moderate/severe AND positive travel or exposure]
+
+Report: You reported that you have moderate to severe symptoms and recent travel or exposure.
+
+You should immediately contact your local health authority and/or your medical practitioner (or local in-country emergency line) for urgent medical help
+{% else %}
+   You are well.
+{% endif %}
+	Click here to save or print your results. 
+
+
+<!-- END FROM WORD DOC-->
 {% if level == 0 %}
 <section class="section">
     <div class="container is-fluid">
@@ -67,3 +130,4 @@
 </footer>
 </body>
 </html>
+
