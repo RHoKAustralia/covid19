@@ -12,14 +12,14 @@
     <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}"/>
 
     <!-- bulma calendar -->
-    <link rel="stylesheet" href="{% static 'css/bulma-calendar.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bulma-calendar.min.css' %}"/>
     <script src="{% static 'js/bulma-calendar.min.js' %}"></script>
 
     <!-- bulma-steps -->
-    <link rel="stylesheet" href="{% static 'css/bulma-steps.min.css' %}" />
-    <script src="{% static "js/bulma-steps.min.js" %}"</script>
+    <link rel="stylesheet" href="{% static 'css/bulma-steps.min.css' %}"/>
+    <script src="{% static 'js/bulma-steps.min.js' %}"</script>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="{" static 'apple-touch-icon.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}"/>
     <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 
     <!-- toolkit -->
@@ -110,11 +110,11 @@
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <label class="radio" for="{{ question.id }}_Female"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Female" value="Female" />&nbsp;Female</label>
+                <label class="radio" for="{{ question.id }}_Female"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Female" value="Female"/>&nbsp;Female</label>
                 <br/>
-                <label class="radio" for="{{ question.id }}_Male"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Male" value="Male" />&nbsp;Male</label>
+                <label class="radio" for="{{ question.id }}_Male"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Male" value="Male"/>&nbsp;Male</label>
                 <br/>
-                <label class="radio" for="{{ question.id }}_Other"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Other" value="Other" />&nbsp;Other</label>
+                <label class="radio" for="{{ question.id }}_Other"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Other" value="Other"/>&nbsp;Other</label>
             </div>
         </div>
         {% endif %}
@@ -144,10 +144,10 @@
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
                 <label class="radio" for="{{ question.id }}_Yes">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes" value="Yes" />&nbsp;Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes" value="Yes"/>&nbsp;Yes</label>
                 <br/>
                 <label class="radio" for="{{ question.id }}_No">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No" />&nbsp;No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No"/>&nbsp;No</label>
             </div>
         </div>
         {% endif %}
@@ -207,8 +207,8 @@
         <div class="field">
           <label class="label" id="label_aboutyou_location">Which town or city are you in now?</label>
           <div class="control" id="control_aboutyou_location">
-              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json" />
+              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json"/>
           </div>
         </div>
         {% endif %}
@@ -320,11 +320,11 @@
             {% if question.isanswer %}
        <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')" />&nbsp;Yes,&nbsp;I&nbsp;was&nbsp;tested</label>
+                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')"/>&nbsp;Yes,&nbsp;I&nbsp;was&nbsp;tested</label>
                 <br/>
-                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="istested('{{ question.id }}')" />&nbsp;Yes,&nbsp;but&nbsp;I&nbsp;was&nbsp;not&nbsp;tested</label>
+                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="istested('{{ question.id }}')"/>&nbsp;Yes,&nbsp;but&nbsp;I&nbsp;was&nbsp;not&nbsp;tested</label>
                 <br/>
-                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')" />&nbsp;No</label>
+                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')"/>&nbsp;No</label>
             </div>
         </div>
             {% else %}
@@ -425,8 +425,8 @@
         <div class="field is-hidden" id="field_iscontact">
            <label class="label" id="label_iscontact_location">Which town or city did the interaction occur in?</label>
            <div class="control" id="control_iscontact_location">
-               <input id="iscontact_location" name="iscontact_location" type="text" class="input" placeholder="Search" />
-               <input type="hidden" class="control" name="iscontact_location_json" id="iscontact_location_json" />
+               <input id="iscontact_location" name="iscontact_location" type="text" class="input" placeholder="Search"/>
+               <input type="hidden" class="control" name="iscontact_location_json" id="iscontact_location_json"/>
            </div>
        </div>
            {% else %}
@@ -652,15 +652,15 @@
         <div class="field is-hidden" id="field_istravel_to">
           <label class="label" id="label_istravel_to_location">Which city did you travel to?</label>
           <div class="control" id="control_istravel_to_location">
-              <input id="istravel_to_location" name="istravel_to_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="istravel_to_location_json" id="istravel_to_location_json" />
+              <input id="istravel_to_location" name="istravel_to_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="istravel_to_location_json" id="istravel_to_location_json"/>
           </div>
         </div>
         <div class="field is-hidden" id="field_istravel_from">
           <label class="label" id="label_istravel_from_location">Which city did you travel from?</label>
           <div class="control" id="control_istravel_from_location">
-              <input id="istravel_from_location" name="istravel_from_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="istravel_from_location_json" id="istravel_from_location_json" />
+              <input id="istravel_from_location" name="istravel_from_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="istravel_from_location_json" id="istravel_from_location_json"/>
           </div>
         </div>
             {% else %}
@@ -765,8 +765,8 @@
         <div class="field is-hidden" id="field_isgathering">
           <label class="label" id="label_isgathering_location">Where was the event held?</label>
           <div class="control" id="control_isgathering_location">
-              <input id="isgathering_location" name="isgathering_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="isgathering_location_json" id="isgathering_location_json" />
+              <input id="isgathering_location" name="isgathering_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="isgathering_location_json" id="isgathering_location_json"/>
           </div>
         </div>
 -->
@@ -794,7 +794,7 @@
 
     <div class="step-content">
       <section class="section">
-      <input class="input" type="hidden" id="uid" name="uid" />
+      <input class="input" type="hidden" id="uid" name="uid"/>
       <!-- Using a modal panel, a bit overkill -->
       <!--
       <div class="modal" id="modalPanel">
