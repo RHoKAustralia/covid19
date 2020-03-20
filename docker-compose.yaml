@@ -1,5 +1,20 @@
 version: '3'
 services:
+  inspec:
+    build:
+      context: ./covid19/
+      dockerfile: docker/inspec.Dockerfile
+    image: covid/inspec:4.18
+    command: >
+      bash -c "inspec supermarket exec dev-sec/linux-baseline --reporter=html:/root/reports/sample.html"
+    stdin_open: true
+    tty: true
+    volumes:
+    - ./inspec_reports:/root/reports
+    environment:
+    - SERVICE_DB=mysql
+    - SERVICE_WEB=web
+    
   mysql:
     image: mysql:5.7.20
     container_name: mysql_covid19
@@ -21,6 +36,7 @@ services:
     image: dg_portal:0.1
     volumes:
       - ./covid19/:/app/
+      - ssh-keys:/root/.ssh
     tty: true
     command: >
       ash -c "python manage.py makemigrations
@@ -33,6 +49,7 @@ services:
       dockerfile: docker/nginx.Dockerfile
     ports:
       - "8000:80"
+      - "22"
     container_name: ng_covid19
     image: ng_covid:0.1
     depends_on:
@@ -41,3 +58,4 @@ services:
       - ./covid19/static:/static
 volumes:
   mysql-persistent-storage:
+  ssh-keys:
