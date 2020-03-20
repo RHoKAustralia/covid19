@@ -1,3 +1,4 @@
 # CACHE FILES
 *__pycache__*
 questionadmin/migrations
+inspec_reports/sample.html
