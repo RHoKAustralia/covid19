@@ -8,6 +8,8 @@ RUN apk --no-cache add mariadb-dev gcc libc-dev
 # REQUIREMENTS: PIP
 RUN pip3 install -r /app/requirements/pip.txt
 
+ENV DEBUG=False
+
 # CLEAN UP: APT
 RUN apk del libc-dev gcc
 
