@@ -19,7 +19,6 @@ from .models import HealthWarningMessage
 from .models import AgeRanges
 from .models import EmploymentStatus
 from .models import Region
-from . import settings
 
     #
 countryList = [
@@ -299,7 +298,7 @@ class IndexView(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super(IndexView,self).get_context_data(**kwargs)
         context["countryList"] = countryList
-        context["urlprefix"] = settings.PREFIX_URL
+        print("return custom context")
         return context
 
 class TrackedView(generic.ListView):
@@ -470,8 +469,6 @@ class QuestionnaireView(generic.FormView):
                 print("UID PASSED="+str(trackingKey))
                 participant = Participant.objects.filter(trackingKey=trackingKey).first()
             if not participant:
-                if len(str(trackingKey))==0:
-                    trackingKey=Participant.generateTrackingKey(request)
                 print("Create New Participant="+str(trackingKey))
                 participant = Participant(firstName=firstName,lastName=lastName,location=participantlocation,age=age, trackingKey=trackingKey)
             participant.save()
@@ -514,7 +511,7 @@ class QuestionnaireView(generic.FormView):
                         answer = Answer(participant=participant,question=question, freeform_text=text_Answer,dateAnswered=QuestionnaireView.nowUTC(),
                                         answerset=answerset)
 
-                    answer.save()
+                        answer.save()
 
         else:
             print("its a get")
@@ -536,9 +533,19 @@ class QuestionnaireView(generic.FormView):
            if HealthWarningMessage.objects.filter(warninglevel=i).count() > 0:
               message = HealthWarningMessage.objects.filter(warninglevel=i).first()
               break
+        risk = "Well"
+        if level == 1:
+            risk = "A"
+        if level == 2:
+            risk = "B"
+        if level == 3:
+            risk = "C"
+        if level >= 4:
+            risk = "D"
         context = {
             'level':level,
             'message':message,
+            'risk':risk,
         }
         return render(request, 'bye-page.html',context)
 
