@@ -83,6 +83,8 @@
     <div class="step-content is-active">
 
     <section class="section">
+
+<div class="notification is-info">
     <div class="content">
 Thank you for being part of testing this Coronavirus (COVID-19) Symptom Checker.
     </div>
@@ -91,9 +93,10 @@ Thank you for being part of testing this Coronavirus (COVID-19) Symptom Checker.
 As you complete the questions, please make notes about anything that is not working, any words you don’t understand, or any other problems you see. Is there any question or issue that would make you not want to finish the survey? At the end, there will be a feedback box where you can leave your comments. Thank you in advance for your participation.
     </div>
 
-    <div class="content">
+    <div class="content has-text-warning has-text-weight-bold">
 Please note, this is a confidential beta-version of the Symptom Checker. This is for your use only so please don’t forward it to others.
     </div>
+</div>
 
 {% for question in questions %}
     {% if question.istested %}
@@ -691,6 +694,14 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
     {% if question.isaboutyou %}
         {% if question.order == 0 %}
         <div class="field">
+          <label class="label" id="label_aboutyou_location">What area, town or city are you in now?</label>
+          <div class="control" id="control_aboutyou_location">
+              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json"/>
+          </div>
+        </div>
+
+        <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
                 <label class="radio" for="{{ question.id }}_Female"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Female" value="Female"/>&nbsp;Female</label>
@@ -786,13 +797,6 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
             </div>
         </div>
 
-        <div class="field">
-          <label class="label" id="label_aboutyou_location">What area, town or city are you in now?</label>
-          <div class="control" id="control_aboutyou_location">
-              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search"/>
-              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json"/>
-          </div>
-        </div>
         {% endif %}
     {% endif %}
 
@@ -876,8 +880,6 @@ Thank you for testing the Symptom Checker. If you have any comments about your e
       <div class="control">
           <textarea class="textarea" type="textarea" class="control" name="feedback" id="feedback"></textarea>
       </div>
-
-
 
       <br/>
 

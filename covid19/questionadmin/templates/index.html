@@ -39,6 +39,18 @@
     </div>
 </section>
 
+<section class="section">
+<article class="message is-info is-hidden" id="cookie_message">
+  <div class="message-header">
+    <p>Cookies Notice</p>
+    <button class="delete" aria-label="delete"></button>
+  </div>
+  <div class="message-body">
+    <div class="content">We are using anonymous data from cookies to ensure that multiple responses from the same person can be easily matched. This feature is only used if you select the Tracker Survey, if you do not wish to participate, simply use Anonymous Survey link and no cookies will be used.</div>
+    <button class="button is-success" type="button" onClick="setCookie('ack', 'yes', 365); document.getElementById('cookie_message').classList.add('is-hidden');">I Understand</button>
+  </div>
+</article>
+
 <!--
 <div class="tile is-ancestor is-pulled-right">
   <div class="tile is-vertical is-8">
@@ -59,7 +71,6 @@
 </div>
 -->
 
-<section class="section">
     <div class="container is-fluid">
 
         <div class="content is-italic has-text-weight-bold">
@@ -76,7 +87,7 @@ We invite you to complete the Symptom Checker to help you to see if you have pos
 
         <div class="content">
 The symptoms of COVID-19 can range from mild flu-like symptoms to pneumonia (lung infection). Some people recover easily from COVID-19, while others may get very sick, very quickly. Symptoms can develop and change rapidly, so record your symptoms every day.
-        </div> 
+        </div>
 
         <div class="content">
 Your identity cannot be revealed through filling in the Symptom Checker. We do not ask for your name, and the information you provide will be kept confidential. The information you provide will be used to help understand and control COVID-19 and provide advice to health authorities. This information could also be useful in the prevention of other pandemics; therefore we will keep the information we collect indefinitely to help us and other researchers in the future. By volunteering to complete the questions, you are not only helping yourself, but also your community.
@@ -89,14 +100,14 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
         <div class="content is-size-7">
         This project has been approved by or on behalf of Swinburne's Human Research Ethics Committee (SUHREC) in line with the National Statement on Ethical Conduct in Human Research. If you have any concerns or complaints about the conduct of this project, you can contact: Research Ethics Officer, Swinburne Research (H68), Swinburne University of Technology, P O Box 218, HAWTHORN VIC 3122 Australia. Tel (03) 9214 3845 or resethics@swin.edu.au
         </div>
- 
+
         <div class="content has-text-weight-bold">
         By completing this survey, you are indicating that you agree to take part in this study.
         </div>
     </div>
-</section>
 
-<section class="section">
+    <br/>
+
     <div class="container is-fluid">
         <button type="button" class="button is-medium is-fullwidth is-warning has-text-weight-bold" onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Symptom Checker</button>
     </div>
@@ -134,17 +145,6 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
     <div class="column"></div>
 </div>
 
-<article class="message is-info" id="cookie_message">
-  <div class="message-header">
-    <p>Cookies Notice</p>
-    <button class="delete" aria-label="delete"></button>
-  </div>
-  <div class="message-body">
-    <div class="content">We are using anonymous data from cookies to ensure that multiple responses from the same person can be easily matched. This feature is only used if you select the Tracker Survey, if you do not wish to participate, simply use Anonymous Survey link and no cookies will be used.</div>
-    <button class="button is-success" type="button" onClick="setCookie('ack', 'yes', 365); document.getElementById('cookie_message').classList.add('is-hidden');">I Understand</button>
-  </div>
-</article>
-
 <footer class="footer">
     <div class="content has-text-centered">
         <p>This website has been developed by a team of public health and IT researchers, and staff at <a href="https://www.swinburne.edu.au/" target="_blank" class="has-text-dark has-text-weight-bold">Swinburne University of Technology</a>, Australia. This will help determine the current and emerging COVID-19 symptoms of people across the world.  This will help you improve your understanding of your health, follow changes and help us to advise health authorities about  what’s going on from the community’s perspective.</p>
@@ -161,6 +161,10 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
   {
     document.getElementById("cookie_message").classList.add("is-hidden");
   }
-  
+  else
+  {
+    document.getElementById("cookie_message").classList.remove("is-hidden");
+  }
+
 </script>
 </html>
