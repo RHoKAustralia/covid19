@@ -1,6 +1,0 @@
-apt-utils
-python3
-python3-pip
-mysql-server
-python3-dev
-libmysqlclient-dev

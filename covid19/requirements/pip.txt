@@ -1,6 +1,8 @@
 Django==2.2.10
+django_countries
 django_tables2
 python-dateutil
 pytz
-mysqlclient
+mysqlclient==1.4.6
 pymysql
+gunicorn==20.0.4

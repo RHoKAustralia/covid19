@@ -1,0 +1,5 @@
+[client]
+host=mysql
+user=covid
+password=covid19
+database=covid

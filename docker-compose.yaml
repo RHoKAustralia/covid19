@@ -1,18 +1,44 @@
 version: '3'
 services:
-  web:
-    build: 
-      context: ./covid19/
-      dockerfile: covid19.Dockerfile
-    container_name: dg_portal
-    image: covid19:0.1
+  mysql:
+    image: mysql:5.7.20
+    container_name: mysql_covid19
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: covid
+      MYSQL_USER: covid
+      MYSQL_PASSWORD: covid19
+    volumes:
+      - mysql-persistent-storage:/var/lib/mysql
     ports:
-      - "8070:8070"
+      # this is a temporary solution to facilitate interacting with the db from the host
+      - "3307:3306"
+  web:
+    build:
+      context: ./covid19/
+      dockerfile: docker/web.Dockerfile
+    container_name: portal_covid19
+    image: dg_portal:0.1
     volumes:
       - ./covid19/:/app/
-      - mysql_volume:/var/lib/mysql
+      - ./covid19/static:/app/covid19/static
     tty: true
     command: >
-      ./start.sh
+      ash -c "python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && gunicorn --bind=0.0.0.0:8000 covid19.wsgi:application"
+  nginx:
+    build:
+      context: ./covid19/
+      dockerfile: docker/nginx.Dockerfile
+    ports:
+      - "8000:80"
+    container_name: ng_covid19
+    image: ng_covid:0.1
+    depends_on:
+      - web
+    volumes:
+      - ./covid19/static:/static/
 volumes:
-        mysql_volume:
+  mysql-persistent-storage:
