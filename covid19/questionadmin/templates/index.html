@@ -18,7 +18,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'UA-153695048-2');
     </script>
 
@@ -31,7 +30,7 @@
     <div class="hero-body">
         <div class="container">
             <h1 class="title" style="color:#FFEC00">
-                Coronavirus Symptom Checker
+                Coronavirus (COVID-19) Symptom Checker
             </h1>
             <h2 class="subtitle" style="color:#FFEC00">
                 Your personal tracker of the symptoms of coronavirus (COVID-19)
@@ -39,39 +38,90 @@
         </div>
     </div>
 </section>
-<section class="section">
-    <div class="container is-fluid">
-        <p>Coronavirus (COVID-19) symptoms range from mild flu-like symptoms to pneumonia. Some people recover easily, others may get very sick very quickly.</p><br/>
-        <p>For general advice on the Coronavirus (COVID-19) or to find out what to do if you think you have symptoms, contact your local health authority.</p><br/>
-        <p>This app does not diagnose COVID-19, it only assesses if you have some of the possible symptoms for the infection. You will need to contact your relevant local health authority to determine if you should be tested.</p><br/>
-        <p>[some text for HREC – this is a research project]</p><br/>
-        <p>Last updated on: 15/03/2020</p>
+
+<!--
+<div class="tile is-ancestor is-pulled-right">
+  <div class="tile is-vertical is-8">
+    <div class="tile">
+      <div class="tile is-parent is-vertical">
+        <article class="tile is-child notification is-primary">
+          <p class="title">Vertical...</p>
+          <p class="subtitle">
+          Number of people completed survey to date
+          9,989,000
+          From 29 countries
+          Help us get to 10,000,000
+          </p>
+        </article>
+      </div>
     </div>
-</section>
+  </div>
+</div>
+-->
+
 <section class="section">
     <div class="container is-fluid">
-        <div class="columns">
-            <div class="column is-6">
-                <a class="button is-medium is-fullwidth is-warning has-text-weight-bold" href="{{ urlprefix }}/questionnaire">
-                    Anonymous Survey
-                </a>
-                <p class="is-size-6 has-text-centered">One-time symptom checker</p>
-            </div>
-            <div class="column is-6">
-                <a class="button is-medium is-fullwidth is-warning has-text-weight-bold" href="{{ urlprefix }}/monitor">
-                    Tracker Survey
-                </a>
-                <p class="is-size-6 has-text-centered">Follow your symptoms over time (recommended)</p>
-            </div>
+
+        <div class="content is-italic has-text-weight-bold">
+This survey is for people aged 15 years or older who may have no symptoms or many symptoms of COVID-19. It takes about 7 minutes to complete. It was developed in Australia to help anyone in the world to improve their understanding of their symptoms and to help them track the symptoms over time.
         </div>
 
-        <br />
-        <a class="button is-medium is-fullwidth is-dark is-outlined" href="survey_response.html">My Survey Responses</a>
-        <p class="is-size-6 has-text-centered">Record my symptoms and test results today (we want to know if you tested positive or negative)</p>
-        <br />
+        <div class="content">
+We invite you to complete the Symptom Checker to help you to see if you have possible symptoms of COVID-19. You can use the Symptom Checker just once or to follow your wellbeing over time. You can also help someone else to use the Symptom Checker.
+        </div>
 
+        <div class="content">
+<b>The Symptom Checker can help you understand if you should seek medical advice. It does not diagnose COVID-19 and it does not provide specific medical advice.</b> If you need health advice, contact your local health authority or a medical practitioner.
+        </div>
+
+        <div class="content">
+The symptoms of COVID-19 can range from mild flu-like symptoms to pneumonia (lung infection). Some people recover easily from COVID-19, while others may get very sick, very quickly. Symptoms can develop and change rapidly, so record your symptoms every day.
+        </div> 
+
+        <div class="content">
+Your identity cannot be revealed through filling in the Symptom Checker. We do not ask for your name, and the information you provide will be kept confidential. The information you provide will be used to help understand and control COVID-19 and provide advice to health authorities. This information could also be useful in the prevention of other pandemics; therefore we will keep the information we collect indefinitely to help us and other researchers in the future. By volunteering to complete the questions, you are not only helping yourself, but also your community.
+        </div>
+
+        <div class="content">
+        This Symptom Checker has been developed by a team of public health and information technology researchers based at Swinburne University of Technology in Australia, which is a public university. The project was funded by an internal university grant in response to the COVID-19 outbreak.
+        </div>
+
+        <div class="content is-size-7">
+        This project has been approved by or on behalf of Swinburne's Human Research Ethics Committee (SUHREC) in line with the National Statement on Ethical Conduct in Human Research. If you have any concerns or complaints about the conduct of this project, you can contact: Research Ethics Officer, Swinburne Research (H68), Swinburne University of Technology, P O Box 218, HAWTHORN VIC 3122 Australia. Tel (03) 9214 3845 or resethics@swin.edu.au
+        </div>
+ 
+        <div class="content has-text-weight-bold">
+        By completing this survey, you are indicating that you agree to take part in this study.
+        </div>
     </div>
 </section>
+<section class="section">
+    <div class="container is-fluid">
+        <button type="button" class="button is-medium is-fullwidth is-warning has-text-weight-bold" onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Take the Symptom
+Checker</button>
+    </div>
+</section>
+
+<div class="modal" id="chooseSurvey">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Symptom Checker: what would you like to do?</p>
+      <button class="delete" aria-label="close" onClick="document.getElementById('chooseSurvey').classList.remove('is-active');"></button>
+    </header>
+    <section class="modal-card-body">
+      <a class="button is-medium is-fullwidth is-warning has-text-weight-bold" href="{{ urlprefix }}/monitor">
+        Track your symptoms (preferred)
+      </a>
+      <div class="content has-text-centered is-size-7">This helps you to track your symptoms and progress each day. We will use anonymous cookies to ensure that multiple responses from you can be easily matched.</div>
+      <div class="content has-text-centered">or</div>
+      <a class="button is-medium is-fullwidth is-warning has-text-weight-bold" href="{{ urlprefix }}/questionnaire">
+        One-off
+      </a>
+      <div class="content has-text-centered is-size-7">You will get your result after completing the Symptom Checker. You cannot track your progress over time.</div>
+    </section>
+  </div>
+</div>
 
 <div class="columns">
     <div class="column"></div>
