@@ -14,7 +14,6 @@ services:
     environment:
     - SERVICE_DB=mysql
     - SERVICE_WEB=web
-    
   mysql:
     image: mysql:5.7.20
     container_name: mysql_covid19
@@ -34,9 +33,11 @@ services:
       dockerfile: docker/web.Dockerfile
     container_name: portal_covid19
     image: dg_portal:0.1
+    depends_on:
+      - mysql
     volumes:
       - ./covid19/:/app/
-      - ./covid19/static:/app/covid19/static
+      - static:/app/covid19/static
     tty: true
     command: >
       ash -c "python manage.py makemigrations
@@ -49,13 +50,12 @@ services:
       dockerfile: docker/nginx.Dockerfile
     ports:
       - "8000:80"
-      - "22"
     container_name: ng_covid19
     image: ng_covid:0.1
     depends_on:
       - web
     volumes:
-      - ./covid19/static:/static/
+      - static:/static/
 volumes:
   mysql-persistent-storage:
-  ssh-keys:
+  static:
