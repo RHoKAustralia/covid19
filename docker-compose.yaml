@@ -42,4 +42,4 @@ services:
       - static:/static/
 volumes:
   mysql-persistent-storage:
- static:
+  static:
