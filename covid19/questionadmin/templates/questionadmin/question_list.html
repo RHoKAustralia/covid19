@@ -43,7 +43,7 @@
 <div class="all">
 
 {% if questions %}
-<form method="post" action="{{ PREFIX_URL }}/saveresponse">
+<form method="post" action="betacovid19/saveresponse">
     {% csrf_token %}
 <br/>
 <div class="steps" id="stepsDemo">
@@ -272,7 +272,7 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
             <p class="modal-card-body" id="conditions">You must be 15 years or greater to use this survey</p>
           </section>
           <footer class="modal-card-foot">
-            <button type="button" class="button" onClick="window.location='{{ PREFIX_URL }}/';">OK</button>
+            <button type="button" class="button" onClick="window.location='/betacovid19/';">OK</button>
           </footer>
         </div>
       </div>
