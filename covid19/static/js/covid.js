@@ -87,7 +87,7 @@ function set_missing_id(id, val)
 {
   var e;
   try {
-    e = document.getElementById("label_" + id); 
+    e = document.getElementById("label_" + id);
     if (val == "")
     {
       document.getElementById("label_" + id).classList.add("has-text-danger");
@@ -102,4 +102,12 @@ function set_missing_id(id, val)
     alert("set_missing_id could not find label_" + id);
     return 1;
   }
+}
+
+function baseName(str)
+{
+   var base = new String(str).substring(str.lastIndexOf('/') + 1);
+    if(base.lastIndexOf(".") != -1)
+        base = base.substring(0, base.lastIndexOf("."));
+   return base;
 }

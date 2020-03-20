@@ -6,20 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>COVID-19-Hack</title>
+    <title>Coronavirus Symptom Checker</title>
 
     <!-- bulma 0.8.0 -->
     <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}"/>
 
     <!-- bulma calendar -->
-    <link rel="stylesheet" href="{% static 'css/bulma-calendar.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bulma-calendar.min.css' %}"/>
     <script src="{% static 'js/bulma-calendar.min.js' %}"></script>
 
     <!-- bulma-steps -->
-    <link rel="stylesheet" href="{% static 'css/bulma-steps.min.css' %}" />
-    <script src="{% static "js/bulma-steps.min.js" %}"</script>
+    <link rel="stylesheet" href="{% static 'css/bulma-steps.min.css' %}"/>
+    <script src="{% static 'js/bulma-steps.min.js' %}"></script>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="{" static 'apple-touch-icon.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}"/>
+
     <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 
     <!-- toolkit -->
@@ -42,7 +43,7 @@
 <div class="all">
 
 {% if questions %}
-<form method="post" action="{{ PREFIX_URL }}/saveresponse">
+<form method="post" action="betacovid19/saveresponse">
     {% csrf_token %}
 <br/>
 <div class="steps" id="stepsDemo">
@@ -80,7 +81,21 @@
   <div class="steps-content">
     <div class="step-content">
     <section class="section">
+
+    <div class="content">
+Thank you for being part of testing this Coronavirus (COVID-19) Symptom Checker.
+</div>
+
+    <div class="content">
+As you complete the questions, please make notes about anything that is not working, any words you don’t understand, or any other problems you see. Is there any question or issue that would make you not want to finish the survey? At the end, there will be a feedback box where you can leave your comments. Thank you in advance for your participation.
+    </div>
+
+    <div class="content">
+Please note, this is a confidential beta-version of the Symptom Checker. This is for your use only so please don’t forward it to others.
+    </div>
+
     <h4 class="title is-4">Some details about you</h4>
+
     <script> 
       function checkAge(id)
       {
@@ -110,11 +125,11 @@
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <label class="radio" for="{{ question.id }}_Female"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Female" value="Female" />&nbsp;Female</label>
+                <label class="radio" for="{{ question.id }}_Female"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Female" value="Female"/>&nbsp;Female</label>
                 <br/>
-                <label class="radio" for="{{ question.id }}_Male"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Male" value="Male" />&nbsp;Male</label>
+                <label class="radio" for="{{ question.id }}_Male"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Male" value="Male"/>&nbsp;Male</label>
                 <br/>
-                <label class="radio" for="{{ question.id }}_Other"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Other" value="Other" />&nbsp;Other</label>
+                <label class="radio" for="{{ question.id }}_Other"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Other" value="Other"/>&nbsp;Other</label>
             </div>
         </div>
         {% endif %}
@@ -144,10 +159,10 @@
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
                 <label class="radio" for="{{ question.id }}_Yes">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes" value="Yes" />&nbsp;Yes</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes" value="Yes"/>&nbsp;Yes</label>
                 <br/>
                 <label class="radio" for="{{ question.id }}_No">
-                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No" />&nbsp;No</label>
+                <input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No"/>&nbsp;No</label>
             </div>
         </div>
         {% endif %}
@@ -156,7 +171,7 @@
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="text" placeholder="Language spoken at home" id="{{ question.id }}" name="{{ question.id }}">
+                <input class="input" type="text" placeholder="Language spoken at home" value="English" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
         {% endif %}
@@ -188,7 +203,6 @@
                 <div class="select">
                     <select id="{{ question.id }}" name="{{ question.id }}">
                         <option value="" selected>--</option>
-                        <option value="0">0</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -205,10 +219,10 @@
         </div>
 
         <div class="field">
-          <label class="label" id="label_aboutyou_location">Which town or city are you in now?</label>
+          <label class="label" id="label_aboutyou_location">What area, town or city are you in now?</label>
           <div class="control" id="control_aboutyou_location">
-              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json" />
+              <input id="aboutyou_location" name="aboutyou_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json"/>
           </div>
         </div>
         {% endif %}
@@ -258,7 +272,7 @@
             <p class="modal-card-body" id="conditions">You must be 15 years or greater to use this survey</p>
           </section>
           <footer class="modal-card-foot">
-            <button type="button" class="button" onClick="history.back();">Cancel</button>
+            <button type="button" class="button" onClick="window.location='/betacovid19/';">OK</button>
           </footer>
         </div>
       </div>
@@ -320,11 +334,11 @@
             {% if question.isanswer %}
        <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')" />&nbsp;Yes,&nbsp;I&nbsp;was&nbsp;tested</label>
+                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')"/>&nbsp;Yes,&nbsp;I&nbsp;was&nbsp;tested</label>
                 <br/>
-                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="istested('{{ question.id }}')" />&nbsp;Yes,&nbsp;but&nbsp;I&nbsp;was&nbsp;not&nbsp;tested</label>
+                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2" onchange="istested('{{ question.id }}')"/>&nbsp;Yes,&nbsp;but&nbsp;I&nbsp;was&nbsp;not&nbsp;tested</label>
                 <br/>
-                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')" />&nbsp;No</label>
+                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')"/>&nbsp;No</label>
             </div>
         </div>
             {% else %}
@@ -425,8 +439,8 @@
         <div class="field is-hidden" id="field_iscontact">
            <label class="label" id="label_iscontact_location">Which town or city did the interaction occur in?</label>
            <div class="control" id="control_iscontact_location">
-               <input id="iscontact_location" name="iscontact_location" type="text" class="input" placeholder="Search" />
-               <input type="hidden" class="control" name="iscontact_location_json" id="iscontact_location_json" />
+               <input id="iscontact_location" name="iscontact_location" type="text" class="input" placeholder="Search"/>
+               <input type="hidden" class="control" name="iscontact_location_json" id="iscontact_location_json"/>
            </div>
        </div>
            {% else %}
@@ -566,17 +580,17 @@
           return sum;
         }
     </script>
-    <h4 class="title is-4"><u>Since this time yesterday</u>, have respiratory problems affected your ability to:</h4>
+    <h4 class="title is-4"><u>Since this time yesterday</u>, have your respiratory problems affected your ability to:</h4>
     {% for question in questions %}
         {% if question.isdifficulty %}
     <div class="field">
         <div class="control" id="control_{{ question.id }}">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control">
-                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">&nbsp;No</label>
-                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">&nbsp;A&nbsp;bit</label>
-                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">&nbsp;Moderately</label>
-                <label class="radio" for="{{ question.id }}_3"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">&nbsp;Greatly</label>
+                <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0">&nbsp;No Difficulty</label>
+                <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1">&nbsp;Some Difficulty</label>
+                <label class="radio" for="{{ question.id }}_2"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_2" value="2">&nbsp;Moderate Difficulty</label>
+                <label class="radio" for="{{ question.id }}_3"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">&nbsp;Great Difficulty</label>
             </div>
         </div>
     </div>
@@ -650,17 +664,17 @@
             </div>
         </div>
         <div class="field is-hidden" id="field_istravel_to">
-          <label class="label" id="label_istravel_to_location">Which city did you travel to?</label>
+          <label class="label" id="label_istravel_to_location">Which country did you travel to?</label>
           <div class="control" id="control_istravel_to_location">
-              <input id="istravel_to_location" name="istravel_to_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="istravel_to_location_json" id="istravel_to_location_json" />
+              <input id="istravel_to_location" name="istravel_to_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="istravel_to_location_json" id="istravel_to_location_json"/>
           </div>
         </div>
         <div class="field is-hidden" id="field_istravel_from">
-          <label class="label" id="label_istravel_from_location">Which city did you travel from?</label>
+          <label class="label" id="label_istravel_from_location">Which country did you travel from?</label>
           <div class="control" id="control_istravel_from_location">
-              <input id="istravel_from_location" name="istravel_from_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="istravel_from_location_json" id="istravel_from_location_json" />
+              <input id="istravel_from_location" name="istravel_from_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="istravel_from_location_json" id="istravel_from_location_json"/>
           </div>
         </div>
             {% else %}
@@ -765,8 +779,8 @@
         <div class="field is-hidden" id="field_isgathering">
           <label class="label" id="label_isgathering_location">Where was the event held?</label>
           <div class="control" id="control_isgathering_location">
-              <input id="isgathering_location" name="isgathering_location" type="text" class="input" placeholder="Search" />
-              <input type="hidden" class="control" name="isgathering_location_json" id="isgathering_location_json" />
+              <input id="isgathering_location" name="isgathering_location" type="text" class="input" placeholder="Search"/>
+              <input type="hidden" class="control" name="isgathering_location_json" id="isgathering_location_json"/>
           </div>
         </div>
 -->
@@ -778,7 +792,7 @@
 
     <div class="step-content">
     <section class="section">
-    <h4 class="title is-4">Do you have of the following long-term conditions?</h4>
+    <h4 class="title is-4">Do you have any of the following long-term conditions? (Optional)</h4>
     <div class="field">
     {% for question in questions %}
         {% if question.islongterm %}
@@ -794,45 +808,31 @@
 
     <div class="step-content">
       <section class="section">
-      <input class="input" type="hidden" id="uid" name="uid" />
-      <!-- Using a modal panel, a bit overkill -->
-      <!--
-      <div class="modal" id="modalPanel">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-          <header class="modal-card-head">
-            <p class="modal-card-title">Confirm Questionnaire</p>
-          </header>
-          <section class="modal-content-body">
-            <p class="modal-card-body" id="conditions">By responding to this survey, this you consent that this information may be... (TBD)</p>
-          </section>
-          <footer class="modal-card-foot">
-            <button type="button" class="button is-success">Save</button>
-            <button type="button" class="button" onClick="document.getElementById('modalPanel').classList.remove('is-active');">Cancel</button>
-          </footer>
-        </div>
+      <input class="input" type="hidden" id="uid" name="uid"/>
+      <input class="input" type="hidden" id="UserAgent" name="UserAgent"/>
+      <input class="input" type="hidden" id="IsMobile" name="IsMobile"/>
+      <div class="content">
+Thank you for testing the Symptom Checker. If you have any comments about your experience using the Symptom Checker, please let us know in the feedback box below.
       </div>
-      <div>
-        <button class="button is-success" type="button" id="showModal" onClick="document.getElementById('modalPanel').classList.add('is-active');">Save</button>
+
+      <div class="control">
+          <textarea class="textarea" type="textarea" class="control" name="feedback" id="feedback"></textarea>
       </div>
-     -->
-      <div class="content">By responding to this survey, this you consent that this information may be...</div>
-        <div>
-          <button class="button is-success">
-            <span class="icon is-small">
-              <i class="fas fa-check"></i>
-            </span>
-            <span>Save</span>
-          </button>
-          <button class="button" type="cancel" value="Cancel"/>
-            <span class="icon is-small">
-              <i class="fas fa-times"></i>
-            </span>
-            <span>Cancel</span>
-          </button>
-        </div>
-    </section>
-    </div>
+
+
+
+      <br/>
+
+      <div class="content">
+        <button class="button is-success">
+          <span class="icon is-small">
+            <i class="fas fa-check"></i>
+          </span>
+          <span>Save</span>
+        </button>
+       </div>
+  </section>
+  </div>
 
   </div>
   <div class="steps-actions has-background-warning">
@@ -851,9 +851,11 @@
 {% endif %}
 </div>
 
+<!-- bit of extra space at the bottom -->
 <div class="content has-text-centered">
     <br/>
 </div>
+
 </body>
 <!-- bulma calendars -->
 <script>
@@ -965,5 +967,10 @@
    setCookie("uid", uid, 365);
 {% endif %}
  document.getElementById("uid").value = uid;
+
+  document.getElementById("UserAgent").value = navigator.userAgent;
+  var isMobile = (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+  document.getElementById("IsMobile").value = String(isMobile);
+
 </script>
 </html>

@@ -8,3 +8,5 @@
 *.egg-info
 *.log
 .venv/
+questionadmin/migrations
+inspec_reports/sample.html
