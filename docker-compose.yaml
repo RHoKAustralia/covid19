@@ -21,7 +21,7 @@ services:
     image: dg_portal:0.1
     volumes:
       - ./covid19/:/app/
-      - ./covid19/static:/app/covid19/static
+      - static:/app/covid19/static
     tty: true
     command: >
       ash -c "python manage.py makemigrations
@@ -39,6 +39,7 @@ services:
     depends_on:
       - web
     volumes:
-      - ./covid19/static:/static/
+      - static:/static/
 volumes:
   mysql-persistent-storage:
+ static:
