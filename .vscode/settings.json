@@ -1,0 +1,14 @@
+{
+  "files.exclude": {
+    "**/__pycache__/": true,
+    ".venv": true
+  },
+  "python.pythonPath": "covid19/.venv/bin/python3",
+  "python.linting.pylintPath": "pylint",
+  "python.formatting.provider": "black",
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  }
+}

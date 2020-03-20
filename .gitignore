@@ -1,2 +1,9 @@
 # CACHE FILES
 *__pycache__*
+.venv/
+.env*
+.ropeproject
+.ipynb_checkpoints/
+*.pyc
+*.egg-info
+*.log
