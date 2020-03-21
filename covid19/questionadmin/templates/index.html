@@ -8,8 +8,8 @@
 
     <title>Coronavirus Symptom Checker</title>
 
-    <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.0/css/bulma.min.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
     <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -22,7 +22,7 @@
     </script>
 
     <!-- covid toolkit -->
-    <script src="{% static "js/covid.js" %}"></script>
+    <script src="{% static 'js/covid.js' %}"></script>
 
 </head>
 <body>
