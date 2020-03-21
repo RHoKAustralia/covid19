@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Coronavirus Symptom Checker</title>
+
+    <!-- bulma 0.8.0 -->
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}"/>
+
+    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+
+    <style>
+    </style>
+
+</head>
+<body>
+<section class="section">
+  {% if user.is_admin %}
+  <div>
+    {% if feedback_list %}
+    <ul>
+      {% for feedback in feedback_list %}
+      <li> {{ feedback.freeform_text }} </li>
+    </ul>
+    {% endfor %}
+    {% else %}
+    <p>There is no feedback </p>
+    {% endif %}
+  </div>
+  {% else %}
+  <p> you must first login as admin </p>
+  {% endif %}
+  
+</section>
+
+<footer class="footer">
+    <div class="content has-text-centered is-size-7">
+No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced for any purpose, including research, translation or
+commercial,  without the expressed written approval of Swinburne University of Technology.
+    </div>
+</footer>
+</body>
+</html>
+
