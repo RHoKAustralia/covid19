@@ -1,15 +1,8 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Coronavirus Symptom Checker</title>
-
-    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}" />
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+{% block head %}
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
     <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -21,24 +14,11 @@
         gtag('config', 'UA-153695048-2');
     </script>
 
-    <!-- covid toolkit -->
-    <script src="{% static 'js/covid.js' %}"></script>
+{% endblock %}
 
-</head>
-<body>
-<section class="hero is-dark">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title" style="color:#FFEC00">
-                Coronavirus (COVID-19) Symptom Checker
-            </h1>
-            <h2 class="subtitle" style="color:#FFEC00">
-                Your personal tracker of the symptoms of coronavirus (COVID-19)
-            </h2>
-        </div>
-    </div>
-</section>
 
+
+{% block body %}
 <section class="section">
 <article class="message is-info is-hidden" id="cookie_message">
   <div class="message-header">
@@ -145,20 +125,19 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
     <div class="column"></div>
 </div>
 
-<footer class="footer">
+{% endblock %}
+
+
+
+{% block footer %}
     <div class="content has-text-centered">
         <p>This website has been developed by a team of public health and IT researchers, and staff at <a href="https://www.swinburne.edu.au/" target="_blank" class="has-text-dark has-text-weight-bold">Swinburne University of Technology</a>, Australia. This will help determine the current and emerging COVID-19 symptoms of people across the world.  This will help you improve your understanding of your health, follow changes and help us to advise health authorities about  what’s going on from the community’s perspective.</p>
         <img src="{% static 'swinburne-logo-horizontal-large.gif' %}" width="100"/>
     </div>
-    <div class="content has-text-centered is-size-7">
-No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced for any purpose, including research, translation or
-commercial,  without the expressed written approval of Swinburne University of Technology.
-    </div>
-</footer>
+{% endblock %}
 
-<script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
-</body>
 
+{% block js_end %}
 <script type="text/javascript">
   var ack = getCookie("ack");
   if (ack == "yes")
@@ -171,4 +150,4 @@ commercial,  without the expressed written approval of Swinburne University of T
   }
 
 </script>
-</html>
+{% endblock %}

@@ -1,16 +1,7 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 {% load static %}
-<html lang='en'>
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Coronavirus Symptom Checker</title>
-
-    <!-- bulma 0.8.0 -->
-    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}"/>
-
+{% block head %}
     <!-- bulma calendar -->
     <link rel="stylesheet" href="{% static 'css/bulma-calendar.min.css' %}"/>
     <script src="{% static 'js/bulma-calendar.min.js' %}"></script>
@@ -23,9 +14,6 @@
 
     <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
 
-    <!-- toolkit -->
-    <script src="{% static 'js/covid.js' %}"></script>
-
     <!-- since nodeList.forEach is missing in IE11 -->
     <script>
       if (window.NodeList && !NodeList.prototype.forEach)
@@ -33,21 +21,9 @@
         NodeList.prototype.forEach = Array.prototype.forEach;
       }
     </script>
+{% endblock %}
 
-</head>
-<body>
-<section class="hero is-dark">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title" style="color:#FFEC00">
-                Coronavirus Symptom Checker
-            </h1>
-            <h2 class="subtitle" style="color:#FFEC00">
-                Your personal tracker of the symptoms of coronavirus (COVID-19)
-            </h2>
-        </div>
-    </div>
-</section>
+{% block  body %}
 <div class="all">
 
 {% if questions %}
@@ -921,13 +897,9 @@ Thank you for testing the Symptom Checker. If you have any comments about your e
 
 <br/>
 
-<!-- bit of extra space at the bottom -->
-<div class="content has-text-centered is-size-7	">
-No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced for any purpose, including research, translation or 
-commercial,  without the expressed written approval of Swinburne University of Technology.
-</div>
+{% endblock %}
 
-</body>
+{% block js_end %}
 <!-- bulma calendars -->
 <script>
   var today = new Date();
@@ -1050,4 +1022,4 @@ commercial,  without the expressed written approval of Swinburne University of T
   document.getElementById("IsMobile").value = String(isMobile);
 
 </script>
-</html>
+{% endblock %}

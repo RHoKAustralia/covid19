@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Coronavirus Symptom Checker</title>
+
+    <!-- bulma 0.8.0 -->
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}" />
+
+    <!-- covid toolkit -->
+    <script src="{% static 'js/covid.js' %}"></script>
+
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+<section class="hero is-dark">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title" style="color:#FFEC00">
+                Coronavirus (COVID-19) Symptom Checker
+            </h1>
+            <h2 class="subtitle" style="color:#FFEC00">
+                Your personal tracker of the symptoms of coronavirus (COVID-19)
+            </h2>
+        </div>
+    </div>
+</section>
+
+{% block body %}{% endblock %}
+
+<footer class="footer">
+    <div class="content has-text-centered is-size-7">
+No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced for any purpose, including research, translation or
+commercial,  without the expressed written approval of Swinburne University of Technology.
+    </div>
+</footer>
+
+{% block js_end %}{% endblock %}
+</html>
