@@ -536,8 +536,8 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
     <h4 class="title is-4" id="label_{{ question.id }}">Have you undertaken international travel in the past 14 days?</h4>
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
-                <label class="radio" for="{{ question.id }}_Yes-to"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes-to" value="Yes-to" onchange="istravel('{{ question.id }}')">&nbsp;Yes&nbsp;-&nbsp;I&nbsp;travelled&nbsp;<b>to</b>&nbsp;another&nbsp;country</label><br/>
-                <label class="radio" for="{{ question.id }}_Yes-from"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes-from" value="Yes-from" onchange="istravel('{{ question.id }}')">&nbsp;Yes&nbsp;-&nbsp;I&nbsp;travelled&nbsp;<b>from</b>&nbsp;another&nbsp;country</label><br/>
+                <label class="radio" for="{{ question.id }}_Yes-to"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes-to" value="Yes-to" onchange="istravel('{{ question.id }}')">&nbsp;Yes&nbsp;-&nbsp;I travelled <b>to</b> another country</label><br/>
+                <label class="radio" for="{{ question.id }}_Yes-from"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Yes-from" value="Yes-from" onchange="istravel('{{ question.id }}')">&nbsp;Yes&nbsp;-&nbsp;I travelled <b>from</b> another country</label><br/>
                 <label class="radio" for="{{ question.id }}_No"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_No" value="No" onchange="istravel('{{ question.id }}')">&nbsp;No</label>
             </div>
         </div>
