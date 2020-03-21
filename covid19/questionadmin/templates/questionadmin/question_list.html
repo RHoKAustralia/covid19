@@ -941,6 +941,12 @@ commercial,  without the expressed written approval of Swinburne University of T
   calendar_options["showButtons"] = false;
   calendar_options["maxDate"] = today_str;
   var calendars = bulmaCalendar.attach('[type="date"]', calendar_options);
+
+  // prevent the clear button from submitting the form
+  var clearbuttons = document.getElementsByClassName('datetimepicker-clear-button');
+  for (var i = 0; i< clearbuttons.length; i++) {
+    clearbuttons[i].disabled = true;
+  }
 </script>
 <!-- Google Places API-->
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr9vma0ZPVFLmkOESuqK4tHNrfwtnyVaM&libraries=places"></script>
