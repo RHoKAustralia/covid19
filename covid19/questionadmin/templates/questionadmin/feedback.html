@@ -20,7 +20,6 @@
 </head>
 <body>
 <section class="section">
-  {% if user.is_admin %}
   <div>
     {% if feedback_list %}
     <ul>
@@ -32,10 +31,6 @@
     <p>There is no feedback </p>
     {% endif %}
   </div>
-  {% else %}
-  <p> you must first login as admin </p>
-  {% endif %}
-  
 </section>
 
 <footer class="footer">
