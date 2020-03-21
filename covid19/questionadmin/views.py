@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.conf import settings
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.views.generic.edit import FormView
 from .forms import ScaleForm
@@ -290,6 +291,11 @@ def is_number(s):
     return False
 
 class FeedbackView(generic.ListView):
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_staff:
+            return redirect('%s?next=%s' % (settings.LOGIN_URL, self.request.path))
+        return super(FeedbackView, self).get(*args, **kwargs)
+
     template_name = 'questionadmin/feedback.html'
     context_object_name = "feedback_list"
     def get_queryset(self):
