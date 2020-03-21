@@ -84,6 +84,12 @@
 <p>If you would like to talk to someone, call the Coronavirus (COVID-19) Health Information Line. The line operates 24 hours a day, seven days a week. 1800 020 080</p>
 </div>
 
+<div class="tile is-child box is-12 is-danger notification is-hidden" id="risk-E">
+<p><b>Report:</b>You reported that you have none or mild symptoms, and recent travel or exposure.</p><br/>
+<p>You should immediately contact your local health authority and/or your medical practitioner (or local in-country emergency line) for urgent medical help</p><br/>
+<p>You should contact your local health authority and/or your medical practitioner (or local in-country emergency line) to review your health status.</p>
+</div>
+
 <div class="tile is-child box is-12 notification is-hidden" id="risk-none">
 <p><b>Report:</b> Support for generating the report has not yet been added to the BETA test.</p>
 </div>
@@ -157,37 +163,34 @@ commercial,  without the expressed written approval of Swinburne University of T
   var contact = "{{ contact }}";
   var travel_or_exposure = ((travel == "Yes") || (contact == "Yes"));
 
-  if (
-        (max_symptom == "None" || max_symptom == "Mild") && 
-        (!travel_or_exposure)
-     )
+  if (travel_or_exposure)
   {
-    document.getElementById("risk-A").classList.remove("is-hidden");
-  }
-  else if (
-        ((max_symptom == "Moderate") || (max_symptom == "Severe")) &&
-        ((shortbreath == "Moderate") || (shortbreath == "Severe")) && 
-        (!travel_or_exposure)
-          )
-  {
-    document.getElementById("risk-C").classList.remove("is-hidden");
-  }
-  else if (
-        ((max_symptom == "Mild") || (max_symptom == "Moderate") || (max_symptom == "Severe")) &&
-        (!travel_or_exposure)
-          )
-  {
-    document.getElementById("risk-B").classList.remove("is-hidden");
-  }
-  else if ((max_symptom == "Moderate") || (max_symptom == "Severe") && (travel_or_exposure))
-  {
-    document.getElementById("risk-D").classList.remove("is-hidden");
+    if ((max_symptom == "Moderate") || (max_symptom == "Severe"))
+    {
+      document.getElementById("risk-D").classList.remove("is-hidden");
+    }
+    else
+    {
+      document.getElementById("risk-E").classList.remove("is-hidden");
+    }
   }
   else
   {
-    document.getElementById("risk-none").classList.remove("is-hidden");
+    if ((max_symptom == "Moderate") || (max_symptom == "Severe"))
+    {
+      if ((shortbreath == "Moderate") || (shortbreath == "Severe"))
+      {
+        document.getElementById("risk-C").classList.remove("is-hidden");
+      }
+      else
+      {
+        document.getElementById("risk-B").classList.remove("is-hidden");
+      }
+    }
+    else
+    {
+      document.getElementById("risk-A").classList.remove("is-hidden");
+    }
   }
 </script>
-
 </html>
-
