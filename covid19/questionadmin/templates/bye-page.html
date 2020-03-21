@@ -137,7 +137,7 @@ commercial,  without the expressed written approval of Swinburne University of T
   var symptom_ranks = { "None": 0, "Mild": 1, "Moderate": 2, "Severe": 3 };
   var max_symptom_rank = 0;
   var max_symptom = "None"; 
-  for (i=0; i<symptoms; i++)
+  for (i=0; i<symptoms.length; i++)
   {
     var symptom_rank = symptom_ranks[symptoms[i]];
     if (symptom_rank > max_symptom_rank)
