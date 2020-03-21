@@ -98,7 +98,7 @@ function set_missing_id(id, val)
       document.getElementById("label_" + id).classList.remove("has-text-danger");
       return 0;
     }
-  } catch {
+  } catch(err) {
     alert("set_missing_id could not find label_" + id);
     return 1;
   }
