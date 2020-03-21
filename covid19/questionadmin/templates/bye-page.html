@@ -159,9 +159,9 @@ commercial,  without the expressed written approval of Swinburne University of T
 
   if ((max_symptom == "None" || max_symptom == "Mild") && (!travel_or_exposure))
     document.getElementById("risk-A").classList.remove("is-hidden");
-  else if ((max_symptom == "Moderate") || (max_symptom == "Severe") && (!travel_or_exposure))
+  else if (((max_symptom == "Moderate") || (max_symptom == "Severe")) && (!travel_or_exposure))
     document.getElementById("risk-B").classList.remove("is-hidden");
-  else if ((max_symptom == "Moderate") || (max_symptom == "Severe") && ((shortbreath == "Moderate") || (shortbreath == "Severe")) && (!travel_or_exposure))
+  else if ( ((max_symptom == "Moderate") || (max_symptom == "Severe")) && ((shortbreath == "Moderate") || (shortbreath == "Severe")) && (!travel_or_exposure))
     document.getElementById("risk-C").classList.remove("is-hidden");
   else if ((max_symptom == "Moderate") || (max_symptom == "Severe") && (travel_or_exposure))
     document.getElementById("risk-D").classList.remove("is-hidden");
