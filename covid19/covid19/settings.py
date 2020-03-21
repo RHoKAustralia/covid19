@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '7e!d9l_a_v%psq+u*h16w&i3hon*t7i!j(p3$gyq=47kuf8=3s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.environ.get("DEBUG", True)
 
 ALLOWED_HOSTS = ["tao.asvo.org.au", "localhost"]
 
