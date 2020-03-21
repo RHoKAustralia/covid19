@@ -26,6 +26,14 @@
     <!-- toolkit -->
     <script src="{% static 'js/covid.js' %}"></script>
 
+    <!-- since nodeList.forEach is missing in IE11 -->
+    <script>
+      if (window.NodeList && !NodeList.prototype.forEach)
+      {
+        NodeList.prototype.forEach = Array.prototype.forEach;
+      }
+    </script>
+
 </head>
 <body>
 <section class="hero is-dark">
@@ -983,7 +991,7 @@ commercial,  without the expressed written approval of Swinburne University of T
             var id = ids[types[j]]
             try {
               document.getElementById(id).value = addr[i]["long_name"];
-            } catch {
+            } catch(err) {
               alert("element type " + types[j] + " with id " + id + " did not exist for prefix=" + prefix);
             }
           }
