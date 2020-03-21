@@ -289,6 +289,12 @@ def is_number(s):
  
     return False
 
+class FeedbackView(generic.ListView):
+    template_name = 'questionadmin/feedback.html'
+    context_object_name = "feedback_list"
+    def get_queryset(self):
+        return Answer.objects.filter(question__alias="feedback").values("freeform_text").exclude(freeform_text__isnull=True, freeform_text__exact='')
+
 class IndexView(generic.ListView):
     context_object_name = 'questions'
     #
