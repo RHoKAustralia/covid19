@@ -155,7 +155,7 @@ commercial,  without the expressed written approval of Swinburne University of T
 
   var travel = "{{ travel }}";
   var contact = "{{ contact }}";
-  var travel_or_exposure = ((travel == "No") || (contact == "No"));
+  var travel_or_exposure = ((travel == "Yes") || (contact == "Yes"));
 
   if ((max_symptom == "None" || max_symptom == "Mild") && (!travel_or_exposure))
     document.getElementById("risk-A").classList.remove("is-hidden");
