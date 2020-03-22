@@ -1,38 +1,21 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Coronavirus Symptom Checker</title>
+{% block head %}
 
-    <!-- bulma 0.8.0 -->
-    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}"/>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153695048-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-153695048-2');
+    </script>
 
-    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+{% endblock %}
 
-    <style>
-    </style>
-
-</head>
-<body>
-<section class="hero is-dark">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title" style="color:#FFEC00">
-                Coronavirus Symptom Checker
-            </h1>
-            <h2 class="subtitle" style="color:#FFEC00">
-                Your personal tracker of the symptoms of coronavirus (COVID-19)
-            </h2>
-        </div>
-    </div>
-</section>
-
-<section class="section">
+{% block body %}
+<section class="section container">
 
     <div class="content">
 <b>The Symptom Checker does not diagnose COVID-19 and it does not provide medical advice.</b> Contact your relevant local health authority or medical practitioner for health advice about COVID-19 and to find out what to do if you think you have symptoms.
@@ -56,7 +39,7 @@
     </div>
 </section>
 
-<section class="section">
+<section class="section container">
 <div class="content">Please review relevant health authority webpages in your country. The following feedback is based on the <a href='https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-health-alert?utm_source=health.gov.au&utm_medium=redirect&utm_campaign=digital_transformation&utm_content=health-topics/novel-coronavirus-2019-ncov'>Australian Government Department of Health website</a>.</div>
 
 <div class="tile is-ancestor">
@@ -128,14 +111,12 @@
     <div class="column"></div>
 </div>
 -->
+{% endblock %}
 
-<footer class="footer">
-    <div class="content has-text-centered is-size-7">
-No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced for any purpose, including research, translation or
-commercial,  without the expressed written approval of Swinburne University of Technology.
-    </div>
-</footer>
-</body>
+{% block footer %}
+{% endblock %}
+
+{% block js_end %}
 <script>
 
   var symptoms = ["{{ cough }}", "{{ sorethroat }}", "{{ fever }}", "{{ shortbreath }}", "{{ fatigue }}", "{{ travel }}", "{{ contact }}"];
@@ -192,4 +173,4 @@ commercial,  without the expressed written approval of Swinburne University of T
     }
   }
 </script>
-</html>
+{% endblock %}

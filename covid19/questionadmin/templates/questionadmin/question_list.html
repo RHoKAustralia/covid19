@@ -12,7 +12,7 @@
 
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}"/>
 
-    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/fontawesome-224eab9f43.js' %}" crossorigin="anonymous"></script>
 
     <!-- since nodeList.forEach is missing in IE11 -->
     <script>
@@ -21,6 +21,7 @@
         NodeList.prototype.forEach = Array.prototype.forEach;
       }
     </script>
+
 {% endblock %}
 
 {% block  body %}
@@ -67,7 +68,7 @@
 
     <div class="step-content is-active">
 
-    <section class="section">
+    <section class="section container">
 
 <div class="notification is-info">
     <div class="content">
@@ -165,9 +166,9 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
         }
 
     </script>
-    {% for question in questions %}
-        {% if question.istested %}
-            {% if question.isanswer %}
+{% for question in questions %}
+    {% if question.istested %}
+        {% if question.isanswer %}
        <div class="field">
             <div class="control" id="control_{{ question.id }}">
                 <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="istested('{{ question.id }}')"/>&nbsp;Yes,&nbsp;I&nbsp;was&nbsp;tested</label>
@@ -177,8 +178,8 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
                 <label class="radio" for="{{ question.id }}_0"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_0" value="0" onchange="istested('{{ question.id }}')"/>&nbsp;No</label>
             </div>
         </div>
-            {% else %}
-                {% if question.order == 1 %}
+        {% else %}
+            {% if question.order == 1 %}
        <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id}}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
@@ -191,39 +192,39 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
                 <label class="radio" for="{{ question.id }}_3"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3" onchange="istestedresult('{{ question.id }}');">&nbsp;Other</label>
             </div>
         </div>
-                {% endif%}
-                {% if question.order == 2 %}
+            {% endif%}
+            {% if question.order == 2 %}
         <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
                 <input class="input" type="text" placeholder="Enter text" name="{{ question.id }}" id="{{ question.id }}" value="">
             </div>
         </div>
-                {% endif %}
-                {% if question.order == 3 %}
+            {% endif %}
+            {% if question.order == 3 %}
         <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
                 <input class="is-size-6 has-text-dark" type="date" name="{{ question.id }}" id="{{ question.id }}" value="">
             </div>
         </div>
-                {% endif %}
-                {% if question.order == 4 %}
+            {% endif %}
+            {% if question.order == 4 %}
         <div class="is-hidden" id="field_{{ question.id }}">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
                 <input class="input" type="text" placeholder="Hospital, clinic or other health service" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
-                {% endif %}
             {% endif %}
         {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
     </section>
     </div>
 
     <div class="step-content">
-    <section class="section">
+    <section class="section container">
 {% for question in questions %}
     {% if question.iscontact%}
         {% if question.isanswer %}
@@ -270,9 +271,9 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
         }
         </script>
 
-    {% for question in questions %}
-        {% if question.iscontact %}
-            {% if question.isanswer %}
+{% for question in questions %}
+    {% if question.iscontact %}
+        {% if question.isanswer %}
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
                 <label class="radio" for="{{ question.id }}_1"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_1" value="1" onchange="iscontact('{{ question.id }}')">&nbsp;Yes</label>
@@ -289,21 +290,21 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
                <input type="hidden" class="control" name="iscontact_location_json" id="iscontact_location_json"/>
            </div>
        </div>
-           {% else %}
+       {% else %}
        <div class="field is-hidden" id="field_{{ question.id }}">
            <!--<label class="label">{{ question.question }}</label>-->
            <div class="control" id="control_{{ question.id }}">
                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
-            {% endif %}
         {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
     </section>
     </div>
 
     <div class="step-content">
-    <section class="section">
+    <section class="section container">
     <script>
         function isisolating(id)
         {
@@ -326,8 +327,6 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
         function validateIsolating()
         {
           sum = 0;
-
-
 {% for question in questions %}
     {% if question.isisolating %}
         {% if question.isanswer %}
@@ -381,23 +380,23 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
     </div>
 
     <div class="step-content">
-    <section class="section">
+    <section class="section container">
     <h4 class="title is-4"><u>Since this time yesterday</u>, because of respiratory problems, have you had the following symptoms? *</h4>
     <script>
         function validateSymptoms()
         {
           sum = 0;
-    {% for question in questions %}
-        {% if question.isscale %}
+{% for question in questions %}
+    {% if question.isscale %}
           sum += check_data_missing("{{ question.id }}");
-        {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
           return sum;
         }
     </script>
 
-    {% for question in questions %}
-        {% if question.isscale %}
+{% for question in questions %}
+    {% if question.isscale %}
     <div class="field">
         <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
         <div class="control has-icon has-icon-right">
@@ -407,8 +406,8 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
             <label class="radio" for="{{ question.id }}_3"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_3" value="3">&nbsp;Severe</label>
         </div>
     </div>
-        {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
 
     <div class="content is-size-7">
 * Influenza intensity and impact questionnaire (Flu-iiQ)&trade; &copy;RH Osborne (2006). No part of the Flu-iiQ&trade; may be copied or reproduced in any form without written permission from the author. Used under license to Swinburne University of Technology. 
@@ -418,22 +417,22 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
     </div>
 
     <div class="step-content">
-    <section class="section">
+    <section class="section container">
     <script>
         function validateDifficulty()
         {
           sum = 0;
-    {% for question in questions %}
-        {% if question.isdifficulty %}
+{% for question in questions %}
+    {% if question.isdifficulty %}
           sum += check_data_missing("{{ question.id }}");
-        {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
           return sum;
         }
     </script>
     <h4 class="title is-4"><u>Since this time yesterday</u>, have your respiratory problems affected your ability to: *</h4>
-    {% for question in questions %}
-        {% if question.isdifficulty %}
+{% for question in questions %}
+    {% if question.isdifficulty %}
     <div class="field">
         <div class="control" id="control_{{ question.id }}">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
@@ -445,8 +444,8 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
             </div>
         </div>
     </div>
-        {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
 
     <div class="content is-size-7">
 * Influenza intensity and impact questionnaire (Flu-iiQ)&trade; &copy;RH Osborne (2006). No part of the Flu-iiQ&trade; may be copied or reproduced in any form without written permission from the author. Used under license to Swinburne University of Technology. 
@@ -455,7 +454,7 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
     </div>
 
     <div class="step-content">
-    <section class="section">
+    <section class="section container">
     <script>
         function istravel(id)
         {
@@ -507,9 +506,9 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
           return sum;
         }
     </script>
-    {% for question in questions %}
-        {% if question.istravel %}
-            {% if question.isanswer %}
+{% for question in questions %}
+    {% if question.istravel %}
+        {% if question.isanswer %}
     <h4 class="title is-4" id="label_{{ question.id }}">Have you undertaken international travel in the past 14 days?</h4>
         <div class="field">
             <div class="control" id="control_{{ question.id }}">
@@ -532,33 +531,33 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
               <input type="hidden" class="control" name="istravel_from_location_json" id="istravel_from_location_json"/>
           </div>
         </div>
-            {% else %}
+        {% else %}
         <div class="is-hidden" id="field_{{ question.id}}">
             <!--<label class="label">{{ question.question }}</label>-->
             <div class="control" id="control_{{ question.id }}">
                 <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
             </div>
         </div>
-            {% endif %}
         {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
     </section>
     </div>
 
     <div class="step-content">
-    <section class="section">
+    <section class="section container">
     <script>
         function isgathering(id)
         {
           var value = get_radio_value(id);
           var fields = [];
-          {% for question in questions %}
-              {% if question.isgathering %}
-                  {% if not question.isanswer %}
+{% for question in questions %}
+    {% if question.isgathering %}
+        {% if not question.isanswer %}
           fields.push("field_{{ question.id }}");
-                  {% endif %}
-              {% endif %}
-          {% endfor %}
+        {% endif %}
+    {% endif %}
+{% endfor %}
           var className = (value == "0") ? "is-hidden" : "field";
           for (i=0; i<fields.length; i++)
           {
@@ -646,7 +645,7 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
     </div>
 
     <div class="step-content">
-    <section class="section">
+    <section class="section container">
 
     <h4 class="title is-4">Some details about you</h4>
 
@@ -838,23 +837,23 @@ Please note, this is a confidential beta-version of the Symptom Checker. This is
     </div>
 
     <div class="step-content">
-    <section class="section">
+    <section class="section container">
     <h4 class="title is-4">Do you have any of the following long-term conditions? (Optional)</h4>
     <div class="field">
-    {% for question in questions %}
-        {% if question.islongterm %}
+{% for question in questions %}
+    {% if question.islongterm %}
         <label class="checkbox-inline">
           <input type="checkbox" data-toggle="toggle" off="No" on="Yes"> {{ question.question }}
         </label>
         <br/>
-        {% endif %}
-    {% endfor %}
+    {% endif %}
+{% endfor %}
     </div>
     </section>
     </div>
 
     <div class="step-content">
-      <section class="section">
+      <section class="section container">
       <input class="input" type="hidden" id="uid" name="uid"/>
       <input class="input" type="hidden" id="UserAgent" name="UserAgent"/>
       <input class="input" type="hidden" id="IsMobile" name="IsMobile"/>
@@ -880,7 +879,7 @@ Thank you for testing the Symptom Checker. If you have any comments about your e
   </div>
 
   </div>
-  <div class="steps-actions has-background-warning">
+  <div class="steps-actions has-background-warning container">
     <div class="steps-action">
       <a href="#" data-nav="previous" class="button is-light">Previous</a>
     </div>
@@ -895,8 +894,6 @@ Thank you for testing the Symptom Checker. If you have any comments about your e
     <p>No questions are available.</p>
 {% endif %}
 </div>
-
-<br/>
 
 {% endblock %}
 

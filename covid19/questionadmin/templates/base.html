@@ -15,7 +15,10 @@
     <script src="{% static 'js/covid.js' %}"></script>
 
     <!-- fontawesome -->
-    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/fontawesome-224eab9f43.js' %}" crossorigin="anonymous"></script>
+
+    <!-- apple touch icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}"/>
 
     {% block head %}{% endblock %}
 </head>
@@ -35,12 +38,16 @@
 
 {% block body %}{% endblock %}
 
-<footer class="footer">
+<footer class="footer container">
+{% block footer %}{% endblock %}
     <div class="content has-text-centered is-size-7">
-No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced for any purpose, including research, translation or
-commercial,  without the expressed written approval of Swinburne University of Technology.
+No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced
+for any purpose, including research, translation or commercial, without the
+expressed written approval of Swinburne University of Technology.
     </div>
 </footer>
+
+</body>
 
 {% block js_end %}{% endblock %}
 </html>

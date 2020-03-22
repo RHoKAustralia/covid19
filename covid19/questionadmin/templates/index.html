@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block head %}
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
     <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -16,10 +15,8 @@
 
 {% endblock %}
 
-
-
 {% block body %}
-<section class="section">
+<section class="section container">
 <article class="message is-info is-hidden" id="cookie_message">
   <div class="message-header">
     <p>Cookies Notice</p>
@@ -51,7 +48,7 @@
 </div>
 -->
 <div> TEST PREFIX_URL [{{PREFIX_URL}}]</div>
-    <div class="container is-fluid">
+    <div class="container">
 
         <div class="content is-italic has-text-weight-bold">
 This survey is for people aged 15 years or older who may have no symptoms or many symptoms of COVID-19. It takes about 7 minutes to complete. It was developed in Australia to help anyone in the world to improve their understanding of their symptoms and to help them track the symptoms over time.
@@ -88,7 +85,7 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
 
     <br/>
 
-    <div class="container is-fluid">
+    <div class="container">
         <button type="button" class="button is-medium is-fullwidth is-warning has-text-weight-bold" onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Symptom Checker</button>
     </div>
 
@@ -98,19 +95,25 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Symptom Checker: what would you like to do?</p>
+      <p class="modal-card-title">Symptom Checker</p>
       <button class="delete" aria-label="close" onClick="document.getElementById('chooseSurvey').classList.remove('is-active');"></button>
     </header>
-    <section class="modal-card-body">
-      <a class="button is-normal is-fullwidth is-warning has-text-weight-bold" href="{{PREFIX_URL}}/monitor">
+    <section class="modal-card-body has-text-centered">
+      <div class="content has-text-centered">What would you like to do?</div>
+
+      <button class="button is-normal is-warning has-text-weight-bold is-fullwidth" onClick="document.location='{{PREFIX_URL}}/monitor';">
         Track your symptoms (preferred)
-      </a>
-      <div class="content has-text-centered is-size-7">This helps you to track your symptoms and progress each day. We will use anonymous cookies to ensure that multiple responses from you can be easily matched.</div>
-      <div class="content has-text-centered">or</div>
-      <a class="button is-normal is-fullwidth is-warning has-text-weight-bold" href="{{PREFIX_URL}}/questionnaire">
+      </button>
+      <div class="content has-text-centered is-size-7">
+        This helps you to track your symptoms and progress each day. We will use anonymous cookies to ensure that multiple responses from you can be easily matched.
+      </div>
+
+      <button class="button is-normal is-warning has-text-weight-bold is-fullwidth" onClick="document.location='{{PREFIX_URL}}/questionnaire';">
         One-off
-      </a>
-      <div class="content has-text-centered is-size-7">You will get your result after completing the Symptom Checker. You cannot track your progress over time.</div>
+      </button>
+      <div class="content has-text-centered is-size-7">
+        You will get your result after completing the Symptom Checker. You cannot track your progress over time.
+      </div>
     </section>
   </div>
 </div>
@@ -127,18 +130,16 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
 
 {% endblock %}
 
-
-
 {% block footer %}
     <div class="content has-text-centered">
-        <p>This website has been developed by a team of public health and IT researchers, and staff at <a href="https://www.swinburne.edu.au/" target="_blank" class="has-text-dark has-text-weight-bold">Swinburne University of Technology</a>, Australia. This will help determine the current and emerging COVID-19 symptoms of people across the world.  This will help you improve your understanding of your health, follow changes and help us to advise health authorities about  what’s going on from the community’s perspective.</p>
+        <div class="content">This website has been developed by a team of public health and IT researchers, and staff at <a href="https://www.swinburne.edu.au/" target="_blank" class="has-text-dark has-text-weight-bold">Swinburne University of Technology</a>, Australia. This will help determine the current and emerging COVID-19 symptoms of people across the world.  This will help you improve your understanding of your health, follow changes and help us to advise health authorities about  what’s going on from the community’s perspective.</div>
         <img src="{% static 'swinburne-logo-horizontal-large.gif' %}" width="100"/>
     </div>
 {% endblock %}
 
 
 {% block js_end %}
-<script type="text/javascript">
+<script>
   var ack = getCookie("ack");
   if (ack == "yes")
   {
