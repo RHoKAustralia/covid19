@@ -1,11 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
 <!doctype html>
-<html>
-    <head>
-        <title>Dashbard</title>
-    </head>
-    <body>
-<a href="{{PREFIX_URL}}/dashboard/graph">Histogram Charts</a>
-<a href="{{PREFIX_URL}}/dashboard/participant/">Browse Participants</a>
-<a href="{{PREFIX_URL}}/">Go to Home Page</a>
-    </body>
-</html>
+{% block body %}
+<div class="columns">
+<div class="column">
+<a class="button is-normal is-fullwidth is-warning has-text-weight-bold" href="{{PREFIX_URL}}/dashboard/graph">
+        Histogram Charts
+      </a>
+</div><div class="column">
+    <a class="button is-normal is-fullwidth is-warning has-text-weight-bold" href="{{PREFIX_URL}}/dashboard/scatter">
+            Maps
+          </a>
+    </div>
+<div class="column">
+<a class="button is-normal is-fullwidth is-warning has-text-weight-bold" href="{{PREFIX_URL}}/dashboard/participant">
+        Browse Participants
+      </a>
+</div>
+<div class="column">
+<a class="button is-normal is-fullwidth is-warning has-text-weight-bold" href="{{PREFIX_URL}}/feedback">
+        Show Feedbak
+      </a>
+</div>
+<div class="column">
+<a class="button is-normal is-fullwidth is-warning has-text-weight-bold" href="{{PREFIX_URL}}">
+        Go to Home Page
+      </a>
+</div>
+</div>
+{% endblock %}
