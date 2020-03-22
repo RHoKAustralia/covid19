@@ -1,12 +1,11 @@
-{% load render_table from django_tables2 %}
 <!doctype html>
 <html>
     <head>
         <title>Dashbard</title>
     </head>
     <body>
-<a href="/betacovid19/dashboard/graph">Histogram Charts</a>
-<a href="/betacovid19/dashboard/participant/">Browse Participants</a>
-<a href="/betacovid19/">Go to Home Page</a>
+<a href="{{PREFIX_URL}}/dashboard/graph">Histogram Charts</a>
+<a href="{{PREFIX_URL}}/dashboard/participant/">Browse Participants</a>
+<a href="{{PREFIX_URL}}/">Go to Home Page</a>
     </body>
 </html>

@@ -2,11 +2,13 @@ from django.conf import settings
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.views.generic.edit import FormView
+from django.views.generic import TemplateView
 from .forms import ScaleForm
 from .forms import QuestionnaireForm
 from datetime import datetime
 import pytz
 from pytz import timezone
+import logging
 
 from .models import Question
 from .models import QuestionType
@@ -328,22 +330,26 @@ def is_number(s):
  
     return False
 
-#class FeedbackView(generic.ListView):
-#    template_name = 'questionadmin/feedback.html'
-#    context_object_name = "feedback_list"
-#    def get_queryset(self):
-#        return Answer.objects.filter(question__alias="feedback").values("freeform_text").exclude(freeform_text__isnull=True, freeform_text__exact='')
-
 class FeedbackView(generic.ListView):
     def get(self, *args, **kwargs):
-        if not self.request.user.is_staff:
-            return redirect('%s?next=%s' % (settings.LOGIN_URL, self.request.path))
+        #if not self.request.user.is_staff:
+            #return redirect('%s?next=%s' % (settings.LOGIN_URL, self.request.path))
         return super(FeedbackView, self).get(*args, **kwargs)
 
     template_name = 'questionadmin/feedback.html'
     context_object_name = "feedback_list"
     def get_queryset(self):
         return Answer.objects.filter(question__alias="feedback").values("freeform_text").exclude(freeform_text__isnull=True).exclude(freeform_text__exact='').exclude(freeform_text__iexact="testing")
+
+class HomeView(TemplateView):
+    logging.getLogger(__name__).info("HomeView {}".format(settings.PREFIX_URL))
+    name = "index.html"
+    PREFIX_URL = ""
+    def get_context_data(self,**kwargs):
+        context = super(HomeView,self).get_context_data(**kwargs)
+        context["PREFIX_URL"] = settings.PREFIX_URL
+        logging.getLogger(__name__).info("return custom contextA")
+        return context
 
 class IndexView(generic.ListView):
     context_object_name = 'questions'
@@ -354,7 +360,8 @@ class IndexView(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super(IndexView,self).get_context_data(**kwargs)
         context["countryList"] = countryList
-        print("return custom context")
+        context["PREFIX_URL"] = settings.PREFIX_URL
+        print("return custom contextB")
         return context
 
 class TrackedView(generic.ListView):
@@ -368,7 +375,8 @@ class TrackedView(generic.ListView):
         context["countryList"] = countryList
         context["generatedKey"] = Participant.generateTrackingKey(self.request)
         context["tracked"] = True
-        print("return custom context")
+        context["PREFIX_URL"] = settings.PREFIX_URL
+        print("return custom contextC")
         return context
 
 

@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.views import generic
 from django.views.generic.edit import FormView
@@ -6,7 +8,6 @@ from questionadmin.models import Answer
 from questionadmin.models import Question,QuestionType
 from questionadmin.models import Participant,ParticipantLocation,Location,Region,Country,AgeRanges,Country,AnswerSet
 from questionadmin.models import EmploymentStatus
-from questionadmin import settings
 
 def asScale(scale):
     index = int(scale)
@@ -87,6 +88,13 @@ def asEmploymentStatus(scale):
            return status.status
     return "unexpected"
 # Create your views here.
+class DashboardView(TemplateView):
+    name = "dashboard/dashboard_gallery.html"
+
+    def get_context_data(self,**kwargs):
+        context = super(DashboardView,self).get_context_data(**kwargs)
+        context['PREFIX_URL'] = settings.PREFIX_URL
+        return context
 class IndexView(generic.ListView):
     context_object_name = 'answers'
     def get_queryset(self):
@@ -210,7 +218,7 @@ class ParticipantView(generic.ListView):
             messages = {}
             for participant in self.get_queryset():
                 if participant.trackingKey:
-                    messages[settings.PREFIX_URL+"/dashboard/participant/"+participant.trackingKey] = True
+                    messages[settings.PREFIX_URL+"/dashboard/participant/"+participant.trackingKey+"/"] = True
         context['messages'] = messages
         
         return context

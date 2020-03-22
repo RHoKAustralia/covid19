@@ -29,5 +29,5 @@ from django.urls import re_path
 if settings.DEBUG:
     urlpatterns += [
         re_path(r'^static/(?P<path>.*)$', views.serve),
-        path('account/', include('django.contrib.auth.urls')),
+        path('accounts/', include('django.contrib.auth.urls')),
     ]

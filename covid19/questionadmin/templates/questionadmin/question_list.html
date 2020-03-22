@@ -26,8 +26,9 @@
 {% block  body %}
 <div class="all">
 
+<div>PREFIX_URL [{{PREFIX_URL}}]</div>
 {% if questions %}
-<form method="post" action="/betacovid19/saveresponse">
+<form method="post" action="{{PREFIX_URL}}/saveresponse">
     {% csrf_token %}
 <br/>
 <div class="steps" id="stepsDemo">

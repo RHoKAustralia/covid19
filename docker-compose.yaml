@@ -49,7 +49,7 @@ services:
       context: ./covid19/
       dockerfile: docker/nginx.Dockerfile
     ports:
-      - "8000:80"
+      - "8075:80"
     container_name: ng_covid19
     image: ng_covid:0.1
     depends_on:
