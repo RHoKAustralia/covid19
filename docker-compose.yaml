@@ -39,12 +39,17 @@ services:
       - ./covid19/:/app/
       - static:/app/covid19/static
     tty: true
+    command: >
+      ash -c "python manage.py makemigrations
+      && python manage.py migrate
+      && python manage.py collectstatic --noinput
+      && gunicorn --bind=0.0.0.0:8000 covid19.wsgi:application > /app/log.txt"
   nginx:
     build:
       context: ./covid19/
       dockerfile: docker/nginx.Dockerfile
     ports:
-      - "8075:80"
+      - "80:80"
     container_name: ng_covid19
     image: ng_covid:0.1
     depends_on:

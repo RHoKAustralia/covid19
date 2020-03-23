@@ -25,7 +25,7 @@ SECRET_KEY = '7e!d9l_a_v%psq+u*h16w&i3hon*t7i!j(p3$gyq=47kuf8=3s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", False)
 
-ALLOWED_HOSTS = ["tao.asvo.org.au", "localhost"]
+ALLOWED_HOSTS = ["beatcovid19now.com", "localhost", "ec2-54-206-19-106.ap-southeast-2.compute.amazonaws.com"]
 
 
 # Application definition
