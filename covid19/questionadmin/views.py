@@ -327,13 +327,13 @@ def is_number(s):
         return True
     except (TypeError, ValueError):
         pass
- 
+
     return False
 
 class FeedbackView(generic.ListView):
     def get(self, *args, **kwargs):
-        #if not self.request.user.is_staff:
-            #return redirect('%s?next=%s' % (settings.LOGIN_URL, self.request.path))
+        if not self.request.user.is_staff:
+            return redirect('%s?next=%s' % (settings.LOGIN_URL, self.request.path))
         return super(FeedbackView, self).get(*args, **kwargs)
 
     template_name = 'questionadmin/feedback.html'

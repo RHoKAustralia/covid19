@@ -1,1 +1,1 @@
-PREFIX_URL = '/covid19'
+PREFIX_URL = ''
