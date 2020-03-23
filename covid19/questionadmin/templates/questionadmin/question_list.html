@@ -762,7 +762,7 @@ Please answer all questions each time you do the Symptom Checker (preferably onc
 {% endfor %}
 {% for question in questions %}
     {% if question.isaboutyou %}
-        {% elif question.order == 1 %}
+        {% if question.order == 1 %}
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
