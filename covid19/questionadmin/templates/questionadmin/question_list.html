@@ -751,6 +751,8 @@ Please answer all questions each time you do the Symptom Checker (preferably onc
         </div>
         {% endif %}
     {% endif %}
+{% endfor %}
+{% for question in questions %}
     {% if question.ispostcode %}
         <div class="field">
             <label class="label">{{ question.question }}</label>
