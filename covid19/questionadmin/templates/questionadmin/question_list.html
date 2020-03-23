@@ -749,6 +749,19 @@ Please answer all questions each time you do the Symptom Checker (preferably onc
               <input type="hidden" class="control" name="aboutyou_location_json" id="aboutyou_location_json"/>
           </div>
         </div>
+        {% endif %}
+    {% endif %}
+    {% if question.ispostcode %}
+        <div class="field">
+            <label class="label">{{ question.question }}</label>
+            <div class="control" id="control_{{ question.id }}">
+                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+{% for question in questions %}
+    {% if question.isaboutyou %}
         {% elif question.order == 1 %}
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
@@ -760,7 +773,7 @@ Please answer all questions each time you do the Symptom Checker (preferably onc
                 <label class="radio" for="{{ question.id }}_Other"><input type="radio" name="{{ question.id }}" id="{{ question.id }}_Other" value="Other"/>&nbsp;Other</label>
             </div>
         </div>
-        {% elif question.order == 2 or question.order == 5 or question.order == 6%}
+        {% elif question.order == 2 or question.order == 5 or question.order == 6 %}
         <div class="field">
             <label class="label" id="label_{{ question.id }}">{{ question.question }}</label>
             <div class="control" id="control_{{ question.id }}">
@@ -846,14 +859,6 @@ Please answer all questions each time you do the Symptom Checker (preferably onc
             </div>
         </div>
     {% endif %}
-    {% if question.ispostcode %}
-        <div class="field">
-            <!--<label class="label">{{ question.question }}</label>-->
-            <div class="control" id="control_{{ question.id }}">
-                <input class="input" type="hidden" id="{{ question.id }}" name="{{ question.id }}">
-            </div>
-        </div>
-    {% endif %}
 {% endfor %}
     </section>
     </div>
@@ -865,7 +870,7 @@ Please answer all questions each time you do the Symptom Checker (preferably onc
 {% for question in questions %}
     {% if question.islongterm %}
         <label class="checkbox-inline">
-          <input type="checkbox" data-toggle="toggle" off="No" on="Yes"> {{ question.question }}
+          <input type="checkbox" data-toggle="toggle" off="No" on="Yes">&nbsp;{{ question.question }}
         </label>
         <br/>
     {% endif %}
