@@ -17,3 +17,8 @@ EXPOSE 8000
 
 # PROJECT DIRECTORY
 WORKDIR /app
+
+# wait for mysql before migrating etc and starting gunicorn
+ENTRYPOINT ["/app/docker/web-docker-entrypoint.sh"]
+CMD ["gunicorn", "--bind=0.0.0.0:8000", "covid19.wsgi:application"]
+
