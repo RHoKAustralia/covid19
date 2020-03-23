@@ -14,6 +14,8 @@
 
     <script src="{% static 'js/fontawesome-224eab9f43.js' %}" crossorigin="anonymous"></script>
 
+    <link rel="stylesheet" href="{% static 'css/question_list.css' %}"/>
+
     <!-- since nodeList.forEach is missing in IE11 -->
     <script>
       if (window.NodeList && !NodeList.prototype.forEach)
@@ -881,12 +883,16 @@ Thank you for testing the Symptom Checker. If you have any comments about your e
   </div>
 
   </div>
-  <div class="steps-actions has-background-warning container">
+  <div class="steps-actions container">
     <div class="steps-action">
-      <a href="#" data-nav="previous" class="button is-light">Previous</a>
+      <a href="#" data-nav="previous" class="button is-light">
+        &larr; Previous
+      </a>
     </div>
     <div class="steps-action">
-      <a href="#" data-nav="next" class="button is-light">Next</a>
+      <a href="#" data-nav="next" class="button is-light">
+        Next &rarr;
+      </a>
     </div>
   </div>
 </div>
