@@ -13,6 +13,16 @@
         gtag('config', 'UA-153695048-2');
     </script>
 
+    <script>
+
+      function acknowledgeCookies()
+      {
+        setCookie('ack', 'yes', 365);
+        document.getElementById('start-survey').disabled = false;
+        document.getElementById('cookie_message').classList.add('is-hidden');
+      }
+    </script>
+
 {% endblock %}
 
 {% block body %}
@@ -24,7 +34,7 @@
   </div>
   <div class="message-body">
     <div class="content">We are using anonymous data from cookies to ensure that multiple responses from the same person can be easily matched. This feature is only used if you select the Tracker Survey, if you do not wish to participate, simply use Anonymous Survey link and no cookies will be used.</div>
-    <button class="button is-success" type="button" onClick="setCookie('ack', 'yes', 365); document.getElementById('cookie_message').classList.add('is-hidden');">I Understand</button>
+    <button class="button is-success" type="button" onClick="acknowledgeCookies();">I Understand</button>
   </div>
 </article>
 
@@ -85,8 +95,8 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
 
     <br/>
 
-    <div class="container">
-        <button type="button" class="button is-medium is-fullwidth is-warning has-text-weight-bold" onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Symptom Checker</button>
+    <div class="container has-text-centered">
+        <button type="button" id="start-survey" class="button is-medium is-warning has-text-weight-bold" disabled onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Click here to start</button>
     </div>
 
 </section>
@@ -101,17 +111,17 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
     <section class="modal-card-body has-text-centered">
       <div class="content has-text-centered">What would you like to do?</div>
 
-      <button class="button is-normal is-warning has-text-weight-bold is-fullwidth" onClick="document.location='{{PREFIX_URL}}/monitor';">
-        Track your symptoms (preferred)
+      <button class="button is-normal is-warning has-text-weight-bold is-size-7-mobile" onClick="document.location='{{PREFIX_URL}}/monitor';">
+        Track your symptoms over time (preferred)
       </button>
       <div class="content has-text-centered is-size-7">
         This helps you to track your symptoms and progress each day. We will use anonymous cookies to ensure that multiple responses from you can be easily matched.
       </div>
 
-      <button class="button is-normal is-warning has-text-weight-bold is-fullwidth" onClick="document.location='{{PREFIX_URL}}/questionnaire';">
-        One-off
+      <button class="button is-normal is-warning has-text-weight-bold is-size-7-mobile" onClick="document.location='{{PREFIX_URL}}/questionnaire';">
+        One-time symptom check
       </button>
-      <div class="content has-text-centered is-size-7">
+      <div class="content has-text-centered is-centered is-size-7">
         You will get your result after completing the Symptom Checker. You cannot track your progress over time.
       </div>
     </section>
@@ -143,7 +153,7 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
   var ack = getCookie("ack");
   if (ack == "yes")
   {
-    document.getElementById("cookie_message").classList.add("is-hidden");
+    acknowledgeCookies();
   }
   else
   {

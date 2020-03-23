@@ -33,7 +33,7 @@
     {% csrf_token %}
 <br/>
 <div class="steps" id="stepsDemo">
-
+  <div class="content">Your Progress</div>
   <div class="step-item is-active is-success">
     <div class="step-marker">1</div>
   </div>
@@ -70,6 +70,7 @@
 
     <section class="section container">
 
+<!--
 <div class="notification is-info">
     <div class="content">
 Thank you for being part of testing this Coronavirus (COVID-19) Symptom Checker.
@@ -83,6 +84,7 @@ As you complete the questions, please make notes about anything that is not work
 Please note, this is a confidential beta-version of the Symptom Checker. This is for your use only so please don’t forward it to others.
     </div>
 </div>
+-->
 
 {% for question in questions %}
     {% if question.istested %}
