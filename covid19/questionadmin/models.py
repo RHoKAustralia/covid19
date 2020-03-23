@@ -101,6 +101,11 @@ class Question(models.Model):
             return True
         return False
 
+    def isflu(self):
+        if (str(self.questiontype) == "Influenza"):
+            return True
+        return False
+
 class QuestionType(models.Model):
     type = models.TextField()
 
