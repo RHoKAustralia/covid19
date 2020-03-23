@@ -20,7 +20,7 @@
       function acknowledgeCookies()
       {
         setCookie('ack', 'yes', 365);
-        document.getElementById('start-survey').disabled = false;
+        document.getElementById('start_survey').disabled = false;
         document.getElementById('cookie_message').classList.add('is-hidden');
       }
     </script>
@@ -29,7 +29,7 @@
 
 {% block body %}
 <section class="section container">
-<article class="message is-info is-hidden" id="cookie_message">
+<article class="message is-info" id="cookie_message">
   <div class="message-header">
     <p>Privacy Notice</p>
     <button class="delete" aria-label="delete"></button>
@@ -97,7 +97,7 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
     <br/>
 
     <div class="container has-text-centered">
-        <button type="button" id="start-survey" class="button is-light is-medium has-text-weight-bold" disabled onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Click here to start</button>
+        <button type="button" id="start_survey" class="button is-warning is-medium has-text-weight-bold" disabled onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Click here to start</button>
     </div>
 
 </section>
