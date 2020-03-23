@@ -147,23 +147,42 @@
       <button class="delete" aria-label="close"
         onClick="document.getElementById('chooseSurvey').classList.remove('is-active');"></button>
     </header>
-    <section class="modal-card-body has-text-centered">
-      <button class="button is-normal is-light has-text-weight-bold is-size-7-mobile"
-        onClick="document.location='{{PREFIX_URL}}/monitor';">
-        Track your symptoms over time (preferred)
-      </button>
-      <div class="content container has-text-centered is-size-7">
-        This helps you to track your symptoms and progress each day. We will use anonymous cookies to ensure that
-        multiple responses from you can be easily matched.
-      </div>
+    <section class="survey-type-options modal-card-body">
+      <a href="#" onClick="document.location='{{PREFIX_URL}}/monitor';">
+        <h4>Track your symptoms over time (preferred)</h4>
+        <span>
+          This helps you to track your symptoms and progress each day. We will use anonymous cookies to ensure that
+          multiple responses from you can be easily matched.
+        </span>
+      </a>
+      <a href="#" onClick="document.location='{{PREFIX_URL}}/questionnaire';">
+        <h4>One-time symptom check</h4>
+        <span>
+          You will get your result after completing the Symptom Checker. You cannot track your progress over time.
+        </span>
+      </a>
+      <!-- <div class="columns">
+        <div class="column is-half">
+          <button class="button is-normal is-light has-text-weight-bold is-size-7-mobile"
+            onClick="document.location='{{PREFIX_URL}}/monitor';">
+            Track your symptoms over time (preferred)
+          </button>
+          <div class="content container has-text-centered is-size-7">
+            This helps you to track your symptoms and progress each day. We will use anonymous cookies to ensure that
+            multiple responses from you can be easily matched.
+          </div>
+        </div>
 
-      <button class="button is-normal is-light has-text-weight-bold is-size-7-mobile"
-        onClick="document.location='{{PREFIX_URL}}/questionnaire';">
-        One-time symptom check
-      </button>
-      <div class="content container has-text-centered is-centered is-size-7">
-        You will get your result after completing the Symptom Checker. You cannot track your progress over time.
-      </div>
+        <div class="column is-half">
+          <button class="button is-normal is-light has-text-weight-bold is-size-7-mobile"
+            onClick="document.location='{{PREFIX_URL}}/questionnaire';">
+            One-time symptom check
+          </button>
+          <div class="content container has-text-centered is-centered is-size-7">
+            You will get your result after completing the Symptom Checker. You cannot track your progress over time.
+          </div>
+        </div>
+      </div> -->
     </section>
   </div>
 </div>
