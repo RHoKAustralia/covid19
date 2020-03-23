@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.views import generic
 from django.views.generic.edit import FormView
@@ -6,7 +8,6 @@ from questionadmin.models import Answer
 from questionadmin.models import Question,QuestionType
 from questionadmin.models import Participant,ParticipantLocation,Location,Region,Country,AgeRanges,Country,AnswerSet
 from questionadmin.models import EmploymentStatus
-from questionadmin import settings
 
 def asScale(scale):
     index = int(scale)
@@ -87,6 +88,38 @@ def asEmploymentStatus(scale):
            return status.status
     return "unexpected"
 # Create your views here.
+class DashboardView(TemplateView):
+    name = "dashboard/dashboard_gallery.html"
+
+    def get_context_data(self,**kwargs):
+        context = super(DashboardView,self).get_context_data(**kwargs)
+        context['PREFIX_URL'] = settings.PREFIX_URL
+        return context
+
+class ScatterView(generic.ListView):
+    context_object_name = 'answers'
+    template_name = "dashboard/scatter.html"
+    def get_queryset(self):
+        print("do the queryset\n")
+        return Answer.objects.filter(question__question="Cough")
+
+    def get_context_data(self,**kwargs):
+        context = super(ScatterView,self).get_context_data(**kwargs)
+        context['none'] = Answer.objects.filter(question__question="Cough").filter(scale_Answer=0)
+        context['mild'] = Answer.objects.filter(question__question="Cough").filter(scale_Answer=1)
+        context['moderate'] = Answer.objects.filter(question__question="Cough").filter(scale_Answer=2)
+        context['severe'] = Answer.objects.filter(question__question="Cough").filter(scale_Answer=3)
+        context['sore_none'] = Answer.objects.filter(question__question="Sore throat").filter(scale_Answer=0)
+        context['sore_mild'] = Answer.objects.filter(question__question="Sore throat").filter(scale_Answer=1)
+        context['sore_moderate'] = Answer.objects.filter(question__question="Sore throat").filter(scale_Answer=2)
+        context['sore_severe'] = Answer.objects.filter(question__question="Sore throat").filter(scale_Answer=3)
+        context['head_none'] = Answer.objects.filter(question__question="Headache").filter(scale_Answer=0)
+        context['head_mild'] = Answer.objects.filter(question__question="Headache").filter(scale_Answer=1)
+        context['head_moderate'] = Answer.objects.filter(question__question="Headache").filter(scale_Answer=2)
+        context['head_severe'] = Answer.objects.filter(question__question="Headache").filter(scale_Answer=3)
+        print("return custom contextC"+str(context))
+        return context
+
 class IndexView(generic.ListView):
     context_object_name = 'answers'
     def get_queryset(self):
@@ -210,7 +243,7 @@ class ParticipantView(generic.ListView):
             messages = {}
             for participant in self.get_queryset():
                 if participant.trackingKey:
-                    messages[settings.PREFIX_URL+"/dashboard/participant/"+participant.trackingKey] = True
+                    messages[settings.PREFIX_URL+"/dashboard/participant/"+participant.trackingKey+"/"] = True
         context['messages'] = messages
         
         return context

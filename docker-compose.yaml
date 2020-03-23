@@ -1,5 +1,19 @@
 version: '3'
 services:
+  inspec:
+    build:
+      context: ./covid19/
+      dockerfile: docker/inspec.Dockerfile
+    image: covid/inspec:4.18
+    command: >
+      bash -c "inspec supermarket exec dev-sec/linux-baseline --reporter=html:/root/reports/sample.html"
+    stdin_open: true
+    tty: true
+    volumes:
+    - ./inspec_reports:/root/reports
+    environment:
+    - SERVICE_DB=mysql
+    - SERVICE_WEB=web
   mysql:
     image: mysql:5.7.20
     container_name: mysql_covid19
@@ -19,6 +33,8 @@ services:
       dockerfile: docker/web.Dockerfile
     container_name: portal_covid19
     image: dg_portal:0.1
+    depends_on:
+      - mysql
     volumes:
       - ./covid19/:/app/
       - static:/app/covid19/static
@@ -33,7 +49,7 @@ services:
       context: ./covid19/
       dockerfile: docker/nginx.Dockerfile
     ports:
-      - "8000:80"
+      - "8075:80"
     container_name: ng_covid19
     image: ng_covid:0.1
     depends_on:

@@ -1,2 +1,12 @@
 # CACHE FILES
 *__pycache__*
+.venv/
+.env*
+.ropeproject
+.ipynb_checkpoints/
+*.pyc
+*.egg-info
+*.log
+.venv/
+questionadmin/migrations
+inspec_reports/sample.html

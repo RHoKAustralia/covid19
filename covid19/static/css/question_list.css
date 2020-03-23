@@ -1,0 +1,27 @@
+.steps-actions {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 2rem 0;
+}
+
+.steps-action .button {
+  width: 100%;
+  max-width: 250px;
+}
+
+.button {
+  transition: all .1s ease-in;
+  box-shadow: 2px 2px 0 #aaa;
+  border: 1px solid #aaa;
+  cursor: pointer;
+}
+
+.button:hover {
+  box-shadow: 0 0 0 #333 !important;
+  border-color: #333;
+}
+
+.button:focus {
+  box-shadow: 2px 2px 0 #333 !important;
+  border-color: #333;
+}

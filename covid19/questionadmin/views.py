@@ -1,13 +1,17 @@
-from django.shortcuts import render
+from django.conf import settings
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.views.generic.edit import FormView
+from django.views.generic import TemplateView
 from .forms import ScaleForm
 from .forms import QuestionnaireForm
 from datetime import datetime
 import pytz
 from pytz import timezone
+import logging
 
 from .models import Question
+from .models import QuestionType
 from .models import Location
 from .models import Country
 from .models import ParticipantLocation
@@ -19,7 +23,43 @@ from .models import HealthWarningMessage
 from .models import AgeRanges
 from .models import EmploymentStatus
 from .models import Region
-from . import settings
+
+def asYesNoMaybe(scale):
+    index = int(scale)
+    if index == -1:
+        return "Unsure"
+    if index == 0:
+        return "No"
+    if index == 1:
+        return "Yes"
+    if index == 2:
+        return "Unsure"
+    return "unexpected"
+
+def asTravel(scale):
+    print("ASTRAVEL="+str(scale))
+    index = int(scale)
+    if index == 1:
+        return "Yes, International"
+    if index == 2:
+        return "Yes, Local"
+    if index == 0:
+        return "No"
+    return "Unknown"
+
+def asScale(scale):
+    index = int(scale)
+    if index == -1:
+        return "unknown"
+    if index == 0:
+        return "None"
+    if index == 1:
+        return "Mild"
+    if index == 2:
+        return "Moderate"
+    if index == 3:
+        return "Severe"
+    return "unexpected_scale"
 
     #
 countryList = [
@@ -287,8 +327,29 @@ def is_number(s):
         return True
     except (TypeError, ValueError):
         pass
- 
+
     return False
+
+class FeedbackView(generic.ListView):
+    def get(self, *args, **kwargs):
+        if not self.request.user.is_staff:
+            return redirect('%s?next=%s' % (settings.LOGIN_URL, self.request.path))
+        return super(FeedbackView, self).get(*args, **kwargs)
+
+    template_name = 'questionadmin/feedback.html'
+    context_object_name = "feedback_list"
+    def get_queryset(self):
+        return Answer.objects.filter(question__alias="feedback").values("freeform_text").exclude(freeform_text__isnull=True).exclude(freeform_text__exact='').exclude(freeform_text__iexact="testing")
+
+class HomeView(TemplateView):
+    logging.getLogger(__name__).info("HomeView {}".format(settings.PREFIX_URL))
+    name = "index.html"
+    PREFIX_URL = ""
+    def get_context_data(self,**kwargs):
+        context = super(HomeView,self).get_context_data(**kwargs)
+        context["PREFIX_URL"] = settings.PREFIX_URL
+        logging.getLogger(__name__).info("return custom contextA")
+        return context
 
 class IndexView(generic.ListView):
     context_object_name = 'questions'
@@ -299,7 +360,8 @@ class IndexView(generic.ListView):
     def get_context_data(self,**kwargs):
         context = super(IndexView,self).get_context_data(**kwargs)
         context["countryList"] = countryList
-        context["urlprefix"] = settings.PREFIX_URL
+        context["PREFIX_URL"] = settings.PREFIX_URL
+        print("return custom contextB")
         return context
 
 class TrackedView(generic.ListView):
@@ -313,7 +375,8 @@ class TrackedView(generic.ListView):
         context["countryList"] = countryList
         context["generatedKey"] = Participant.generateTrackingKey(self.request)
         context["tracked"] = True
-        print("return custom context")
+        context["PREFIX_URL"] = settings.PREFIX_URL
+        print("return custom contextC")
         return context
 
 
@@ -436,6 +499,7 @@ class QuestionnaireView(generic.FormView):
     def home(request):
         print("process form")
         myset = {}
+        mysymptom = {}
         if request.method == 'POST':
             #print("its a post="+str(request.POST))
             #print("AGE RANGE ID"+str(QuestionnaireView.findAgeRange(request)))
@@ -469,9 +533,9 @@ class QuestionnaireView(generic.FormView):
             if trackingKey:
                 print("UID PASSED="+str(trackingKey))
                 participant = Participant.objects.filter(trackingKey=trackingKey).first()
+            else:
+                trackingKey = Participant.generateTrackingKey(request)
             if not participant:
-                if len(str(trackingKey))==0:
-                    trackingKey=Participant.generateTrackingKey(request)
                 print("Create New Participant="+str(trackingKey))
                 participant = Participant(firstName=firstName,lastName=lastName,location=participantlocation,age=age, trackingKey=trackingKey)
             participant.save()
@@ -492,6 +556,8 @@ class QuestionnaireView(generic.FormView):
                             scale_Answer = QuestionnaireView.findEmploymentStatus(request).id
                         else:
                             scale_Answer = QuestionnaireView.asint(request.POST[field])
+                            mysymptom[question.id]=request.POST[field]
+                            print("Question="+str(question)+" "+str(request.POST[field]))
                         answer = Answer(participant=participant,question=question, scale_Answer=scale_Answer,dateAnswered=QuestionnaireView.nowUTC(),
                                         answerset=answerset)
                         myset[question.id] = scale_Answer
@@ -510,15 +576,19 @@ class QuestionnaireView(generic.FormView):
                 elif field!="csrfmiddlewaretoken":
                     question = Question.objects.filter(question=field).first()
                     if question:
-                        text_Answer = QuestionnaireView.astext(request.POST[field])
-                        answer = Answer(participant=participant,question=question, freeform_text=text_Answer,dateAnswered=QuestionnaireView.nowUTC(),
-                                        answerset=answerset)
+                        try:
+                            text_Answer = QuestionnaireView.astext(request.POST[field])
+                            answer = Answer(participant=participant,question=question, freeform_text=text_Answer,dateAnswered=QuestionnaireView.nowUTC(),
+                                            answerset=answerset)
 
-                    answer.save()
+                            answer.save()
+                        except:
+                            print("Caught error on field "+field)
 
         else:
             print("its a get")
             form = QuestionnaireForm()
+            return render(request, 'index.html')
         print("DONE")
 
         # stub for working out the health warning message
@@ -536,9 +606,33 @@ class QuestionnaireView(generic.FormView):
            if HealthWarningMessage.objects.filter(warninglevel=i).count() > 0:
               message = HealthWarningMessage.objects.filter(warninglevel=i).first()
               break
+        cough = mysymptom[Question.objects.filter(alias="cough").first().id]
+        sorethroat = mysymptom[Question.objects.filter(alias="sore-throat").first().id]
+        fever = mysymptom[Question.objects.filter(alias="fever").first().id]
+        shortbreath = mysymptom[Question.objects.filter(alias="shortBreath").first().id]
+        fatigue = mysymptom[Question.objects.filter(alias="fatigue").first().id]
+        travel = mysymptom[Question.objects.filter(alias="answer1").first().id]
+        contact = mysymptom[Question.objects.filter(alias="answer3").first().id]
+        risk = "Well"
+        if level == 1:
+            risk = "A"
+        if level == 2:
+            risk = "B"
+        if level == 3:
+            risk = "C"
+        if level >= 4:
+            risk = "D"
         context = {
             'level':level,
             'message':message,
+            'risk':risk,
+            'cough':asScale(cough),
+            'sorethroat':asScale(sorethroat),
+            'fever':asScale(fever),
+            'shortbreath':asScale(shortbreath),
+            'fatigue':asScale(fatigue),
+            'travel':str(travel).split("-")[0],
+            'contact':asYesNoMaybe(contact),
         }
         return render(request, 'bye-page.html',context)
 

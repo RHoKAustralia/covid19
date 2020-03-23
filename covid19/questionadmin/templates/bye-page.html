@@ -1,33 +1,88 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
-    <title>COVID-19-Hack</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/fav/apple-touch-icon.png">
+{% block head %}
 
-    <script src="https://kit.fontawesome.com/224eab9f43.js" crossorigin="anonymous"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153695048-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-153695048-2');
+    </script>
 
-    <style>
+{% endblock %}
 
-    </style>
+{% block body %}
+<section class="section container">
 
-</head>
-<body>
-<section class="hero is-dark">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title">
-                COVID-19-Hack
-            </h1>
-            <h2 class="subtitle">
-                MVP
-            </h2>
-        </div>
+    <div class="content">
+<b>The Symptom Checker does not diagnose COVID-19 and it does not provide medical advice.</b> Contact your relevant local health authority or medical practitioner for health advice about COVID-19 and to find out what to do if you think you have symptoms.
+    </div>
+
+    <div class="content">
+<table class="table">
+<tr> <th>COVID-19 Symptom</th>           <th>Your score today</th> </tr>
+<tr> <td>Cough</td>                      <td>{{ cough }}</td> </tr>
+<tr> <td>Sore throat</td>                <td>{{ sorethroat }}</td> </tr>
+<tr> <td>Feeling feverish</td>           <td>{{ fever }}</td> </tr>
+<tr> <td>Short of breath</td>            <td>{{ shortbreath }}</td> </tr>
+<tr> <td>Fatigue (severe tiredness)</td> <td>{{ fatigue }}</td> </tr>
+</table>
+
+<table class="table">
+<tr> <th colspan=2>Potential Exposure in the past 14 days:</th></tr>
+<tr> <td>International Travel</td>                       <td>{{ travel }}</td> </tr>
+<tr> <td>Been in contact with someone with COVID-19</td> <td>{{ contact }}</td> </tr>
+</table>
     </div>
 </section>
+
+<section class="section container">
+<div class="content">Please review relevant health authority webpages in your country. The following feedback is based on the <a href='https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-health-alert?utm_source=health.gov.au&utm_medium=redirect&utm_campaign=digital_transformation&utm_content=health-topics/novel-coronavirus-2019-ncov'>Australian Government Department of Health website</a>.</div>
+
+<div class="tile is-ancestor">
+<div class="tile is-vertical is-parent">
+
+<div class="tile is-child box is-12 is-success notification is-hidden" id="risk-A">
+<p><b>Report:</b> No or mild symptoms, no recent travel or exposure.</p><br/>
+<p>Your survey results show that you should continue to monitor your wellbeing. Please complete this survey each day. Follow the advice of local health authorities.</p>
+</div>
+
+<div class="tile is-child box is-12 is-warning notification is-hidden" id="risk-B">
+<p><b>Report:</b> You reported that you have mild, moderate or severe symptoms and no recent travel or exposure.</p><br/>
+<p>Your survey results show that you should continue to monitor your symptoms. If you have serious symptoms such as difficulty breathing, call 000 (or local in-country emergency line) for urgent medical help.</p>
+</div>
+
+<div class="tile is-child box is-12 is-warning notification is-hidden" id="risk-C">
+<p><b>Report:</b> You reported that you have symptoms including Shortness of breath (moderate or severe), with no recent travel or exposure.</p><br/>
+<p>If you have serious symptoms such as difficulty breathing, call 000 (or local in-country emergency line) for urgent medical help.</p><br/>
+<p>If you would like to talk to someone, call the Coronavirus (COVID-19) Health Information Line. The line operates 24 hours a day, seven days a week. 1800 020 080</p>
+</div>
+
+<div class="tile is-child box is-12 is-danger notification is-hidden" id="risk-D">
+<p><b>Report:</b> You reported that you have moderate to severe symptoms and recent travel or exposure.</p><br/>
+<p>You should immediately contact your local health authority and/or your medical practitioner (or local in-country emergency line) for urgent medical help</p><br/>
+<p>If you would like to talk to someone, call the Coronavirus (COVID-19) Health Information Line. The line operates 24 hours a day, seven days a week. 1800 020 080</p>
+</div>
+
+<div class="tile is-child box is-12 is-warning notification is-hidden" id="risk-E">
+<p><b>Report:</b>You reported that you have none or mild symptoms, and recent travel or exposure.</p><br/>
+<p>You should contact your local health authority and/or your medical practitioner (or local in-country emergency line) to review your health status.</p>
+</div>
+
+<div class="tile is-child box is-12 notification is-hidden" id="risk-none">
+<p><b>Report:</b> Support for generating the report has not yet been added to the BETA test.</p>
+</div>
+
+</div>
+</div>
+
+</section>
+
+<!--
+<button class="button">Click here to save or print your results.</button>
 {% if level == 0 %}
 <section class="section">
     <div class="container is-fluid">
@@ -55,15 +110,67 @@
     </div>
     <div class="column"></div>
 </div>
+-->
+{% endblock %}
 
+{% block footer %}
+{% endblock %}
 
+{% block js_end %}
+<script>
 
-<footer class="footer">
-    <div class="content has-text-centered">
-        <p>
-            <strong>App</strong> by COVID-19-Hack.
-        </p>
-    </div>
-</footer>
-</body>
-</html>
+  var symptoms = ["{{ cough }}", "{{ sorethroat }}", "{{ fever }}", "{{ shortbreath }}", "{{ fatigue }}", "{{ travel }}", "{{ contact }}"];
+  var symptom_ranks = { "None": 0, "Mild": 1, "Moderate": 2, "Severe": 3 };
+  var max_symptom_rank = 0;
+  var max_symptom = "None"; 
+  for (i=0; i<symptoms.length; i++)
+  {
+    var symptom_rank = symptom_ranks[symptoms[i]];
+    if (symptom_rank > max_symptom_rank)
+    {
+      max_symptom_rank = symptom_rank;
+      max_symptom = symptoms[i];
+    }
+  }
+
+  var cough = "{{ cough }}";
+  var sorethroat = "{{ sorethroat }}";
+  var fever = "{{ fever }}";
+  var shortbreath = "{{ shortbreath }}";
+  var fatigue = "{{ fatigue }}";
+
+  var travel = "{{ travel }}";
+  var contact = "{{ contact }}";
+  var travel_or_exposure = ((travel == "Yes") || (contact == "Yes"));
+
+  if (travel_or_exposure)
+  {
+    if ((max_symptom == "Moderate") || (max_symptom == "Severe"))
+    {
+      document.getElementById("risk-D").classList.remove("is-hidden");
+    }
+    else
+    {
+      document.getElementById("risk-E").classList.remove("is-hidden");
+    }
+  }
+  else
+  {
+    if ((max_symptom == "Moderate") || (max_symptom == "Severe"))
+    {
+      if ((shortbreath == "Moderate") || (shortbreath == "Severe"))
+      {
+        document.getElementById("risk-C").classList.remove("is-hidden");
+      }
+      else
+      {
+        document.getElementById("risk-B").classList.remove("is-hidden");
+      }
+    }
+    else
+    {
+      document.getElementById("risk-A").classList.remove("is-hidden");
+    }
+  }
+</script>
+{% endblock %}

@@ -132,12 +132,47 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Logging.
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'covid19_logfile.txt',
+        },
+    },
+    'loggers': {
+        'covid19': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'dashboard': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'questionadmin': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        }
+    },
+}
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-LOGIN_URL = '/account/login/'
-LOGIN_REDIRECT_URL = '/accounts/login/'
-STATIC_URL = "/staticfiles/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+# For TAOUI
+#PREFIX_URL = '/covid19docker'
+# Typically for local host
+PREFIX_URL = ''
+STATIC_URL = PREFIX_URL+'/static/'
+STATIC_ROOT = '/app/covid19/static'
+LOGIN_URL = PREFIX_URL+'/accounts/login/'
+LOGIN_REDIRECT_URL = PREFIX_URL+'/accounts/login/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]

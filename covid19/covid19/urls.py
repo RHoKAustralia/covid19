@@ -21,6 +21,7 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('test', include('questionadmin.urls')),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 from django.conf import settings
 from django.contrib.staticfiles import views

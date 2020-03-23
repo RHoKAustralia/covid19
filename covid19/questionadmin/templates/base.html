@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Coronavirus (COVID-19) Symptom Checker</title>
+
+    <!-- bulma 0.8.0 -->
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}" />
+
+    <!-- covid toolkit -->
+    <script src="{% static 'js/covid.js' %}"></script>
+
+    <!-- fontawesome -->
+    <script src="{% static 'js/fontawesome-224eab9f43.js' %}" crossorigin="anonymous"></script>
+
+    <!-- apple touch icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}"/>
+
+    {% block head %}{% endblock %}
+</head>
+<body>
+<section class="hero is-warning">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title" style="is-dark">
+                Coronavirus (COVID-19) Symptom Checker
+            </h1>
+            <h2 class="subtitle" style="is-dark">
+                Your personal tracker of the symptoms of coronavirus (COVID-19)
+            </h2>
+        </div>
+    </div>
+</section>
+
+{% block body %}{% endblock %}
+
+<footer class="footer container">
+{% block footer %}{% endblock %}
+    <div class="content has-text-centered is-size-7">
+No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced
+for any purpose, including research, translation or commercial, without the
+expressed written approval of Swinburne University of Technology.
+    </div>
+</footer>
+
+</body>
+
+{% block js_end %}{% endblock %}
+</html>
