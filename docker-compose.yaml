@@ -39,11 +39,6 @@ services:
       - ./covid19/:/app/
       - static:/app/covid19/static
     tty: true
-    command: >
-      ash -c "python manage.py makemigrations
-      && python manage.py migrate
-      && python manage.py collectstatic --noinput
-      && gunicorn --bind=0.0.0.0:8000 covid19.wsgi:application"
   nginx:
     build:
       context: ./covid19/
