@@ -24,7 +24,6 @@ SECRET_KEY = '7e!d9l_a_v%psq+u*h16w&i3hon*t7i!j(p3$gyq=47kuf8=3s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", True)
-DEBUG = False
 
 ALLOWED_HOSTS = ["tao.asvo.org.au", "localhost"]
 
@@ -78,15 +77,27 @@ WSGI_APPLICATION = 'covid19.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+DATABASES_AVAILABLE = {
+    'production': {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
             'read_default_file': '/app/sql.cfn',
             },
+    },
+    'development': {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, ".db.sqlite3"),
     }
 }
 
+DB_USING = os.environ.get("DJANGO_DATABASE", "production")
+
+if DB_USING not in DATABASES_AVAILABLE.keys():
+    raise Exception("{} is not one of the available databases. Select one of: {}".format(DB_USING, ", ".join(DATABSES_AVAILABLE.keys())))
+
+DATABASES = {
+    'default': DATABASES_AVAILABLE[DB_USING]
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
