@@ -20,30 +20,30 @@
     <!-- apple touch icon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}"/>
 
+    <!-- site stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/site.css' %}" />
+
     {% block head %}{% endblock %}
 </head>
 <body>
-<section class="hero is-warning">
-    <div class="hero-body">
-        <div class="container">
-            <h1 class="title" style="is-dark">
-                Coronavirus (COVID-19) Symptom Checker
-            </h1>
-            <h2 class="subtitle" style="is-dark">
-                Your personal tracker of the symptoms of coronavirus (COVID-19)
-            </h2>
-        </div>
+
+<nav class="site-navbar">
+    <div class="container">
+        <h1>Coronavirus (COVID-19) Symptom Checker</h1>
+        <h2>Your personal tracker of the symptoms of coronavirus (COVID-19)</h2>
     </div>
-</section>
+</nav>
 
 {% block body %}{% endblock %}
 
-<footer class="footer container">
-{% block footer %}{% endblock %}
-    <div class="content has-text-centered is-size-7">
-No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced
-for any purpose, including research, translation or commercial, without the
-expressed written approval of Swinburne University of Technology.
+<footer class="footer">
+    <div class="container">
+        {% block footer %}{% endblock %}
+        <div class="content has-text-centered is-size-7">
+            No part of the Coronavirus Symptom Checker may be copied, printed, or re-produced
+            for any purpose, including research, translation or commercial, without the
+            expressed written approval of Swinburne University of Technology.
+        </div>
     </div>
 </footer>
 

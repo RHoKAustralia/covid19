@@ -1,6 +1,5 @@
 .steps-actions {
   border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
   padding: 2rem 0;
 }
 
@@ -9,19 +8,26 @@
   max-width: 250px;
 }
 
-.button {
-  transition: all .1s ease-in;
-  box-shadow: 2px 2px 0 #aaa;
-  border: 1px solid #aaa;
-  cursor: pointer;
+.steps .step-item .step-marker {
+  font-size: 0.7rem;
+  height: 1.5rem;
+  width: 1.5rem;
+  left: calc(50% - 0.5rem);
 }
 
-.button:hover {
-  box-shadow: 0 0 0 #333 !important;
-  border-color: #333;
+.steps .step-item:not(:first-child)::before {
+  top: 0.6rem;
 }
 
-.button:focus {
-  box-shadow: 2px 2px 0 #333 !important;
-  border-color: #333;
+/* responsive styles */
+@media all and (min-width: 520px) {
+  .steps .step-item .step-marker {
+    font-size: 1rem;
+    height: 2rem;
+    width: 2rem;
+    left: calc(50% - 1rem);
+  }
+  .steps .step-item:not(:first-child)::before {
+    top: 1rem;
+  }
 }

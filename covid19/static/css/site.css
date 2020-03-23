@@ -1,0 +1,101 @@
+.container {
+  max-width: 960px;
+}
+
+.survey-content {
+  margin-top: 2rem;
+}
+
+.left-column-content {
+  background-color: #F4F8FF;
+  border-radius: 6px;
+  padding: 1rem;
+  font-size: 0.8rem;
+}
+.right-column-content {
+  border-radius: 6px;
+  padding: 1rem;
+}
+
+.telemed-image {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.site-navbar {
+  background-color: #140E4B;
+  color: #fff;
+  padding: 1rem;
+}
+
+.site-navbar h1 {
+  font-size: 18px;
+  font-weight: 600;
+  display: block;
+  letter-spacing: -0.05em
+}
+
+.site-navbar h2 {
+  font-size: 11px;
+  font-weight: 300;
+  display: block;
+  color: #ccc;
+}
+
+/* footer styles */
+.footer {
+  margin-top: 2rem;
+  border-top: 1px solid #999;
+  background-color: none;
+}
+
+/* overwrite bulma .is-info colours */
+.message.is-info {
+  background-color: #D9E7FF;
+}
+.message.is-info .message-header {
+  background-color: #566277;
+}
+.message.is-info .message-body {
+  border-color: none;
+  color: #140E4B;
+}
+.notification.is-info {
+  background-color: #D9E7FF;
+}
+.notification.is-info .content {
+  color: #140E4B;
+}
+
+/* button styles */
+.button {
+  transition: all .1s ease-in;
+  box-shadow: 2px 2px 0 #aaa;
+  border: 1px solid #aaa;
+  cursor: pointer;
+}
+
+.button:hover {
+  box-shadow: 0 0 0 #333 !important;
+  border-color: #333;
+}
+
+.button:focus {
+  box-shadow: 2px 2px 0 #333 !important;
+  border-color: #333;
+}
+
+/* responsive styles */
+@media all and (min-width: 520px) {
+  .site-navbar {
+    padding: 1rem;
+  }
+
+  .site-navbar h1 {
+    font-size: 25px;
+  }
+
+  .site-navbar h2 {
+    font-size: 14px;
+  }
+}
