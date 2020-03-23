@@ -4,6 +4,8 @@
 {% block head %}
     <link rel="stylesheet" href="https://unpkg.com/bulma-modal-fx/dist/css/modal-fx.min.css" />
 
+    <link rel="stylesheet" href="{% static 'css/question_list.css' %}"/>
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-153695048-2"></script>
     <script>
@@ -57,7 +59,6 @@
   </div>
 </div>
 -->
-<div> TEST PREFIX_URL [{{PREFIX_URL}}]</div>
     <div class="container">
 
         <div class="content is-italic has-text-weight-bold">
@@ -96,7 +97,7 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
     <br/>
 
     <div class="container has-text-centered">
-        <button type="button" id="start-survey" class="button is-medium is-warning has-text-weight-bold" disabled onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Click here to start</button>
+        <button type="button" id="start-survey" class="button is-light is-medium has-text-weight-bold" disabled onClick="document.getElementById('chooseSurvey').classList.add('is-active');">Click here to start</button>
     </div>
 
 </section>
@@ -111,14 +112,14 @@ Your identity cannot be revealed through filling in the Symptom Checker. We do n
     <section class="modal-card-body has-text-centered">
       <div class="content has-text-centered">What would you like to do?</div>
 
-      <button class="button is-normal is-warning has-text-weight-bold is-size-7-mobile" onClick="document.location='{{PREFIX_URL}}/monitor';">
+      <button class="button is-normal is-light has-text-weight-bold is-size-7-mobile" onClick="document.location='{{PREFIX_URL}}/monitor';">
         Track your symptoms over time (preferred)
       </button>
       <div class="content has-text-centered is-size-7">
         This helps you to track your symptoms and progress each day. We will use anonymous cookies to ensure that multiple responses from you can be easily matched.
       </div>
 
-      <button class="button is-normal is-warning has-text-weight-bold is-size-7-mobile" onClick="document.location='{{PREFIX_URL}}/questionnaire';">
+      <button class="button is-normal is-light has-text-weight-bold is-size-7-mobile" onClick="document.location='{{PREFIX_URL}}/questionnaire';">
         One-time symptom check
       </button>
       <div class="content has-text-centered is-centered is-size-7">

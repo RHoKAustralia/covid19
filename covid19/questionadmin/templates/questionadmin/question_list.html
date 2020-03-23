@@ -29,13 +29,14 @@
 {% block  body %}
 <div class="all">
 
-<div>PREFIX_URL [{{PREFIX_URL}}]</div>
 {% if questions %}
 <form method="post" action="{{PREFIX_URL}}/saveresponse">
     {% csrf_token %}
 <br/>
+<section class="section container">
+  <h4 class="title is-4" style="is-dark">Your Progress</h4>
+</section>
 <div class="steps" id="stepsDemo">
-  <div class="content">Your Progress</div>
   <div class="step-item is-active is-success">
     <div class="step-marker">1</div>
   </div>
